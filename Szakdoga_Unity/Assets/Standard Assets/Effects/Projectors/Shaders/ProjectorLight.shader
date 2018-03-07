@@ -1,0 +1,33 @@
+// Upgrade NOTE: replaced '_Projector' with 'unity_Projector'
+// Upgrade NOTE: replaced '_ProjectorClip' with 'unity_ProjectorClip'
+
+Shader "Projector/Additive Tinted" {
+	Properties{
+		_Color("Main Color", Color) = (1,0.5,0.5,1)
+		_ShadowTex("Cookie", 2D) = "" {TexGen ObjectLinear}
+		_FalloffTex("FallOff", 2D) = "" {TexGen ObjectLinear}
+	}
+
+		Subshader{
+			Pass {
+				ZWrite Off
+				Fog { Color(1,1,1) }
+				ColorMask RGB
+				Blend One One
+
+				SetTexture[_ShadowTex]{
+				constantColor[_Color]
+				combine texture * constant, ONE - texture
+				Matrix[_Projector]
+
+				}
+
+				SetTexture[_falloffTex]{
+				constantColor(0,0,0,0)
+				combine previous lerp(texture) constant
+				Matrix[_ProjectorClips]
+
+				}
+			}
+	}
+}
