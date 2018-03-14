@@ -1,4 +1,8 @@
 sceneSetups:
+<<<<<<< HEAD
+- path: Assets/Scenes/Galaxy.unity
+=======
 - path: Assets/Alap.unity
+>>>>>>> 261974893441068212a10918a216a596cd8d0574
   isLoaded: 1
   isActive: 1
