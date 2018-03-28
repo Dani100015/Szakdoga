@@ -291,6 +291,8 @@ GameObject:
   - component: {fileID: 381056711}
   - component: {fileID: 381056710}
   - component: {fileID: 381056709}
+  - component: {fileID: 381056713}
+  - component: {fileID: 381056714}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -354,13 +356,81 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 381056708}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 5.74, z: -37.5}
+  m_LocalRotation: {x: -0, y: 0.24827799, z: -0, w: 0.96868885}
+  m_LocalPosition: {x: -15, y: 10, z: -50}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 28.751001, z: 0}
+--- !u!114 &381056713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 381056708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28ef8c68bade09b41aca258d42a632f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lastTab: 2
+  movementSettingsFoldout: 0
+  zoomingSettingsFoldout: 0
+  rotationSettingsFoldout: 0
+  heightSettingsFoldout: 0
+  mapLimitSettingsFoldout: 0
+  targetingSettingsFoldout: 0
+  inputSettingsFoldout: 0
+  useFixedUpdate: 0
+  keyboardMovementSpeed: 80
+  screenEdgeMovementSpeed: 3
+  followingSpeed: 5
+  rotationSped: 50
+  panningSpeed: 10
+  mouseRotationSpeed: 10
+  autoHeight: 0
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  maxHeight: 15
+  minHeight: 1
+  heightDampening: 5
+  keyboardZoomingSensitivity: 2
+  scrollWheelZoomingSensitivity: 50
+  limitMap: 1
+  limitX: 50
+  limitY: 50
+  targetFollow: {fileID: 0}
+  targetOffset: {x: 0, y: 0, z: 0}
+  useScreenEdgeInput: 1
+  screenEdgeBorder: 25
+  useKeyboardInput: 1
+  horizontalAxis: Horizontal
+  verticalAxis: Vertical
+  usePanning: 1
+  panningKey: 325
+  useKeyboardZooming: 1
+  zoomInKey: 101
+  zoomOutKey: 113
+  useScrollwheelZooming: 1
+  zoomingAxis: Mouse ScrollWheel
+  useKeyboardRotation: 1
+  rotateRightKey: 101
+  rotateLeftKey: 113
+  useMouseRotation: 1
+  mouseRotationKey: 324
+--- !u!114 &381056714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 381056708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0811a98f4839b3c4cab9d074e9cae32f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &451232903
 Prefab:
   m_ObjectHideFlags: 0
