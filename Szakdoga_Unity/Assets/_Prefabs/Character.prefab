@@ -26,7 +26,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1735708192239882
 GameObject:
   m_ObjectHideFlags: 0
@@ -38,6 +38,7 @@ GameObject:
   - component: {fileID: 33265685214205798}
   - component: {fileID: 65557122211119888}
   - component: {fileID: 23024492400595752}
+  - component: {fileID: 114118463215071048}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -52,7 +53,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1735708192239882}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.5762467, y: -2.1, z: -6.302658}
+  m_LocalPosition: {x: -3.53, y: -2.1, z: -6.302658}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children:
   - {fileID: 4542193602071978}
@@ -125,6 +126,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114118463215071048
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1735708192239882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62ffa6bd50f1422408bb8d808ef7c370, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ScreenPos: {x: 0, y: 0}
+  OnScreen: 0
+  Selected: 0
 --- !u!119 &119996921758013910
 Projector:
   m_ObjectHideFlags: 1
@@ -133,8 +148,8 @@ Projector:
   m_GameObject: {fileID: 1443620921298504}
   m_Enabled: 1
   serializedVersion: 2
-  m_NearClipPlane: 1.2
-  m_FarClipPlane: 10
+  m_NearClipPlane: 7
+  m_FarClipPlane: 15
   m_FieldOfView: 70
   m_AspectRatio: 1
   m_Orthographic: 0
