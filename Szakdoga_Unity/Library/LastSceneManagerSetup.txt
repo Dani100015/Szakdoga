@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/SolarSystem_TUTORIAL.unity
+- path: Assets/Scenes/Galaxy.unity
   isLoaded: 1
   isActive: 1
