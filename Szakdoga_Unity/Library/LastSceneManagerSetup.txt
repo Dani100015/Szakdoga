@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Alap.unity
+- path: Assets/Scenes/SolarSystem_TUTORIAL.unity
   isLoaded: 1
   isActive: 1

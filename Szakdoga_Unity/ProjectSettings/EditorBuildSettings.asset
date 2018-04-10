@@ -4,4 +4,16 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Alap.unity
+    guid: 3c320aa42921abe4e97301b9bcd3bc76
+  - enabled: 1
+    path: Assets/Scenes/Galaxy.unity
+    guid: a275f45240c74bd458db8eb13048486a
+  - enabled: 1
+    path: Assets/Scenes/SolarSystem_1.unity
+    guid: a9a24ebfdd8a5f147832db4fa4f75415
+  - enabled: 1
+    path: Assets/Scenes/SolarSystem_2.unity
+    guid: 1f921fafa9edffd469c89e3fbb29dda8
