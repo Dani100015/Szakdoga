@@ -271,7 +271,8 @@ namespace RTS_Cam
             if(distanceToGround != targetHeight)
                 difference = targetHeight - distanceToGround;
 
-            m_Transform.position = Vector3.Lerp(m_Transform.position, 
+            //m_Transform.position = Vector3.Slerp
+            m_Transform.position = Vector3.Slerp(m_Transform.position, 
                 new Vector3(m_Transform.position.x, targetHeight + difference, m_Transform.position.z ), Time.deltaTime * heightDampening);
         }
 
@@ -284,7 +285,7 @@ namespace RTS_Cam
                 transform.Rotate(Vector3.up, RotationDirection * Time.deltaTime * rotationSped, Space.World);
 
             if (useMouseRotation && Input.GetKey(mouseRotationKey))
-                m_Transform.Rotate(Vector3.up, -MouseAxis.x * Time.deltaTime * mouseRotationSpeed, Space.World);
+                m_Transform.Rotate(Vector3.up, MouseAxis.x * Time.deltaTime * mouseRotationSpeed, Space.World);
         }
 
         /// <summary>
