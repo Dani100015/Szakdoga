@@ -1,4 +1,8 @@
 sceneSetups:
-- path: Assets/Scenes/Galaxy.unity
+<<<<<<< HEAD
+- path: Assets/Scenes/Alap.unity
+=======
+- path: Assets/Scenes/SolarSystem_2.unity
+>>>>>>> 4b932a185ac174c35d244ba99fbd148120d73238
   isLoaded: 1
   isActive: 1

@@ -9,6 +9,7 @@ public class Mouse : MonoBehaviour
 
     RaycastHit hit;
 
+    public static Vector3 RightClickPoint;
     public static ArrayList CurrentlySelectedUnits = new ArrayList();
     public static ArrayList UnitsOnScreen = new ArrayList();
     public static ArrayList UnitsInDrag = new ArrayList();
@@ -78,11 +79,13 @@ public class Mouse : MonoBehaviour
             {
                 //Debug.Log(hit.collider.name);
                 if (hit.collider.name == "TerrainMain")
-                {                   
+                {
+                    
                     if (Input.GetMouseButtonDown(1))
                     {
                         GameObject targetObject = Instantiate(Target, hit.point, Quaternion.identity) as GameObject;
                         targetObject.name = "Target Instantiated";
+                        Debug.Log(hit.point);
                     }
                     else if (Input.GetMouseButtonUp(0) && DidUserClickLeftMouse(mouseDownPoint))
                     {
@@ -111,6 +114,9 @@ public class Mouse : MonoBehaviour
 
                                 //Add unit to currently selected units
                                 CurrentlySelectedUnits.Add(hit.collider.gameObject);
+
+                                //Change the unit selected value to true
+                                hit.collider.gameObject.GetComponent<Unit>().Selected = true;
 
                             }
                             else
