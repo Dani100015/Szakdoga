@@ -1,0 +1,42 @@
+Felhasználói dokumentáció
+
+	Feladat:
+		Az XYZ számára egy valós idejű, űrben játszódó stratégiai játék megalkotása
+	
+	Futási környezet leírása:
+		Windows 7 vagy újabb operációs rendszer szükséges, fejlesztési fázisban Unity fejlesztői környezetből használható, későbbi buildelt változat önmagában is futtatható
+				A rendszerkövetelmény Intel Core I3 vagy újabb processzor.  3GB RAM, jelenleg 700MB hely a merevlemezen, valamint legalább Intel HD 520 videókártya 512MB memóriával.
+		
+	Elképzelések:
+		1. Egyjátékos hadjárat, melyben mesterséges intelligencia által vezérelt 'játékosok' ellen kell játszani
+		2. Többjátékos mód - Egyenlőre csak helyi hálózaton
+		3. Pályaszerkesztő program a játékhoz csatolva
+		
+	Használat:
+		1. Menü
+			a, Indítás után kiválaszthatjuk mely pályán szeretnénk megmérkőzni, majd start.
+			b, Többjátékos módban helyi hálózaton szoba létrehozása, majd más játékosok csatlakozása
+		2. Irányítás
+			Irányításban hasonlít a mai piacon levő valós idejű stratégiai játékokhoz, az egységek egérrel kijelölhetőek valamit parancs adható ki nekik.
+		3. Játékstílus	
+			Hangsúlyt szeretnénk fektetni a nyersanyag menedzsmentre valamint a bázisépítésre és területfoglalásra is, így lehet újabb egységekhez jutni.
+		4. Játékmechanika
+			Kiterjedt fejlesztési fa létrehozása, amely kifejlesztésével előnyhöz juthatnak a játékosok
+		5. Játéktér
+			A játék maga egyedi csillagrendszerekben fog játszódni, minden játékos kezd egy külön rendszerben, majd a megfelelő fejlettséget elérve
+			egy 'kapun' keresztül utazhatnak a flottákkal a rendszerek közt - Itt lép életbe a galaxis nézet, ahol az úticélt jelölhetjük ki
+		6. Végjáték
+			Előre kitűzött cél elérése, vagy az ellenség teljes likvidálása után vége a játéknak
+			A játék során statisztikákat gyűjtünk, majd a végén egy elemzést mutatunk a játékos(ok)nak, milyen téren mennyit értek el
+						
+	Jelenlegi Állapot:
+		A program jelenleg még félkész állapotban van, azonban sok megvalósítandó elképzelésünk van
+		
+		1.	Az egységek már kijelölhetőek egérrel valamint jelölő téglalappal, ilyenkor körülöttük megjelenik egy szines kör, ami jelzi,
+			hogy ki vannak jelölve - valamint a kijelölt egységeket a shift lenyomásával el lehet távolítani a kijelöltek közül
+		2. 	Jobb kattintásra az egységek - egy A* algoritmussal dolgozó pathfinding segítségével - megkeresik a kattintás helyéhez vezető
+			legrövidebb utat, majd odamennek - további tervek közt szerepel a cselekvési sor megalkotása, valamit az egységcsoportok kialakítása
+			és használata, illetve gyorsgombok beállítása
+		3.	Naprendszer illetve galaxis nézet kidolgozva, égitestek keringési pályája meghatározva, valamit a két nézet közti
+			átmenet megvalósítva - ez még nem tökéletes, szebben szeretnénk megcsinálni
+		4. 	Modellek csak a fejlesztés későbbi állapotában kerülnek implementálásra, azonban a Naprendszerek már kászen vannak ilyen szempontból													

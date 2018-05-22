@@ -1,0 +1,29 @@
+A fejlesztés egy valós idejű stratégiai játékot valósít meg. 
+Célja, hogy az XYZ piaci értékét tovább növelje, valamint a hasonló játékok körében
+évek óta tátongó űrt betöltse.
+
+A rendszernek 4 módot kell megvalósítania (Egyjátékos,Többjátékos,Kooperatív,Pályaszerkesztő). 
+
+A megvalósítás során egy softwaret hozunk létre Unity grafikus motorral.
+A megvalósított program  a következő modulokra bontható:
+	Egyjátékos - Nincs bejelentkezés, csupán gép ellen játszik a játékos
+	Többjátékos - Bejelentkezési felület, vagy helyi hálózat, ahol más játékosok ellen játszhatnak
+	Kooperatív - Szintén bejelentkezési felület, vagy helyi hálózat, ahol más játékosokkal közös célért küzdhetnek
+	Pályaszerkesztő - Különálló programrész, ahol a játékos saját helyzeteket valósíthat meg
+	
+Felhasználó kezelés:
+Játékmódokat menün keresztül érhetik el a felhasználók, valamit saját hardware-hez mérten módosíthatnak grafikát, hangpt illetve
+irányítást, gombkiosztást
+
+Játék indítása után a játékos egy kis bázissal indul, innen kell nyersanyag menedzsmenttel és fejlesztéssel eljutnia a játék végére
+Többjátékos során a játékos létrehoz egy szobát, majd kiválasztja a játszani kivánt térképet, ekkor létrejön a szoba, melyet mások
+is láthatnak, illetve beléphetnek ha nincs jelszóval levédve az adott szoba
+A host tudja indítani a játékot amikor idejét érzi.
+
+A rendszer c# nyelven írodott , és Unity grafikus motort használ.
+Modellek megalkotása Blenderben történik. 
+
+A teljesítés befejezési időpontja legkésőbb a szerződés megkötésétől számított 2 év.
+A szerződést megkötésének a határideje 2018.07.30
+Az üzembehelyezés végső időpontja 2020.08.06.
+A támogatási szerződés időtartalmának a kezdete a teljesítéstől számított 24 hónap(legkésőbb 2022.08.06).
