@@ -1,5 +1,0 @@
-A tesztelési jegyzőkönyvek mezői 96%-ban MEGFELELT minősítésűek, azaz
-a specifikációban elfogadott funkciók működnek 
-(a rendszer az előre definiált eredményt adjaelőre definiált bemeneti adatok esetében –funkcionális teszt),
-a  rendszerfunkciók  specifikált  paramétereinek  mért  értékei  az  elvárásoknak  megfelelő  teljesítmény-határértékek  között  vannak 
-(mért  válaszidő  vagy  elvégzési  idő  kisebb  az  előre  definiált  válasz-vagy elvégzési időnél –terheléses teszt).
