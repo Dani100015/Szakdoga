@@ -20,20 +20,20 @@ public class UnitPath : MonoBehaviour {
     {      
         seeker = GetComponent<Seeker>();
         controller = GetComponent<CharacterController>();
-        unit = GetComponent<Unit>();  
+        unit = GetComponent<Unit>();
     }
 
-    //public void LateUpdate()
-    //{
-    //    if (unit.Selected && unit.isWalkable)
-    //    {
-    //        //if (Input.GetMouseButtonDown(1))
-    //        //{
-    //        //    //Debug.Log(Mouse.RightClickPoint);
-    //        //    seeker.StartPath(transform.position, new Vector3(10,10), OnPathComplete);
-    //        //}
-    //    }
-    //}
+    void LateUpdate()
+    {
+        if (unit.Selected && unit.isWalkable)
+        {
+            if (Input.GetMouseButtonDown(1))
+            {               
+                //Debug.Log(GameObject.Find("World").GetComponent<Mouse>().RightClickPoint);
+                seeker.StartPath(transform.position, GameObject.Find("World").GetComponent<Mouse>().RightClickPoint, OnPathComplete);
+            }
+        }
+    }
 
     //Pathfinding logic
     public void OnPathComplete(Path p)

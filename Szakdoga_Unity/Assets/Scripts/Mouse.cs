@@ -9,7 +9,7 @@ public class Mouse : MonoBehaviour
 
     RaycastHit hit;
 
-    public static Vector3 RightClickPoint;
+    public Vector3 RightClickPoint;
     public static ArrayList CurrentlySelectedUnits = new ArrayList();
     public static ArrayList UnitsOnScreen = new ArrayList();
     public static ArrayList UnitsInDrag = new ArrayList();
@@ -42,7 +42,6 @@ public class Mouse : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(ray, out hit, Mathf.Infinity))
@@ -83,9 +82,7 @@ public class Mouse : MonoBehaviour
                     
                     if (Input.GetMouseButtonDown(1))
                     {
-                        GameObject targetObject = Instantiate(Target, hit.point, Quaternion.identity) as GameObject;
-                        targetObject.name = "Target Instantiated";
-                        Debug.Log(hit.point);
+                        RightClickPoint = hit.point;
                     }
                     else if (Input.GetMouseButtonUp(0) && DidUserClickLeftMouse(mouseDownPoint))
                     {
