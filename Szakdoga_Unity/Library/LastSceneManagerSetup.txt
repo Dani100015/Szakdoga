@@ -1,8 +1,4 @@
 sceneSetups:
-<<<<<<< HEAD
-- path: Assets/Scenes/Alap.unity
-=======
-- path: Assets/Scenes/SolarSystem_2.unity
->>>>>>> 152e403ccddb1c8ffd9c62bd287f238e91389de4
+- path: Assets/Scenes/MainMenu.unity
   isLoaded: 1
   isActive: 1

@@ -5,9 +5,12 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/Scenes/Alap.unity
-    guid: 3c320aa42921abe4e97301b9bcd3bc76
+    path: Assets/Scenes/MainMenu.unity
+    guid: 0baef6e2b761608409f63c9f6245f5a5
   - enabled: 1
     path: Assets/Scenes/Galaxy.unity
     guid: a275f45240c74bd458db8eb13048486a
