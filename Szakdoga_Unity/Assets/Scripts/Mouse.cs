@@ -7,6 +7,19 @@ public class Mouse : MonoBehaviour
 
     #region Variables
 
+    public static ArrayList[] Grouping = new ArrayList[10];
+    private KeyCode[] keyCodes = {
+         KeyCode.Keypad1,
+         KeyCode.Keypad2,
+         KeyCode.Keypad3,
+         KeyCode.Keypad4,
+         KeyCode.Keypad5,
+         KeyCode.Keypad6,
+         KeyCode.Keypad7,
+         KeyCode.Keypad8,
+         KeyCode.Keypad9,
+     };
+
     RaycastHit hit;
 
     public Vector3 RightClickPoint;
@@ -38,7 +51,7 @@ public class Mouse : MonoBehaviour
     private static Vector2 BoxFinish;
 
     #endregion
-      
+
     // Update is called once per frame
     void Update()
     {
@@ -52,9 +65,9 @@ public class Mouse : MonoBehaviour
             {
                 mouseDownPoint = hit.point;
                 TimeLeftBeforeDeclareDrag = TimeLimitBeforeDeclareDrag;
-                MouseDragStart = Input.mousePosition;               
+                MouseDragStart = Input.mousePosition;
                 StartedDrag = true;
-                
+
             }
             else if (Input.GetMouseButton(0))
             {
@@ -64,7 +77,7 @@ public class Mouse : MonoBehaviour
                     TimeLeftBeforeDeclareDrag = Time.deltaTime;
                     if (TimeLeftBeforeDeclareDrag <= 0f || UserDraggingByPosition(MouseDragStart, Input.mousePosition))
                         UserIsDragging = true;
-                }            
+                }
             }
             else if (Input.GetMouseButtonUp(0))
             {
@@ -79,7 +92,7 @@ public class Mouse : MonoBehaviour
                 //Debug.Log(hit.collider.name);
                 if (hit.collider.name == "TerrainMain")
                 {
-                    
+
                     if (Input.GetMouseButtonDown(1))
                     {
                         RightClickPoint = hit.point;
@@ -98,7 +111,7 @@ public class Mouse : MonoBehaviour
                     {
                         //Is the user hitting a unit?
                         if (hit.collider.gameObject.GetComponent<Unit>())
-                        {                        
+                        {
                             //Are we selecting a different object?
                             if (!UnitAlreadyInCurrentySelectedUnits(hit.collider.gameObject))
                             {
@@ -158,6 +171,47 @@ public class Mouse : MonoBehaviour
             DeselectGameObjectsIfSelected();
             StartedDrag = false;
         }
+        //Group creation
+        if (CurrentlySelectedUnits.Count != 0 && (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)))
+        {
+            for (int i = 1; i < 10; i++)
+            {
+                if (Input.GetKey(keyCodes[i - 1]))
+                {
+                    Grouping[i] = new ArrayList();
+                    for (int j = 0; j < CurrentlySelectedUnits.Count; j++)
+                    {
+                        Grouping[i].Add(CurrentlySelectedUnits[j]);
+                    }
+                    Debug.Log(Grouping[i].Count);
+                }      
+            }
+        }
+
+        //Group selection
+        if (GetAnyKey(keyCodes))
+        {           
+            for (int i = 1; i < 10; i++)
+            {
+                if (Input.GetKey(keyCodes[i - 1]) && Grouping[i] != null)
+                {                 
+                    DeselectGameObjectsIfSelected();
+                    for (int j = 0; j < Grouping[i].Count; j++)
+                    {
+                        CurrentlySelectedUnits.Add((Grouping[i])[j]);
+                    }
+                }
+            }
+            Debug.Log(CurrentlySelectedUnits.Count);
+            for (int j = 0; j < CurrentlySelectedUnits.Count; j++)
+            {
+                GameObject SelectedObj = CurrentlySelectedUnits[j] as GameObject;
+                SelectedObj.GetComponent<Unit>().Selected = true;
+                SelectedObj.transform.Find("Selected").gameObject.SetActive(true);
+                Debug.Log(j + ". aktív");
+            }           
+        }
+
         Debug.DrawRay(ray.origin, ray.direction * 1000, Color.yellow);
         //GUI Variables
 
@@ -181,7 +235,7 @@ public class Mouse : MonoBehaviour
                     BoxStart = new Vector2(Input.mousePosition.x + BoxWidth, Input.mousePosition.y);
 
             BoxFinish = new Vector2(BoxStart.x + Mathf.Abs(BoxWidth), BoxStart.y - Mathf.Abs(BoxHeight));
-        }           
+        }
     }
 
     void LateUpdate()
@@ -220,7 +274,7 @@ public class Mouse : MonoBehaviour
             FinishedDragOnThisFrame = false;
             PutDraggedUnitsInCurrentlySelectedUnits();
         }
-        
+
     }
 
     void OnGUI()
@@ -232,8 +286,13 @@ public class Mouse : MonoBehaviour
     }
 
     #region Helper 
-
-    
+    bool GetAnyKey(KeyCode[] aKeys)
+    {
+        foreach (var key in aKeys)
+            if (Input.GetKey(key))
+                return true;
+        return false;
+    }
 
     //Is the user dragging relative to mouse drag start point
     public bool UserDraggingByPosition(Vector2 DragStartPoint, Vector2 NewPoint)
@@ -264,7 +323,7 @@ public class Mouse : MonoBehaviour
                 ArrayListUnit.transform.Find("Selected").gameObject.SetActive(false);
                 ArrayListUnit.GetComponent<Unit>().Selected = false;
             }
-           
+
         }
         CurrentlySelectedUnits.Clear();
     }
@@ -301,7 +360,7 @@ public class Mouse : MonoBehaviour
         }
         else return;
     }
-   
+
     //Check if unit is within screen space
     public static bool UnitWithinScreenSpace(Vector2 UnitScreenPos)
     {
@@ -328,8 +387,8 @@ public class Mouse : MonoBehaviour
     //Is the unit inside drag?
     public static bool UnitInsideDrag(Vector2 UnitScreenPos)
     {
-        if ((UnitScreenPos.x > BoxStart.x && UnitScreenPos.y < BoxStart.y) && 
-           (UnitScreenPos.x <BoxFinish.x && UnitScreenPos.y > BoxFinish.y))
+        if ((UnitScreenPos.x > BoxStart.x && UnitScreenPos.y < BoxStart.y) &&
+           (UnitScreenPos.x < BoxFinish.x && UnitScreenPos.y > BoxFinish.y))
             return true;
         else return false;
     }
@@ -364,7 +423,7 @@ public class Mouse : MonoBehaviour
                 {
                     CurrentlySelectedUnits.Add(UnitObj);
                     UnitObj.GetComponent<Unit>().Selected = true;
-                }             
+                }
             }
             UnitsInDrag.Clear();
         }

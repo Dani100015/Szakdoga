@@ -44,8 +44,8 @@ public class CamCont : MonoBehaviour
 
     public void OffsettedMovement()
     {
-            rotationX += Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-            rotationY += Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+            rotationX += Input.GetAxis("BasicControl X") * mouseSensitivity * Time.deltaTime;
+            rotationY += Input.GetAxis("BasicControl Y") * mouseSensitivity * Time.deltaTime;
             Cursor.lockState = CursorLockMode.Locked;
 
         //rotationY = Mathf.Clamp(rotationY, -90, 90);

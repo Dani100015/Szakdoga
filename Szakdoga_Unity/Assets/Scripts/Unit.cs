@@ -8,8 +8,14 @@ public class Unit : MonoBehaviour {
     public Vector2 ScreenPos;
     public bool OnScreen;
     public bool Selected = false;
+    public Queue<Vector3> ActionsQueue;
 
     public bool isWalkable = true;
+
+    void Start()
+    {
+        ActionsQueue = new Queue<Vector3>();
+    }
 
     //void Awake()
     //{

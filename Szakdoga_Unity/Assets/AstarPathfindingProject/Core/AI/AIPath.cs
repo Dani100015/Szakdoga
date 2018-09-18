@@ -115,11 +115,11 @@ namespace Pathfinding {
 
 		/** Helper which calculates points along the current path */
 		protected PathInterpolator interpolator = new PathInterpolator();
+        private Unit unit;
+        #region IAstarAI implementation
 
-		#region IAstarAI implementation
-
-		/** \copydoc Pathfinding::IAstarAI::Teleport */
-		public override void Teleport (Vector3 newPosition, bool clearPath = true) {
+        /** \copydoc Pathfinding::IAstarAI::Teleport */
+        public override void Teleport (Vector3 newPosition, bool clearPath = true) {
 			if (clearPath) interpolator.SetPath(null);
 			reachedEndOfPath = false;
 			base.Teleport(newPosition, clearPath);
@@ -176,15 +176,22 @@ namespace Pathfinding {
 			interpolator.SetPath(null);
 		}
 
-		/** The end of the path has been reached.
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+
+            unit = GetComponent<Unit>();
+        }
+
+        /** The end of the path has been reached.
 		 * If you want custom logic for when the AI has reached it's destination add it here. You can
 		 * also create a new script which inherits from this one and override the function in that script.
 		 *
 		 * This method will be called again if a new path is calculated as the destination may have changed.
 		 * So when the agent is close to the destination this method will typically be called every #repathRate seconds.
 		 */
-		public virtual void OnTargetReached () {
-		}
+        public virtual void OnTargetReached () {                     
+        }
 
 		/** Called when a requested path has been calculated.
 		 * A path is first requested by #UpdatePath, it is then calculated, probably in the same or the next frame.
@@ -240,7 +247,12 @@ namespace Pathfinding {
 			var distanceToEnd = remainingDistance;
 			if (distanceToEnd <= endReachedDistance) {
 				reachedEndOfPath = true;
-				OnTargetReached();
+                if (unit.ActionsQueue.Count >= 1)
+                {
+                    destination = unit.ActionsQueue.Dequeue();
+                    Debug.Log(unit.ActionsQueue.Count + ", " + destination);
+                }
+                OnTargetReached();
 			}
 		}
 
