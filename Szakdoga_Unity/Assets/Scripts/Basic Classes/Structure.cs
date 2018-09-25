@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Structure : Unit
 {
-    
+
     List<Tech> ResearchableTechs;
     Vector3 RallyPoint;
     Queue TrainingQueue;
@@ -21,18 +21,18 @@ public class Structure : Unit
     void StartTrain(Unit unit)
     {
         Training = true;
-        TimeLeft = unit.trainingTime;
+        //TimeLeft = unit.trainingTime;
     }
 
     void StartResearch(Tech tech)
     {
         Training = true;
-        TimeLeft = tech.ResearchTime;
+        //TimeLeft = tech.ResearchTime;
     }
 
     void EndTrain()
     {
-       
+
     }
 
     void EndResearch()
