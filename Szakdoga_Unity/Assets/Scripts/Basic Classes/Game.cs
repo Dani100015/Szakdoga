@@ -4,13 +4,57 @@ using UnityEngine;
 
 public class Game : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
+    List<SolarSystem> solars;
+    List<Player> players;
+    //List<Team> teams;
+
+
+    Player player1;
+    Player player2;
+
+    public GameObject starPrefab;
+    public GameObject planetPrefab;
+
+
+
+    SolarSystem solarSystem1;
+    SolarSystem solarSystem2;
+
+    void Start () {
+
+
+        player1 = new Player();
+        player2 = new Player();
+
+        solarSystem1 = new SolarSystem("solarSystem1",player1,null,null);
+        solarSystem1.InitCelestials();
+
+        InitSolarSystem();
+
+    }
 	
-	// Update is called once per frame
 	void Update () {
 		
 	}
+
+    // void CheckForWin
+    // void CheckForLose
+    // void setNewGame
+    // void EndGame
+
+
+    void InitSolarSystem()
+    {
+        //GameObject star = (GameObject)Instantiate(Resources.Load("Assets/_Prefabs/Galaxy/Star.prefab"));
+        GameObject star = Instantiate(starPrefab);
+        star.transform.position = new Vector3(0, 0, 0);
+
+        GameObject planet;
+        for (int i = 0; i < solarSystem1.celestials.Count; i++)
+        {
+            planet = Instantiate(planetPrefab);
+            planet.transform.position = new Vector3(solarSystem1.celestials[i].x, 0, solarSystem1.celestials[i].y);
+        }
+
+    }
 }

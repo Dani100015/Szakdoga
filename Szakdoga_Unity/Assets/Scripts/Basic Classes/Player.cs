@@ -2,15 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class _Player : MonoBehaviour {
+public class Player {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    string empireName;
+    Species species;
+
+    List<SolarSystem> playerSystems; //irányított naprendszerek
+    List<Planets> playerColonizedPlanets; //kolonizáld player planéták
+
+    List<Unit> units; //
+    List<Player> allies;
+    List<Player> enemies;
+
+    int palladium;      //
+    int iridium;        //Nyersanyagok
+    int nullElement;    //
+
+    int unitSize;       //Egységek
+    int maxUnitSize;    //Max egységek
+
+    //List<Unit>
+
+
+    public Player()
+    {
+
+    }
+
 }

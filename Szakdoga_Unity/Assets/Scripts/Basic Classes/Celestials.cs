@@ -2,13 +2,49 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Celestials {
+abstract class Celestials {
 
-    int x;
-    int y;
+    public float x;
+    public float y;
+    public string name;
+    public SolarSystem solarSystem;
+    public Player owner;
 
-    string name;
-    SolarSystem solarSystem;
+    public string Name
+    {
+        get
+        {
+            return name;
+        }
+        set
+        {
+            name = value;
+        }
+    }
+    public SolarSystem SolarSystem
+    {
+        get
+        {
+            return solarSystem;
+        }
+        set
+        {
+            solarSystem = value;
+        }
+    }
+    public Player Owner
+    {
+        get { return owner; }
+        set { owner = value; ; }
+    }
 
+    public Celestials(SolarSystem Sol,string Name,float X,float Y)
+    {
+        name = Name;
+        solarSystem = Sol;
+        x = X;
+        y = Y;
+    }
+    
 
 }
