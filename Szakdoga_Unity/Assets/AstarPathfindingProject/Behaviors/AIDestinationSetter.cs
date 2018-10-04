@@ -38,31 +38,66 @@ namespace Pathfinding
             if (ai != null) ai.onSearchPath -= LateUpdate;
         }
 
+        void OnCollisionEnter(Collision other)
+        {
+            if (target == other.transform)
+            {
+                ai.isStopped = true;
+                target = null;
+            }
+            else if (gameObject.GetComponent<AIDestinationSetter>().ai.remainingDistance <=1)
+            {
+                ai.isStopped = true;
+            }
+
+        }
+
         /** Updates the AI's destination every frame */
         void LateUpdate()
-        {           
+        {
+            if (ai != null && target != null)
+            {
+                ai.destination = target.transform.position;
+                ai.isStopped = false;
+            }
             if (unit.Selected && unit.isWalkable)
             {
                 if (Input.GetMouseButtonDown(1))
                 {
+                    ai.isStopped = false;
                     if (Common.ShiftKeysDown())
                     {
                         if (!ai.hasPath && unit.ActionsQueue.Count == 0)
                         {
-                            if (ai != null) ai.destination = GameObject.Find("World").GetComponent<Mouse>().RightClickPoint;
+                            if (ai != null) ai.destination = GameObject.Find("Game").GetComponent<Mouse>().RightClickPoint;
                         }
                         else
                         {
-                            unit.ActionsQueue.Enqueue(GameObject.Find("World").GetComponent<Mouse>().RightClickPoint);
+                            unit.ActionsQueue.Enqueue(GameObject.Find("Game").GetComponent<Mouse>().RightClickPoint);
                             Debug.Log(unit.ActionsQueue.Count);
                         }
                     }
                     else
                     {
-                        if (ai != null) ai.destination = GameObject.Find("World").GetComponent<Mouse>().RightClickPoint;
+                        if (ai != null && target != null) ai.destination = target.transform.position;
+                        if (ai != null) ai.destination = GameObject.Find("Game").GetComponent<Mouse>().RightClickPoint;
                     }
                 }
             }
+            if (target != null && target.gameObject.GetComponent<Unit>().Owner != 0 &&
+                Vector3.Distance(target.gameObject.transform.position, gameObject.transform.position) <= gameObject.GetComponent<Unit>().Range * 5)
+            {
+                Debug.Log("Beléptem");
+                ai.isStopped = true;
+                if (target.gameObject.GetComponent<Unit>().currentHealth > 0)
+                    gameObject.GetComponent<Unit>().AttackTarget(target);
+                else
+                {
+                    Destroy(target.gameObject);
+                    target = null;
+                }
+            }
+
         }
 
     }

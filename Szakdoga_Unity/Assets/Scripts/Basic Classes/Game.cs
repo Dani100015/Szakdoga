@@ -9,8 +9,8 @@ public class Game : MonoBehaviour {
     //List<Team> teams;
 
 
-    Player player1;
-    Player player2;
+    public static Player player1;
+    public static Player player2;
 
     public GameObject starPrefab;
     public GameObject planetPrefab;

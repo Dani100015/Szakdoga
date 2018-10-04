@@ -18,11 +18,11 @@ public class Player {
     int iridium;        //Nyersanyagok
     int nullElement;    //
 
-    int unitSize;       //Egységek
-    int maxUnitSize;    //Max egységek
+    int Population;       //Egységek
+    int maxPopulation;    //Max egységek
 
     //List<Unit>
-
+    
 
     public Player()
     {

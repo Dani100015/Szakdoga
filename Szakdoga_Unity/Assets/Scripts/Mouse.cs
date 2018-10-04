@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Pathfinding;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,8 +7,9 @@ public class Mouse : MonoBehaviour
 {
 
     #region Variables
+    public ArrayList[] Grouping = new ArrayList[10];
 
-    public static ArrayList[] Grouping = new ArrayList[10];
+
     private KeyCode[] keyCodes = {
          KeyCode.Keypad1,
          KeyCode.Keypad2,
@@ -34,13 +36,12 @@ public class Mouse : MonoBehaviour
     private static Vector3 mouseDownPoint;
     private Vector3 currentMousePoint; //in World Space
 
-    public GameObject Target;
-
     public static bool UserIsDragging;
     private static float TimeLimitBeforeDeclareDrag = 1f;
     private static float TimeLeftBeforeDeclareDrag;
     private static Vector2 MouseDragStart;
     private static float clickDragZone = 1.3f;
+    public LayerMask MouseLayerMask;
 
     //GUI
     private float BoxWidth;
@@ -90,19 +91,25 @@ public class Mouse : MonoBehaviour
             if (!UserIsDragging)
             {
                 //Debug.Log(hit.collider.name);
-                if (hit.collider.name == "TerrainMain")
+                if (Input.GetMouseButtonDown(1))
                 {
-
-                    if (Input.GetMouseButtonDown(1))
+                    if (hit.collider.gameObject.layer == 8)
+                        SelectTargets(hit);
+                    else if (hit.collider.name == "TerrainMain")
                     {
                         RightClickPoint = hit.point;
+                        DeselectTargets();
                     }
+
                     else if (Input.GetMouseButtonUp(0) && DidUserClickLeftMouse(mouseDownPoint))
                     {
                         if (!Common.ShiftKeysDown())
                             DeselectGameObjectsIfSelected();
                     }
-                } // End of Terrain
+                }
+
+
+                // End of Terrain
 
                 else
                 {
@@ -141,6 +148,7 @@ public class Mouse : MonoBehaviour
 
                                     GameObject SelectedObj = hit.collider.transform.Find("Selected").gameObject;
                                     SelectedObj.SetActive(true);
+                                    hit.collider.gameObject.GetComponent<Unit>().Selected = true;
 
                                     //Add unit to currently selected units
                                     CurrentlySelectedUnits.Add(hit.collider.gameObject);
@@ -184,17 +192,17 @@ public class Mouse : MonoBehaviour
                         Grouping[i].Add(CurrentlySelectedUnits[j]);
                     }
                     Debug.Log(Grouping[i].Count);
-                }      
+                }
             }
         }
 
         //Group selection
         if (GetAnyKey(keyCodes))
-        {           
+        {
             for (int i = 1; i < 10; i++)
             {
                 if (Input.GetKey(keyCodes[i - 1]) && Grouping[i] != null)
-                {                 
+                {
                     DeselectGameObjectsIfSelected();
                     for (int j = 0; j < Grouping[i].Count; j++)
                     {
@@ -209,7 +217,7 @@ public class Mouse : MonoBehaviour
                 SelectedObj.GetComponent<Unit>().Selected = true;
                 SelectedObj.transform.Find("Selected").gameObject.SetActive(true);
                 Debug.Log(j + ". aktív");
-            }           
+            }
         }
 
         Debug.DrawRay(ray.origin, ray.direction * 1000, Color.yellow);
@@ -248,22 +256,25 @@ public class Mouse : MonoBehaviour
             for (int i = 0; i < UnitsOnScreen.Count; i++)
             {
                 GameObject UnitObj = UnitsOnScreen[i] as GameObject;
-                Unit UnitScript = UnitObj.GetComponent<Unit>();
-                GameObject SelectedObj = UnitObj.transform.Find("Selected").gameObject;
-
-                //If not already in the dragged units
-                if (!UnitAlreadyInDraggedUnits(UnitObj))
+                if (UnitObj != null)
                 {
-                    if (UnitInsideDrag(UnitScript.ScreenPos))
+                    Unit UnitScript = UnitObj.GetComponent<Unit>();
+                    GameObject SelectedObj = UnitObj.transform.Find("Selected").gameObject;
+
+                    //If not already in the dragged units
+                    if (!UnitAlreadyInDraggedUnits(UnitObj))
                     {
-                        SelectedObj.SetActive(true);
-                        UnitsInDrag.Add(UnitObj);
-                    } //unit is not in drag
-                    else
-                    {
-                        //remove the selected graphic, if unit is not already in CurrentlySelectedUnits
-                        if (!UnitAlreadyInCurrentySelectedUnits(UnitObj))
-                            SelectedObj.SetActive(false);
+                        if (UnitInsideDrag(UnitScript.ScreenPos))
+                        {
+                            SelectedObj.SetActive(true);
+                            UnitsInDrag.Add(UnitObj);
+                        } //unit is not in drag
+                        else
+                        {
+                            //remove the selected graphic, if unit is not already in CurrentlySelectedUnits
+                            if (!UnitAlreadyInCurrentySelectedUnits(UnitObj))
+                                SelectedObj.SetActive(false);
+                        }
                     }
                 }
             }
@@ -320,12 +331,40 @@ public class Mouse : MonoBehaviour
             for (int i = 0; i < CurrentlySelectedUnits.Count; i++)
             {
                 GameObject ArrayListUnit = CurrentlySelectedUnits[i] as GameObject;
-                ArrayListUnit.transform.Find("Selected").gameObject.SetActive(false);
-                ArrayListUnit.GetComponent<Unit>().Selected = false;
+                if (ArrayListUnit != null)
+                {
+                    ArrayListUnit.transform.Find("Selected").gameObject.SetActive(false);
+                    ArrayListUnit.GetComponent<Unit>().Selected = false;
+                }
             }
-
         }
         CurrentlySelectedUnits.Clear();
+    }
+
+    public static void SelectTargets(RaycastHit hit)
+    {
+        if (CurrentlySelectedUnits.Count != 0)
+        {
+            for (int i = 0; i < CurrentlySelectedUnits.Count; i++)
+            {
+                GameObject CurrentObject = CurrentlySelectedUnits[i] as GameObject;
+                if (CurrentObject != null)
+                    CurrentObject.GetComponent<AIDestinationSetter>().target = hit.collider.gameObject.transform;
+            }
+        }
+    }
+
+    public static void DeselectTargets()
+    {
+        if (CurrentlySelectedUnits.Count != 0)
+        {
+            for (int i = 0; i < CurrentlySelectedUnits.Count; i++)
+            {
+                GameObject CurrentObject = CurrentlySelectedUnits[i] as GameObject;
+                if (CurrentObject != null && CurrentObject.GetComponent<AIDestinationSetter>() != null)
+                    CurrentObject.GetComponent<AIDestinationSetter>().target = null;
+            }
+        }
     }
 
     public static bool UnitAlreadyInCurrentySelectedUnits(GameObject Unit)

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Pathfinding;
 using UnityEngine;
 
 public class Unit : MonoBehaviour {
@@ -8,7 +9,14 @@ public class Unit : MonoBehaviour {
     public Vector2 ScreenPos;
     public bool OnScreen;
     public bool Selected = false;
+    private GameObject DragSelect;
+
     public Queue<Vector3> ActionsQueue;
+    public Vector3 CurrentTargetLocation;
+    public int Range;
+    public GameObject Projectile;
+    public int attackSpeed;
+    public int attackDamage;
 
     //Játékmechanika
     public int maxHealth;
@@ -16,24 +24,43 @@ public class Unit : MonoBehaviour {
     public int trainingTime;
 
     public bool isWalkable = true;
+    public int Owner;
 
     void Start()
     {
         ActionsQueue = new Queue<Vector3>();
     }
 
-    //void Awake()
-    //{
-    //    Physics.IgnoreLayerCollision(8,8,true);
-    //}
+    void Awake()
+    {
+        //Physics.IgnoreLayerCollision(8, 8, true);
+        if (transform.Find("DragSelect") != null)
+            DragSelect = transform.Find("Dragselect").gameObject;
+    }
+
+    public void AttackTarget(Transform target)
+    {
+        var q = Quaternion.LookRotation(target.position - transform.position);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, q, 150 * Time.deltaTime);
+        if (transform.rotation == q)
+        {
+            Projectile = Instantiate(Resources.Load("Bullet"), transform.position, transform.rotation) as GameObject;
+            Projectile.GetComponent<Rigidbody>().velocity = (target.position - gameObject.transform.position).normalized * 100;
+            target.gameObject.GetComponent<Unit>().currentHealth -= attackDamage;
+        }
+        Destroy(Projectile.gameObject, 0.5f);
+    }
 
     void Update()
     {
+        #region Selection
         //if unit not selected, get screenspace
         if (!Selected)
         {
             //track the screen position
-            ScreenPos = Camera.main.WorldToScreenPoint(this.transform.position);
+            if (DragSelect)
+                ScreenPos = Camera.main.WorldToScreenPoint(DragSelect.transform.position);
+            else ScreenPos = Camera.main.WorldToScreenPoint(transform.position);
 
             //if within screen space
             if (Mouse.UnitWithinScreenSpace(ScreenPos))
@@ -54,5 +81,6 @@ public class Unit : MonoBehaviour {
                 }
             }
         }
+        #endregion
     }
 }
