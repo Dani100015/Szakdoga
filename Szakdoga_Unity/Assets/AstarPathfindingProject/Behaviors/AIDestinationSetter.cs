@@ -20,7 +20,7 @@ namespace Pathfinding
         public Transform target;
         private Unit unit;
 
-        IAstarAI ai;
+        public IAstarAI ai;
 
         void OnEnable()
         {
@@ -81,6 +81,7 @@ namespace Pathfinding
                     {
                         if (ai != null && target != null) ai.destination = target.transform.position;
                         if (ai != null) ai.destination = GameObject.Find("Game").GetComponent<Mouse>().RightClickPoint;
+                        Debug.Log(ai.destination);
                     }
                 }
             }
@@ -96,6 +97,14 @@ namespace Pathfinding
                     Destroy(target.gameObject);
                     target = null;
                 }
+            }
+
+            if (target != null && target.gameObject.layer == LayerMask.NameToLayer("Resources") &&
+                Vector3.Distance(target.gameObject.transform.position, gameObject.transform.position) <= 100)
+            {
+                Debug.Log("Gyûjtök");
+                ai.isStopped = true;
+                
             }
 
         }

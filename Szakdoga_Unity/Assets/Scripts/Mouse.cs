@@ -6,6 +6,14 @@ using UnityEngine;
 public class Mouse : MonoBehaviour
 {
 
+    public struct ClipPlainPoints
+    {
+        public Vector3 UpperLeft;
+        public Vector3 UpperRight;
+        public Vector3 LowerLeft;
+        public Vector3 LowerRight;
+    }
+
     #region Variables
     public ArrayList[] Grouping = new ArrayList[10];
 
@@ -51,14 +59,31 @@ public class Mouse : MonoBehaviour
     private static Vector2 BoxStart;
     private static Vector2 BoxFinish;
 
+    //DragMesh
+    public LayerMask SelectMeshLayerMask;
+    public float DistanceToGround;
+    public LayerMask TerrainOnly;
+    public GameObject DragSelectMesh;
+    public GameObject Pointer;
+    public Material DragSelectMeshMat;
+
     #endregion
+
+    void Start()
+    {
+        Pointer = new GameObject();
+        Pointer.name = "PointerForDragMesh";
+        CreateDragBoxMesh();
+    }
 
     // Update is called once per frame
     void Update()
     {
+        ClipPlainPoints NearPlainPoints = CameraClipPlanePoints(Camera.main.GetComponent<Camera>().nearClipPlane);
+
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, MouseLayerMask))
         {
             currentMousePoint = hit.point;
             //Store point at mouse button down
@@ -72,6 +97,8 @@ public class Mouse : MonoBehaviour
             }
             else if (Input.GetMouseButton(0))
             {
+                if (DragSelectMesh.activeSelf == false)
+                    DragSelectMesh.SetActive(true);
                 //If the user is not dragging, lets do the tests
                 if (!UserIsDragging)
                 {
@@ -86,6 +113,7 @@ public class Mouse : MonoBehaviour
                 if (UserIsDragging)
                     FinishedDragOnThisFrame = true;
                 UserIsDragging = false;
+                DragSelectMesh.SetActive(false);
             }
             //Mouse click
             if (!UserIsDragging)
@@ -93,10 +121,13 @@ public class Mouse : MonoBehaviour
                 //Debug.Log(hit.collider.name);
                 if (Input.GetMouseButtonDown(1))
                 {
-                    if (hit.collider.gameObject.layer == 8)
+                    if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Unit"))
                         SelectTargets(hit);
+                    else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Resources"))
+                        SelectGatherTargets(hit);
                     else if (hit.collider.name == "TerrainMain")
                     {
+                        SelectTargets(hit);
                         RightClickPoint = hit.point;
                         DeselectTargets();
                     }
@@ -107,33 +138,36 @@ public class Mouse : MonoBehaviour
                             DeselectGameObjectsIfSelected();
                     }
                 }
-
-
                 // End of Terrain
-
                 else
                 {
                     //Hitting other objects
                     if (Input.GetMouseButtonUp(0) && DidUserClickLeftMouse(mouseDownPoint))
                     {
                         //Is the user hitting a unit?
-                        if (hit.collider.gameObject.GetComponent<Unit>())
+                        if (hit.collider.gameObject.GetComponent<Unit>() || hit.collider.gameObject.layer == LayerMask.NameToLayer("SelectMesh"))
                         {
+                            Transform UnitGameObject;
+                            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("SelectMesh"))
+                                UnitGameObject = hit.collider.transform.parent.transform;
+                            else
+                                UnitGameObject = hit.collider.transform;
+
                             //Are we selecting a different object?
-                            if (!UnitAlreadyInCurrentySelectedUnits(hit.collider.gameObject))
+                            if (!UnitAlreadyInCurrentySelectedUnits(UnitGameObject.gameObject))
                             {
                                 //If shift key is not down, remove the rest of the units
                                 if (!Common.ShiftKeysDown())
                                     DeselectGameObjectsIfSelected();
 
-                                GameObject SelectedObj = hit.collider.transform.Find("Selected").gameObject;
+                                GameObject SelectedObj = UnitGameObject.Find("Selected").gameObject;
                                 SelectedObj.SetActive(true);
 
                                 //Add unit to currently selected units
-                                CurrentlySelectedUnits.Add(hit.collider.gameObject);
+                                CurrentlySelectedUnits.Add(UnitGameObject.gameObject);
 
                                 //Change the unit selected value to true
-                                hit.collider.gameObject.GetComponent<Unit>().Selected = true;
+                                UnitGameObject.gameObject.GetComponent<Unit>().Selected = true;
 
                             }
                             else
@@ -141,17 +175,17 @@ public class Mouse : MonoBehaviour
                                 //Unit is currently in the selected units arraylist
                                 //Remove the units
                                 if (Common.ShiftKeysDown())
-                                    RemoveUnitFromCurrentlySelectedUnits(hit.collider.gameObject);
+                                    RemoveUnitFromCurrentlySelectedUnits(UnitGameObject.gameObject);
                                 else if (!Common.ShiftKeysDown())
                                 {
                                     DeselectGameObjectsIfSelected();
 
-                                    GameObject SelectedObj = hit.collider.transform.Find("Selected").gameObject;
+                                    GameObject SelectedObj = UnitGameObject.Find("Selected").gameObject;
                                     SelectedObj.SetActive(true);
-                                    hit.collider.gameObject.GetComponent<Unit>().Selected = true;
+                                    UnitGameObject.gameObject.GetComponent<Unit>().Selected = true;
 
                                     //Add unit to currently selected units
-                                    CurrentlySelectedUnits.Add(hit.collider.gameObject);
+                                    CurrentlySelectedUnits.Add(UnitGameObject.gameObject);
                                 }
                             }
                         }
@@ -223,7 +257,7 @@ public class Mouse : MonoBehaviour
         Debug.DrawRay(ray.origin, ray.direction * 1000, Color.yellow);
         //GUI Variables
 
-        if (UserIsDragging)
+        if (UserIsDragging && currentMousePoint != Vector3.positiveInfinity)
         {
             BoxWidth = Camera.main.WorldToScreenPoint(mouseDownPoint).x - Camera.main.WorldToScreenPoint(currentMousePoint).x;
             BoxHeight = Camera.main.WorldToScreenPoint(mouseDownPoint).y - Camera.main.WorldToScreenPoint(currentMousePoint).y;
@@ -236,11 +270,14 @@ public class Mouse : MonoBehaviour
                     BoxStart = new Vector2(Input.mousePosition.x, Input.mousePosition.y + BoxHeight);
                 else
                     BoxStart = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-            else if (!Common.FloatToBool(BoxWidth))
+            else
+                if (!Common.FloatToBool(BoxWidth))
+            {
                 if (Common.FloatToBool(BoxHeight))
                     BoxStart = new Vector2(Input.mousePosition.x + BoxWidth, Input.mousePosition.y + BoxHeight);
                 else
                     BoxStart = new Vector2(Input.mousePosition.x + BoxWidth, Input.mousePosition.y);
+            }
 
             BoxFinish = new Vector2(BoxStart.x + Mathf.Abs(BoxWidth), BoxStart.y - Mathf.Abs(BoxHeight));
         }
@@ -252,6 +289,7 @@ public class Mouse : MonoBehaviour
 
         if ((UserIsDragging || FinishedDragOnThisFrame) && UnitsOnScreen.Count > 0)
         {
+            UpdateDragBoxMesh();
             //Loop through units on the screen
             for (int i = 0; i < UnitsOnScreen.Count; i++)
             {
@@ -262,7 +300,7 @@ public class Mouse : MonoBehaviour
                     GameObject SelectedObj = UnitObj.transform.Find("Selected").gameObject;
 
                     //If not already in the dragged units
-                    if (!UnitAlreadyInDraggedUnits(UnitObj))
+                    if (!UnitAlreadyInDraggedUnits(UnitObj) && !DragMeshTrigger.UnitAlreadyInTriggeredUnits(UnitObj) && DragMeshTrigger.NewTriggerEvent)
                     {
                         if (UnitInsideDrag(UnitScript.ScreenPos))
                         {
@@ -280,6 +318,41 @@ public class Mouse : MonoBehaviour
             }
         }
 
+        //DragMeshTrigger       
+        if (UserIsDragging && DragMeshTrigger.NewTriggerEvent)
+        {
+            DragMeshTrigger.NewSelectedUnits.Clear();
+            //Check if units are still triggered this event
+            for (int i = 0; i < DragMeshTrigger.SelectedUnits.Count; i++)
+            {
+                GameObject UnitObj = DragMeshTrigger.SelectedUnits[i] as GameObject;
+                if (!DragMeshTrigger.UnitAlreadyInTriggeredUnits(UnitObj))
+                {
+                    DragMeshTrigger.SelectedUnits.RemoveAt(i);
+                    UnitObj.transform.Find("Selected").gameObject.SetActive(false);
+                }
+                else
+                {
+                    DragMeshTrigger.NewSelectedUnits.Add(UnitObj);
+                    UnitObj.transform.Find("Selected").gameObject.SetActive(true);
+                }
+            }
+            //Check which new units are triggered this event
+            for (int i = 0; i < DragMeshTrigger.TriggeredUnits.Count; i++)
+            {
+                GameObject UnitObj = DragMeshTrigger.TriggeredUnits[i] as GameObject;
+                if (!DragMeshTrigger.UnitAlreadyInDragMesh(UnitObj))
+                {
+                    DragMeshTrigger.NewSelectedUnits.Add(UnitObj);
+                    UnitObj.transform.Find("Selected").gameObject.SetActive(true);
+                }
+            }
+
+            DragMeshTrigger.SelectedUnits = DragMeshTrigger.NewSelectedUnits;
+            DragMeshTrigger.NewTriggerEvent = false;
+        }
+            DragMeshTrigger.TriggeredUnits.Clear();
+
         if (FinishedDragOnThisFrame)
         {
             FinishedDragOnThisFrame = false;
@@ -296,7 +369,58 @@ public class Mouse : MonoBehaviour
         }
     }
 
-    #region Helper 
+    public float DistanceFromCameraToGround()
+    {
+        float extend = 50f;
+        RaycastHit distance;
+        float newFarPlaneValue = 0;
+
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out distance, Mathf.Infinity, TerrainOnly))
+        {
+            DistanceToGround = Vector3.Distance(Camera.main.transform.position, distance.point);
+            Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * 1000, Color.green);
+            newFarPlaneValue = DistanceToGround - Camera.main.nearClipPlane + extend;
+        }
+        return newFarPlaneValue;
+    }
+
+    public ClipPlainPoints CameraClipPlanePoints(float distance)
+    {
+        ClipPlainPoints clipPlainPoints = new ClipPlainPoints();
+
+        Transform transform = Camera.main.transform;
+        Vector3 pos = transform.position;
+        float halfFOV = (Camera.main.fieldOfView * 0.5f) * Mathf.Deg2Rad;
+        float aspect = Camera.main.aspect;
+
+        float height = Mathf.Tan(halfFOV) * distance;
+        float width = height * aspect;
+
+        //Lower Right
+        clipPlainPoints.LowerRight = pos + transform.forward * distance;
+        clipPlainPoints.LowerRight += transform.right * width;
+        clipPlainPoints.LowerRight -= transform.up * height;
+
+        //Lower Left
+        clipPlainPoints.LowerLeft = pos + transform.forward * distance;
+        clipPlainPoints.LowerLeft -= transform.right * width;
+        clipPlainPoints.LowerLeft -= transform.up * height;
+
+        //Upper Right
+        clipPlainPoints.UpperRight = pos + transform.forward * distance;
+        clipPlainPoints.UpperRight += transform.right * width;
+        clipPlainPoints.UpperRight += transform.up * height;
+
+        //Upper Left
+        clipPlainPoints.UpperLeft = pos + transform.forward * distance;
+        clipPlainPoints.UpperLeft -= transform.right * width;
+        clipPlainPoints.UpperLeft += transform.up * height;
+
+        return clipPlainPoints;
+    }
+
+
+    #region Helper
     bool GetAnyKey(KeyCode[] aKeys)
     {
         foreach (var key in aKeys)
@@ -349,6 +473,44 @@ public class Mouse : MonoBehaviour
             {
                 GameObject CurrentObject = CurrentlySelectedUnits[i] as GameObject;
                 if (CurrentObject != null)
+                {
+                    if (CurrentObject.GetComponent<Unit>() != null && CurrentObject.GetComponent<Structure>() == null)
+                        CurrentObject.GetComponent<AIDestinationSetter>().target = hit.collider.gameObject.transform;
+                    else
+                    {
+                        Debug.Log("Rallypont");
+                        if (CurrentObject.transform == hit.collider.transform)
+                        {
+                            CurrentObject.GetComponent<Structure>().RallyTarget = null;
+                            CurrentObject.GetComponent<Structure>().RallyPoint = CurrentObject.transform.position;
+                            continue;
+                        }
+                        else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Unit"))
+                        {
+                            CurrentObject.GetComponent<Structure>().RallyPoint = Vector3.positiveInfinity;
+                            CurrentObject.GetComponent<Structure>().RallyTarget = hit.collider.transform;
+                        }
+                        else 
+                        {
+                           
+                            CurrentObject.GetComponent<Structure>().RallyTarget = null;
+                            CurrentObject.GetComponent<Structure>().RallyPoint = hit.point;
+                        }
+                    }           
+                }
+
+            }
+        }
+    }
+  
+    public static void SelectGatherTargets(RaycastHit hit)
+    {
+        if (CurrentlySelectedUnits.Count != 0)
+        {
+            for (int i = 0; i < CurrentlySelectedUnits.Count; i++)
+            {
+                GameObject CurrentObject = CurrentlySelectedUnits[i] as GameObject;
+                if (CurrentObject != null && CurrentObject.GetComponent<Unit>().isGatherer)
                     CurrentObject.GetComponent<AIDestinationSetter>().target = hit.collider.gameObject.transform;
             }
         }
@@ -466,6 +628,275 @@ public class Mouse : MonoBehaviour
             }
             UnitsInDrag.Clear();
         }
+        if (DragMeshTrigger.SelectedUnits.Count > 0)
+        {
+            for (int i = 0; i < DragMeshTrigger.SelectedUnits.Count; i++)
+            {
+                GameObject UnitObj = DragMeshTrigger.SelectedUnits[i] as GameObject;
+                if (!UnitAlreadyInCurrentySelectedUnits(UnitObj))
+                {
+                    CurrentlySelectedUnits.Add(UnitObj);
+                    UnitObj.GetComponent<Unit>().Selected = true;
+                }
+            }
+            DragMeshTrigger.SelectedUnits.Clear();
+        }
+    }
+
+    public void UpdateDragBoxMesh()
+    {
+        MeshCollider meshc = DragSelectMesh.GetComponent<MeshCollider>();
+        meshc.sharedMesh = null;
+        //Ratios
+        Vector2 p0Ratio = new Vector2(
+            BoxFinish.x / (Screen.width * 0.01f) * 0.01f,
+            (BoxFinish.y + Mathf.Abs(BoxHeight)) / (Screen.height * 0.01f) * 0.01f
+            );
+        Vector2 p1Ratio = new Vector2(
+            BoxStart.x / (Screen.width * 0.01f) * 0.01f,
+            BoxStart.y / (Screen.height * 0.01f) * 0.01f
+            );
+        Vector2 p2Ratio = new Vector2(
+            BoxStart.x / (Screen.width * 0.01f) * 0.01f,
+            (BoxStart.y - Mathf.Abs(BoxHeight)) / (Screen.height * 0.01f) * 0.01f
+            );
+        Vector2 p3Ratio = new Vector2(
+            BoxFinish.x / (Screen.width * 0.01f) * 0.01f,
+            BoxFinish.y / (Screen.height * 0.01f) * 0.01f
+            );
+
+        ClipPlainPoints nearClipPlainPoints = CameraClipPlanePoints(Camera.main.nearClipPlane + 30f);
+        ClipPlainPoints farClipPlainPoints = CameraClipPlanePoints(DistanceFromCameraToGround());
+
+        float nearPlainWidth = Vector3.Distance(nearClipPlainPoints.LowerLeft, nearClipPlainPoints.LowerRight);
+        float nearPlainHeight = Vector3.Distance(nearClipPlainPoints.UpperRight, nearClipPlainPoints.LowerRight);
+        float farPlainWidth = Vector3.Distance(farClipPlainPoints.LowerLeft, farClipPlainPoints.LowerRight);
+        float farPlainHeight = Vector3.Distance(farClipPlainPoints.UpperRight, farClipPlainPoints.LowerRight);
+
+        Pointer.transform.position = nearClipPlainPoints.LowerLeft;
+        Pointer.transform.eulerAngles = Camera.main.transform.eulerAngles;
+        Pointer.transform.Translate(nearPlainWidth * p0Ratio.x, nearPlainHeight * p0Ratio.y, 0f);
+
+        Vector3 p0 = Pointer.transform.position;
+
+        Pointer.transform.position = nearClipPlainPoints.LowerLeft;
+        Pointer.transform.Translate(nearPlainWidth * p1Ratio.x, nearPlainHeight * p1Ratio.y, 0f);
+
+        Vector3 p1 = Pointer.transform.position;
+
+        Pointer.transform.position = nearClipPlainPoints.LowerLeft;
+        Pointer.transform.Translate(nearPlainWidth * p2Ratio.x, nearPlainHeight * p2Ratio.y, 0f);
+
+        Vector3 p2 = Pointer.transform.position;
+
+        Pointer.transform.position = nearClipPlainPoints.LowerLeft;
+        Pointer.transform.Translate(nearPlainWidth * p3Ratio.x, nearPlainHeight * p3Ratio.y, 0f);
+
+        Vector3 p3 = Pointer.transform.position;
+
+        Pointer.transform.position = farClipPlainPoints.LowerLeft;
+        Pointer.transform.Translate(farPlainWidth * p0Ratio.x, farPlainHeight * p0Ratio.y, 0f);
+
+        Vector3 p4 = Pointer.transform.position;
+
+        Pointer.transform.position = farClipPlainPoints.LowerLeft;
+        Pointer.transform.Translate(farPlainWidth * p1Ratio.x, farPlainHeight * p1Ratio.y, 0f);
+
+        Vector3 p5 = Pointer.transform.position;
+
+        Pointer.transform.position = farClipPlainPoints.LowerLeft;
+        Pointer.transform.Translate(farPlainWidth * p2Ratio.x, farPlainHeight * p2Ratio.y, 0f);
+
+        Vector3 p6 = Pointer.transform.position;
+
+        Pointer.transform.position = farClipPlainPoints.LowerLeft;
+        Pointer.transform.Translate(farPlainWidth * p3Ratio.x, farPlainHeight * p3Ratio.y, 0f);
+
+        Vector3 p7 = Pointer.transform.position;
+
+        Mesh mesh = DragSelectMesh.GetComponent<MeshFilter>().mesh;
+
+        #region Vertices
+        Vector3[] vertices = new Vector3[]
+       {
+	        // Bottom
+	        p0, p1, p2, p3,
+ 
+	        // Left
+	        p7, p4, p0, p3,
+ 
+	        // Front
+	        p4, p5, p1, p0,
+ 
+	        // Back
+	        p6, p7, p3, p2,
+ 
+	        // Right
+	        p5, p6, p2, p1,
+ 
+	        // Top
+	        p7, p6, p5, p4
+       };
+        #endregion
+
+        mesh.vertices = vertices;
+        meshc.sharedMesh = mesh;
+        DragSelectMesh.transform.Translate(0.1f, 0f, 0f);
+        DragSelectMesh.transform.Translate(-0.1f, 0f, 0f);
+    }
+
+    public void CreateDragBoxMesh()
+    {
+        DragSelectMesh = new GameObject();
+        DragSelectMesh.name = "DragSelectMesh";
+        DragSelectMesh.transform.position = Vector3.zero;
+        DragSelectMesh.layer = LayerMask.NameToLayer("Mechanics");
+
+        //MeshRenderer renderer = DragSelectMesh.AddComponent<MeshRenderer>();
+        //renderer.material = DragSelectMeshMat;
+        MeshFilter filter = DragSelectMesh.AddComponent<MeshFilter>();
+        Mesh mesh = filter.mesh;
+        mesh.Clear();
+
+        float length = 50f;
+        float width = 50f;
+        float height = 50f;
+
+        #region Vertices
+        Vector3 p0 = new Vector3(-length * .5f, -width * .5f, height * .5f);
+        Vector3 p1 = new Vector3(length * .5f, -width * .5f, height * .5f);
+        Vector3 p2 = new Vector3(length * .5f, -width * .5f, -height * .5f);
+        Vector3 p3 = new Vector3(-length * .5f, -width * .5f, -height * .5f);
+
+        Vector3 p4 = new Vector3(-length * .5f, width * .5f, height * .5f);
+        Vector3 p5 = new Vector3(length * .5f, width * .5f, height * .5f);
+        Vector3 p6 = new Vector3(length * .5f, width * .5f, -height * .5f);
+        Vector3 p7 = new Vector3(-length * .5f, width * .5f, -height * .5f);
+
+        Vector3[] vertices = new Vector3[]
+        {
+	        // Bottom
+	        p0, p1, p2, p3,
+ 
+	        // Left
+	        p7, p4, p0, p3,
+ 
+	        // Front
+	        p4, p5, p1, p0,
+ 
+	        // Back
+	        p6, p7, p3, p2,
+ 
+	        // Right
+	        p5, p6, p2, p1,
+ 
+	        // Top
+	        p7, p6, p5, p4
+        };
+        #endregion
+
+        #region Normales
+        Vector3 up = Vector3.up;
+        Vector3 down = Vector3.down;
+        Vector3 front = Vector3.forward;
+        Vector3 back = Vector3.back;
+        Vector3 left = Vector3.left;
+        Vector3 right = Vector3.right;
+
+        Vector3[] normales = new Vector3[]
+        {
+	        // Bottom
+	        down, down, down, down,
+ 
+	        // Left
+	        left, left, left, left,
+ 
+	        // Front
+	        front, front, front, front,
+ 
+	        // Back
+	        back, back, back, back,
+ 
+	        // Right
+	        right, right, right, right,
+ 
+	        // Top
+	        up, up, up, up
+        };
+        #endregion
+
+        #region UVs
+        Vector2 _00 = new Vector2(0f, 0f);
+        Vector2 _10 = new Vector2(1f, 0f);
+        Vector2 _01 = new Vector2(0f, 1f);
+        Vector2 _11 = new Vector2(1f, 1f);
+
+        Vector2[] uvs = new Vector2[]
+        {
+	        // Bottom
+	        _11, _01, _00, _10,
+ 
+	        // Left
+	        _11, _01, _00, _10,
+ 
+	        // Front
+	        _11, _01, _00, _10,
+ 
+	        // Back
+	        _11, _01, _00, _10,
+ 
+	        // Right
+	        _11, _01, _00, _10,
+ 
+	        // Top
+	        _11, _01, _00, _10,
+        };
+        #endregion
+
+        #region Triangles
+        int[] triangles = new int[]
+        {
+	        // Bottom
+	        3, 1, 0,
+            3, 2, 1,			
+ 
+	        // Left
+	        3 + 4 * 1, 1 + 4 * 1, 0 + 4 * 1,
+            3 + 4 * 1, 2 + 4 * 1, 1 + 4 * 1,
+ 
+	        // Front
+	        3 + 4 * 2, 1 + 4 * 2, 0 + 4 * 2,
+            3 + 4 * 2, 2 + 4 * 2, 1 + 4 * 2,
+ 
+	        // Back
+	        3 + 4 * 3, 1 + 4 * 3, 0 + 4 * 3,
+            3 + 4 * 3, 2 + 4 * 3, 1 + 4 * 3,
+ 
+	        // Right
+	        3 + 4 * 4, 1 + 4 * 4, 0 + 4 * 4,
+            3 + 4 * 4, 2 + 4 * 4, 1 + 4 * 4,
+ 
+	        // Top
+	        3 + 4 * 5, 1 + 4 * 5, 0 + 4 * 5,
+            3 + 4 * 5, 2 + 4 * 5, 1 + 4 * 5,
+        };
+        #endregion
+
+        mesh.vertices = vertices;
+        mesh.normals = normales;
+        mesh.uv = uvs;
+        mesh.triangles = triangles;
+
+        mesh.RecalculateBounds();
+        DragSelectMesh.AddComponent<DragMeshTrigger>();
+        Rigidbody rigidbody = DragSelectMesh.AddComponent<Rigidbody>();
+        rigidbody.useGravity = false;
+        MeshCollider meshc = DragSelectMesh.AddComponent<MeshCollider>();
+        meshc.convex = true;
+        meshc.isTrigger = true;
+        meshc.sharedMesh = filter.mesh;
+        meshc.inflateMesh = true;
+
     }
 }
 

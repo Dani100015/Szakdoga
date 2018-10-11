@@ -1,58 +1,52 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Pathfinding;
 
 public class Structure : Unit
 {
 
-    List<Tech> ResearchableTechs;
-    Vector3 RallyPoint;
+    public List<Tech> ResearchableTechs;
+    public Vector3 RallyPoint;
+    public Transform RallyTarget;
     Queue TrainingQueue;
     int TimeLeft;
     bool Training;
+    public bool isDropOffPoint;
 
     void Start()
     {
         isWalkable = false;
         ResearchableTechs = new List<Tech>();
         TrainingQueue = new Queue();
+        RallyPoint = gameObject.transform.position;
+        RallyTarget = null;
     }
 
-    void StartTrain(Unit unit)
+    IEnumerator Train(string unit)
     {
         Training = true;
-        //TimeLeft = unit.trainingTime;
+        yield return new WaitForSeconds((Resources.Load(unit) as GameObject).GetComponent<Unit>().trainingTime);
+        GameObject TrainedUnit = Instantiate(Resources.Load(unit), transform.position, transform.rotation) as GameObject;
+        if (RallyPoint != gameObject.transform.position)
+        {
+            if (RallyTarget == null)
+                TrainedUnit.GetComponent<AIDestinationSetter>().ai.destination = RallyPoint;
+            else
+                TrainedUnit.GetComponent<AIDestinationSetter>().target = RallyTarget;
+        }
+        TrainedUnit.transform.position = new Vector3(transform.position.x, transform.position.y ,transform.position.z - (TrainedUnit.GetComponent<Collider>().bounds.size.z + 10));
+        yield return null;
     }
 
-    void StartResearch(Tech tech)
+    IEnumerator Research(Tech tech)
     {
         Training = true;
-        //TimeLeft = tech.ResearchTime;
-    }
-
-    void EndTrain()
-    {
-
-    }
-
-    void EndResearch()
-    {
-
+        yield return new WaitForSeconds(tech.ResearchTime);
     }
 
     void Update()
     {
-        if (Training)
-        {
-            if (TimeLeft != 0)
-                TimeLeft -= Mathf.RoundToInt(Time.deltaTime);
-            else
-            {
-                Training = false;
-                if (TrainingQueue.Peek() is Unit)
-                { }
-
-            }
-        }
+        //StartCoroutine("Train", "Gatherer");
     }
 }

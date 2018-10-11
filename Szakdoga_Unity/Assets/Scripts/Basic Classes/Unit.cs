@@ -25,6 +25,8 @@ public class Unit : MonoBehaviour {
 
     public bool isWalkable = true;
     public int Owner;
+    public bool isGatherer;
+    public int GatherSpeed;
 
     void Start()
     {
@@ -35,7 +37,9 @@ public class Unit : MonoBehaviour {
     {
         //Physics.IgnoreLayerCollision(8, 8, true);
         if (transform.Find("DragSelect") != null)
-            DragSelect = transform.Find("Dragselect").gameObject;
+            DragSelect = transform.Find("DragSelect").gameObject;
+        if (transform.Find("Selected") != null)
+            transform.Find("Selected").gameObject.SetActive(false);
     }
 
     public void AttackTarget(Transform target)
@@ -49,6 +53,19 @@ public class Unit : MonoBehaviour {
             target.gameObject.GetComponent<Unit>().currentHealth -= attackDamage;
         }
         Destroy(Projectile.gameObject, 0.5f);
+    }
+
+    public void GatherTarget(Transform target)
+    {
+        var q = Quaternion.LookRotation(target.position - transform.position);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, q, 150 * Time.deltaTime);
+        if (transform.rotation == q)
+        {
+            Projectile = Instantiate(Resources.Load("Bullet"), transform.position, transform.rotation) as GameObject;
+            Projectile.GetComponent<Rigidbody>().velocity = (target.position - gameObject.transform.position).normalized * 100;
+            target.gameObject.GetComponent<ResourceObject>().Capacity -= gameObject.GetComponent<Unit>().GatherSpeed;
+        }
+        Destroy(Projectile.gameObject, 0.2f);
     }
 
     void Update()

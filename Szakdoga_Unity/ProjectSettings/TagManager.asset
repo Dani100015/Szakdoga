@@ -18,10 +18,10 @@ TagManager:
   - Unit
   - Obstacle
   - Projectile
-  - 
-  - 
-  - 
-  - 
+  - SelectMesh
+  - Terrain
+  - Mechanics
+  - Resources
   - 
   - 
   - 
