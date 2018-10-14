@@ -8,8 +8,7 @@ public class Game : MonoBehaviour {
     List<Player> players;
     //List<Team> teams;
 
-
-    public static Player player1;
+    public static Player currentPlayer;
     public static Player player2;
 
     public GameObject starPrefab;
@@ -23,10 +22,10 @@ public class Game : MonoBehaviour {
     void Start () {
 
 
-        player1 = new Player();
-        player2 = new Player();
+        currentPlayer = new Player("Peti");
+        player2 = new Player("Sanyi");
 
-        solarSystem1 = new SolarSystem("solarSystem1",player1,null,null);
+        solarSystem1 = new SolarSystem("solarSystem1", currentPlayer, null,null);
         solarSystem1.InitCelestials();
 
         InitSolarSystem();

@@ -124,7 +124,10 @@ public class Mouse : MonoBehaviour
                     if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Unit"))
                         SelectTargets(hit);
                     else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Resources"))
+                    {
+                        Debug.Log("Hit Resource");
                         SelectGatherTargets(hit);
+                    }
                     else if (hit.collider.name == "TerrainMain")
                     {
                         SelectTargets(hit);
@@ -491,8 +494,7 @@ public class Mouse : MonoBehaviour
                             CurrentObject.GetComponent<Structure>().RallyTarget = hit.collider.transform;
                         }
                         else 
-                        {
-                           
+                        {                           
                             CurrentObject.GetComponent<Structure>().RallyTarget = null;
                             CurrentObject.GetComponent<Structure>().RallyPoint = hit.point;
                         }
@@ -524,7 +526,10 @@ public class Mouse : MonoBehaviour
             {
                 GameObject CurrentObject = CurrentlySelectedUnits[i] as GameObject;
                 if (CurrentObject != null && CurrentObject.GetComponent<AIDestinationSetter>() != null)
+                {
                     CurrentObject.GetComponent<AIDestinationSetter>().target = null;
+                    CurrentObject.GetComponent<AIDestinationSetter>().ai.isStopped = false;
+                }
             }
         }
     }

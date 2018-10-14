@@ -19,7 +19,6 @@ namespace Pathfinding
         /** The object that the AI should move to */
         public Transform target;
         private Unit unit;
-
         public IAstarAI ai;
 
         void OnEnable()
@@ -30,7 +29,11 @@ namespace Pathfinding
             // This is enough in theory, but this script will also update the destination every
             // frame as the destination is used for debugging and may be used for other things by other
             // scripts as well. So it makes sense that it is up to date every frame.
-            if (ai != null) ai.onSearchPath += LateUpdate;
+            if (ai != null)
+            {
+                ai.onSearchPath += LateUpdate;
+                ai.isStopped = true;               
+            }          
         }
 
         void OnDisable()
@@ -45,11 +48,55 @@ namespace Pathfinding
                 ai.isStopped = true;
                 target = null;
             }
-            else if (gameObject.GetComponent<AIDestinationSetter>().ai.remainingDistance <=1)
+            else if (gameObject.GetComponent<AIDestinationSetter>().ai.remainingDistance <= 1)
             {
                 ai.isStopped = true;
             }
 
+        }
+
+        void Start()
+        {
+            StartCoroutine("AutoAttack");
+        }
+        
+        //Auto Attack
+        IEnumerator AutoAttack()
+        {
+            yield return new WaitForSeconds(0.1f);
+            while (true)
+            {                
+                if (!gameObject.GetComponent<Unit>().isGatherer && target == null && ai.isStopped)
+                {
+                    Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position, gameObject.GetComponent<Unit>().Range * 5, 1 << LayerMask.NameToLayer("Unit"));
+                    ArrayList enemyUnits = new ArrayList();
+                    Debug.Log(Game.currentPlayer.empireName);
+                    for (int i = 0; i < hitColliders.Length; i++)
+                    {
+                        if (!hitColliders[i].gameObject.GetComponent<Unit>().Owner.Equals(Game.currentPlayer.empireName))
+                        {
+                            enemyUnits.Add(hitColliders[i].transform);
+                        }
+                    }
+
+                    //Find Closest Enemy
+                    Transform bestTarget = null;
+                    float closestDistanceSqr = Mathf.Infinity;
+                    Vector3 currentPosition = transform.position;
+                    foreach (Transform potentialTarget in enemyUnits)
+                    {
+                        Vector3 directionToTarget = potentialTarget.position - currentPosition;
+                        float dSqrToTarget = directionToTarget.sqrMagnitude;
+                        if (dSqrToTarget < closestDistanceSqr)
+                        {
+                            closestDistanceSqr = dSqrToTarget;
+                            bestTarget = potentialTarget;
+                        }
+                    }
+                    target = bestTarget;
+                }
+                yield return null;
+            }
         }
 
         /** Updates the AI's destination every frame */
@@ -60,6 +107,7 @@ namespace Pathfinding
                 ai.destination = target.transform.position;
                 ai.isStopped = false;
             }
+            //Set Destination or target
             if (unit.Selected && unit.isWalkable)
             {
                 if (Input.GetMouseButtonDown(1))
@@ -81,14 +129,15 @@ namespace Pathfinding
                     {
                         if (ai != null && target != null) ai.destination = target.transform.position;
                         if (ai != null) ai.destination = GameObject.Find("Game").GetComponent<Mouse>().RightClickPoint;
-                        Debug.Log(ai.destination);
+                        unit.ActionsQueue.Clear();
                     }
                 }
             }
-            if (target != null && target.gameObject.GetComponent<Unit>().Owner != 0 &&
+
+            //Right Click Attack
+            if (target != null && target.gameObject.layer != LayerMask.NameToLayer("Resources") && !target.gameObject.GetComponent<Unit>().Owner.Equals(Game.currentPlayer.empireName) &&
                 Vector3.Distance(target.gameObject.transform.position, gameObject.transform.position) <= gameObject.GetComponent<Unit>().Range * 5)
             {
-                Debug.Log("Beléptem");
                 ai.isStopped = true;
                 if (target.gameObject.GetComponent<Unit>().currentHealth > 0)
                     gameObject.GetComponent<Unit>().AttackTarget(target);
@@ -98,15 +147,15 @@ namespace Pathfinding
                     target = null;
                 }
             }
-
+            
+            //Gather
             if (target != null && target.gameObject.layer == LayerMask.NameToLayer("Resources") &&
-                Vector3.Distance(target.gameObject.transform.position, gameObject.transform.position) <= 100)
+                Vector3.Distance(target.gameObject.transform.position, gameObject.transform.position) <= 10)
             {
                 Debug.Log("Gyûjtök");
                 ai.isStopped = true;
-                
-            }
 
+            }
         }
 
     }

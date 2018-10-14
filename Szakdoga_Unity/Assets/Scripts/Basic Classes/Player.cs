@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class Player {
 
-    string empireName;
+    public string empireName;
+    ArrayList structures;
     Species species;
 
     List<SolarSystem> playerSystems; //irányított naprendszerek
-    List<Planets> playerColonizedPlanets; //kolonizáld player planéták
+    List<Planets> playerColonizedPlanets; //kolonizált player planéták
 
     List<Unit> units; //
     List<Player> allies;
@@ -24,9 +25,8 @@ public class Player {
     //List<Unit>
     
 
-    public Player()
+    public Player(string name)
     {
-
+        this.empireName = name;
     }
-
 }

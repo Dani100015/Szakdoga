@@ -28,6 +28,7 @@ public class Structure : Unit
         Training = true;
         yield return new WaitForSeconds((Resources.Load(unit) as GameObject).GetComponent<Unit>().trainingTime);
         GameObject TrainedUnit = Instantiate(Resources.Load(unit), transform.position, transform.rotation) as GameObject;
+        TrainedUnit.GetComponent<Unit>().Owner = gameObject.GetComponent<Structure>().Owner;
         if (RallyPoint != gameObject.transform.position)
         {
             if (RallyTarget == null)

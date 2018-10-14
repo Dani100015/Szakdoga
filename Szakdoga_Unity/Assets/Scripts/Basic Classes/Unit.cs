@@ -11,7 +11,7 @@ public class Unit : MonoBehaviour {
     public bool Selected = false;
     private GameObject DragSelect;
 
-    public Queue<Vector3> ActionsQueue;
+    public Queue ActionsQueue;
     public Vector3 CurrentTargetLocation;
     public int Range;
     public GameObject Projectile;
@@ -24,13 +24,13 @@ public class Unit : MonoBehaviour {
     public int trainingTime;
 
     public bool isWalkable = true;
-    public int Owner;
+    public string Owner;
     public bool isGatherer;
     public int GatherSpeed;
 
     void Start()
     {
-        ActionsQueue = new Queue<Vector3>();
+        ActionsQueue = new Queue();
     }
 
     void Awake()
@@ -41,10 +41,12 @@ public class Unit : MonoBehaviour {
         if (transform.Find("Selected") != null)
             transform.Find("Selected").gameObject.SetActive(false);
     }
-
+   
     public void AttackTarget(Transform target)
     {
-        var q = Quaternion.LookRotation(target.position - transform.position);
+        var q = new Quaternion();
+        if ((target.position - transform.position) != Vector3.zero)
+            q = Quaternion.LookRotation(target.position - transform.position);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, q, 150 * Time.deltaTime);
         if (transform.rotation == q)
         {
@@ -57,7 +59,9 @@ public class Unit : MonoBehaviour {
 
     public void GatherTarget(Transform target)
     {
-        var q = Quaternion.LookRotation(target.position - transform.position);
+        var q = new Quaternion();
+        if ((target.position - transform.position) != Vector3.zero)
+            q = Quaternion.LookRotation(target.position - transform.position);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, q, 150 * Time.deltaTime);
         if (transform.rotation == q)
         {

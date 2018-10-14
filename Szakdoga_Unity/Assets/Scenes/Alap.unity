@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.574817, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -170,6 +170,11 @@ Prefab:
         type: 2}
       propertyPath: isDropOffPoint
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114027614946187248, guid: ef4e49a764735774580ff7f60d8d585c,
+        type: 2}
+      propertyPath: Owner
+      value: Peti
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114012241009663198, guid: ef4e49a764735774580ff7f60d8d585c, type: 2}
@@ -380,6 +385,36 @@ Prefab:
     - target: {fileID: 114173718747612698, guid: de69df229851e124eb04b79a04dbca22,
         type: 2}
       propertyPath: startEndModifier.exactStartPoint
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114118463215071048, guid: de69df229851e124eb04b79a04dbca22,
+        type: 2}
+      propertyPath: Owner
+      value: Sanyi
+      objectReference: {fileID: 0}
+    - target: {fileID: 54725402339687674, guid: de69df229851e124eb04b79a04dbca22,
+        type: 2}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 54725402339687674, guid: de69df229851e124eb04b79a04dbca22,
+        type: 2}
+      propertyPath: m_Constraints
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 54725402339687674, guid: de69df229851e124eb04b79a04dbca22,
+        type: 2}
+      propertyPath: m_Drag
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 54725402339687674, guid: de69df229851e124eb04b79a04dbca22,
+        type: 2}
+      propertyPath: m_AngularDrag
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 54725402339687674, guid: de69df229851e124eb04b79a04dbca22,
+        type: 2}
+      propertyPath: m_UseGravity
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -625,7 +660,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0.0000001, y: 0.00000001}
   m_Pivot: {x: 0, y: 0}
 --- !u!1 &448156952
 GameObject:
@@ -887,7 +922,7 @@ Prefab:
     - target: {fileID: 114118463215071048, guid: de69df229851e124eb04b79a04dbca22,
         type: 2}
       propertyPath: Owner
-      value: 0
+      value: Peti
       objectReference: {fileID: 0}
     - target: {fileID: 114118463215071048, guid: de69df229851e124eb04b79a04dbca22,
         type: 2}
@@ -1333,7 +1368,7 @@ Prefab:
     - target: {fileID: 114118463215071048, guid: de69df229851e124eb04b79a04dbca22,
         type: 2}
       propertyPath: Owner
-      value: 0
+      value: Sanyi
       objectReference: {fileID: 0}
     - target: {fileID: 119996921758013910, guid: de69df229851e124eb04b79a04dbca22,
         type: 2}
@@ -1501,6 +1536,7 @@ GameObject:
   - component: {fileID: 2034212084}
   - component: {fileID: 2034212085}
   - component: {fileID: 2034212083}
+  - component: {fileID: 2034212086}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -1624,3 +1660,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dde8b64311cf239458450d3c95e33139, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2034212086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2034212082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e782b18d18ff6247a1560bb467972c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  starPrefab: {fileID: 0}
+  planetPrefab: {fileID: 0}
