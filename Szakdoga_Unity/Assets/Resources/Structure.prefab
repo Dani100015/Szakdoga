@@ -23,7 +23,6 @@ GameObject:
   - component: {fileID: 65252138003996356}
   - component: {fileID: 23081522598211336}
   - component: {fileID: 114027614946187248}
-  - component: {fileID: 114012241009663198}
   m_Layer: 8
   m_Name: Structure
   m_TagString: Untagged
@@ -98,7 +97,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1365782036134554}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 38.2, y: -2.1, z: -34.5}
+  m_LocalPosition: {x: 38.2, y: -0.9, z: -34.5}
   m_LocalScale: {x: 10, y: 5, z: 5}
   m_Children:
   - {fileID: 4391933289524354}
@@ -195,7 +194,7 @@ BoxCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1365782036134554}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -207,44 +206,18 @@ BoxCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1562970673163556}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114012241009663198
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1365782036134554}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62ffa6bd50f1422408bb8d808ef7c370, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ScreenPos: {x: 0, y: 0}
-  OnScreen: 0
-  Selected: 0
-  CurrentTargetLocation: {x: 0, y: 0, z: 0}
-  Range: 0
-  Projectile: {fileID: 0}
-  attackSpeed: 0
-  attackDamage: 0
-  maxHealth: 0
-  currentHealth: 0
-  trainingTime: 0
-  isWalkable: 1
-  Owner: 0
-  isGatherer: 0
-  GatherSpeed: 0
 --- !u!114 &114027614946187248
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1365782036134554}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 43cdf5b8ea774c14dac5ee33263a709c, type: 3}
   m_Name: 
@@ -261,9 +234,15 @@ MonoBehaviour:
   currentHealth: 500
   trainingTime: 0
   isWalkable: 0
-  Owner: 0
+  Owner: Peti
   isGatherer: 0
   GatherSpeed: 0
+  MaxResourceAmount: 0
+  CurrentResourceAmount: 0
+  CurrentCarriedResource: 0
+  RallyPoint: {x: 0, y: 0, z: 0}
+  RallyTarget: {fileID: 0}
+  isDropOffPoint: 1
 --- !u!119 &119237605488212792
 Projector:
   m_ObjectHideFlags: 1

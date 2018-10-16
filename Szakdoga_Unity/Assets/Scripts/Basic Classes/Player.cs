@@ -15,9 +15,9 @@ public class Player {
     List<Player> allies;
     List<Player> enemies;
 
-    int palladium;      //
-    int iridium;        //Nyersanyagok
-    int nullElement;    //
+    public int palladium;      //
+    public int iridium;        //Nyersanyagok
+    public int nullElement;    //
 
     int Population;       //Egységek
     int maxPopulation;    //Max egységek

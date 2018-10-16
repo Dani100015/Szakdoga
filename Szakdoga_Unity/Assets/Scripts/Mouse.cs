@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Mouse : MonoBehaviour
 {
-
     public struct ClipPlainPoints
     {
         public Vector3 UpperLeft;

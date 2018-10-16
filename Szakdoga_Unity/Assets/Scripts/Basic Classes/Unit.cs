@@ -25,12 +25,19 @@ public class Unit : MonoBehaviour {
 
     public bool isWalkable = true;
     public string Owner;
+
+    //Gyűjtögetéshez
     public bool isGatherer;
     public int GatherSpeed;
+    public int MaxResourceAmount;
+    public int CurrentResourceAmount;
+    public resourceType CurrentCarriedResource;
 
     void Start()
     {
         ActionsQueue = new Queue();
+        if (isGatherer)
+            CurrentCarriedResource = resourceType.None;
     }
 
     void Awake()
@@ -65,11 +72,23 @@ public class Unit : MonoBehaviour {
         transform.rotation = Quaternion.RotateTowards(transform.rotation, q, 150 * Time.deltaTime);
         if (transform.rotation == q)
         {
-            Projectile = Instantiate(Resources.Load("Bullet"), transform.position, transform.rotation) as GameObject;
-            Projectile.GetComponent<Rigidbody>().velocity = (target.position - gameObject.transform.position).normalized * 100;
-            target.gameObject.GetComponent<ResourceObject>().Capacity -= gameObject.GetComponent<Unit>().GatherSpeed;
+            CurrentCarriedResource = target.GetComponent<ResourceObject>().Type;
+            if (target.gameObject.GetComponent<ResourceObject>().Capacity - GatherSpeed <= 0)
+            {
+                if (CurrentResourceAmount + target.gameObject.GetComponent<ResourceObject>().Capacity >= MaxResourceAmount)
+                    CurrentResourceAmount = MaxResourceAmount;
+                else  CurrentResourceAmount += target.gameObject.GetComponent<ResourceObject>().Capacity;
+                Destroy(target.gameObject);
+                target = null;
+                gameObject.GetComponent<AIDestinationSetter>().StartCoroutine("SearchDropOffPoint");
+                return;
+            }
+
+            if (CurrentResourceAmount + GatherSpeed >= MaxResourceAmount)
+                CurrentResourceAmount = MaxResourceAmount;                              
+            else CurrentResourceAmount += GatherSpeed;
+            target.gameObject.GetComponent<ResourceObject>().Capacity -= GatherSpeed;
         }
-        Destroy(Projectile.gameObject, 0.2f);
     }
 
     void Update()

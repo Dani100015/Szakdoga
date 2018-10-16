@@ -4,19 +4,29 @@ using UnityEngine;
 
 public class Tech
 {
-
     //alap adatok
     string name;
     string description;
     Tech prerequisite;
-    Tech leadsTo;
     int researchTime;
     bool researched;
 
     //nyersanyag szükséglet
-    int palladiumCost;
-    int iridiumCost;
-    int eezoCost;
+   public int palladiumCost;
+   public int iridiumCost;
+   public int eezoCost;
+
+    public Tech(string name, string desc, Tech pre, int resTime, int pCost, int iCost, int eCost)
+    {
+        this.Name = name;
+        this.Description = description;
+        this.Prerequisite = pre;
+        this.researched = false;
+        this.ResearchTime = resTime;
+        this.PalladiumCost = pCost;
+        this.IridiumCost = iCost;
+        this.EezoCost = eCost;
+    }
 
     #region Propertyk 
     public bool Researched
@@ -40,12 +50,6 @@ public class Tech
     {
         get { return prerequisite; }
         set { prerequisite = value; }
-    }
-
-    public Tech LeadsTo
-    {
-        get { return leadsTo; }
-        set { leadsTo = value; }
     }
 
     public int ResearchTime
