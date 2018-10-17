@@ -25,8 +25,44 @@ public class Player {
     //List<Unit>
     
 
-    public Player(string name)
+    public Player(int Palladium = 500, int Irididium = 500, int NullElement = 100)
     {
-        this.empireName = name;
+        palladium = Palladium;
+        iridium = Irididium;
+        nullElement = NullElement;
+    }
+
+    public int Palladium
+    {
+        get
+        {
+            return palladium;
+        }
+        set
+        {
+            palladium = value;
+        }
+    }
+    public int Iridium
+    {
+        get
+        {
+            return iridium;
+        }
+        set
+        {
+            iridium = value;
+        }
+    }
+    public int NullElement
+    {
+        get
+        {
+            return nullElement;
+        }
+        set
+        {
+            nullElement = value;
+        }
     }
 }

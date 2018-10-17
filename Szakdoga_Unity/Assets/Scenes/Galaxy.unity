@@ -154,7 +154,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1835564886795140, guid: e78f548d71ee64440a608e31f32c6942, type: 2}
       propertyPath: m_Name
-      value: SolarSystem_1
+      value: SolarSystems
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e78f548d71ee64440a608e31f32c6942, type: 2}
@@ -200,7 +200,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1835564886795140, guid: e78f548d71ee64440a608e31f32c6942, type: 2}
       propertyPath: m_Name
-      value: SolarSystem_2
+      value: SolarSystems
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e78f548d71ee64440a608e31f32c6942, type: 2}

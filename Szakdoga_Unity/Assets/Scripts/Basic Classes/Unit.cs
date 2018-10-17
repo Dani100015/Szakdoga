@@ -72,7 +72,7 @@ public class Unit : MonoBehaviour {
         transform.rotation = Quaternion.RotateTowards(transform.rotation, q, 150 * Time.deltaTime);
         if (transform.rotation == q)
         {
-            CurrentCarriedResource = target.GetComponent<ResourceObject>().Type;
+            //CurrentCarriedResource = target.GetComponent<ResourceObject>().Type;
             if (target.gameObject.GetComponent<ResourceObject>().Capacity - GatherSpeed <= 0)
             {
                 if (CurrentResourceAmount + target.gameObject.GetComponent<ResourceObject>().Capacity >= MaxResourceAmount)

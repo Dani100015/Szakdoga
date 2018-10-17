@@ -22,8 +22,8 @@ public class Game : MonoBehaviour {
     void Start () {
 
 
-        currentPlayer = new Player("Peti");
-        player2 = new Player("Sanyi");
+        currentPlayer = new Player();
+        player2 = new Player();
 
         solarSystem1 = new SolarSystem("solarSystem1", currentPlayer, null,null);
         solarSystem1.InitCelestials();
