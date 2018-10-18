@@ -11,11 +11,9 @@ public class PlayerInfoBar : MonoBehaviour {
     public Text resourse2_Iridium;
     public Text resourse3_NullElement;
 
-
-
     void Start()
     {
-        player = new Player();
+        player = Game.currentPlayer;
     }
     void Update()
     {

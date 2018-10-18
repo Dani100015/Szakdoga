@@ -125,6 +125,7 @@ namespace Pathfinding
                     }
                 }
                 target = bestTarget;
+                Debug.Log(target);
             }
             yield return null;
         }
@@ -191,8 +192,9 @@ namespace Pathfinding
                 {
                     tempTarget = target;
                     if (target.GetComponent<Structure>() == null || !target.GetComponent<Structure>().isDropOffPoint)
-                    {
+                    {                        
                         StartCoroutine("SearchDropOffPoint");
+                        Debug.Log("Keresek");
                     }
                 }
 
@@ -204,10 +206,10 @@ namespace Pathfinding
             {
                 ai.isStopped = true;
                 if (gameObject.GetComponent<Unit>().CurrentCarriedResource == resourceType.Iridium)
-                    Game.currentPlayer.iridium += gameObject.GetComponent<Unit>().CurrentResourceAmount;
+                    Game.currentPlayer.Iridium += gameObject.GetComponent<Unit>().CurrentResourceAmount;
                 else if (gameObject.GetComponent<Unit>().CurrentCarriedResource == resourceType.Palladium)
-                    Game.currentPlayer.palladium += gameObject.GetComponent<Unit>().CurrentResourceAmount;
-                else Game.currentPlayer.nullElement += gameObject.GetComponent<Unit>().CurrentResourceAmount;
+                    Game.currentPlayer.Palladium += gameObject.GetComponent<Unit>().CurrentResourceAmount;
+                else Game.currentPlayer.NullElement += gameObject.GetComponent<Unit>().CurrentResourceAmount;
 
                 gameObject.GetComponent<Unit>().CurrentCarriedResource = resourceType.None;
                 gameObject.GetComponent<Unit>().CurrentResourceAmount = 0;

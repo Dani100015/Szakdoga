@@ -104,7 +104,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1167271026427432}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 101.55618, y: -2.1, z: 1.6}
+  m_LocalPosition: {x: 53.3, y: -2.1, z: 1.5}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children:
   - {fileID: 4732716790774580}
@@ -153,7 +153,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 6b1d8a4d94ed668418d2f3ec9fc23d59, type: 2}
+  - {fileID: 2100000, guid: 9afc4366f5de9184e816586377ff5913, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -191,7 +191,7 @@ Rigidbody:
   m_Drag: 10
   m_AngularDrag: 10
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 4
   m_CollisionDetection: 0
@@ -220,6 +220,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   version: 1
   target: {fileID: 0}
+  tempTarget: {fileID: 0}
 --- !u!114 &114076457261378442
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -300,9 +301,13 @@ MonoBehaviour:
   currentHealth: 500
   trainingTime: 5
   isWalkable: 1
-  Owner: 1
+  Owner: Peti
+  MenuIcon: {fileID: 2800000, guid: 4a9e95b75f564e74e9852d0c47f2e16a, type: 3}
   isGatherer: 1
   GatherSpeed: 2
+  MaxResourceAmount: 100
+  CurrentResourceAmount: 0
+  CurrentCarriedResource: 0
 --- !u!114 &114478912815481028
 MonoBehaviour:
   m_ObjectHideFlags: 1

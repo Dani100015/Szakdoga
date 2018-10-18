@@ -22,14 +22,17 @@ public class Player {
     int Population;       //Egységek
     int maxPopulation;    //Max egységek
 
-    //List<Unit>
-    
+    //Egységek importálása
+    public List<Texture2D> UnitIcons = new List<Texture2D>();
+    public List<string> UnitNames = new List<string>();
+    public List<string> UnitPaths = new List<string>();
 
-    public Player(int Palladium = 500, int Irididium = 500, int NullElement = 100)
+    public Player(int pall, int irid, int eezo, string name)
     {
-        palladium = Palladium;
-        iridium = Irididium;
-        nullElement = NullElement;
+        palladium = pall;
+        iridium = irid;
+        nullElement = eezo;
+        empireName = name;
     }
 
     public int Palladium

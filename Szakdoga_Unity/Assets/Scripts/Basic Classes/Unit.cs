@@ -25,6 +25,8 @@ public class Unit : MonoBehaviour {
 
     public bool isWalkable = true;
     public string Owner;
+    public Texture2D MenuIcon;
+    public Texture2D MenuIconRo;
 
     //Gyűjtögetéshez
     public bool isGatherer;
@@ -57,7 +59,7 @@ public class Unit : MonoBehaviour {
         transform.rotation = Quaternion.RotateTowards(transform.rotation, q, 150 * Time.deltaTime);
         if (transform.rotation == q)
         {
-            Projectile = Instantiate(Resources.Load("Bullet"), transform.position, transform.rotation) as GameObject;
+            Projectile = Instantiate(Resources.Load("Prefabs/Projectiles/Bullet"), transform.position, transform.rotation) as GameObject;
             Projectile.GetComponent<Rigidbody>().velocity = (target.position - gameObject.transform.position).normalized * 100;
             target.gameObject.GetComponent<Unit>().currentHealth -= attackDamage;
         }
@@ -72,7 +74,7 @@ public class Unit : MonoBehaviour {
         transform.rotation = Quaternion.RotateTowards(transform.rotation, q, 150 * Time.deltaTime);
         if (transform.rotation == q)
         {
-            //CurrentCarriedResource = target.GetComponent<ResourceObject>().Type;
+            CurrentCarriedResource = target.GetComponent<ResourceObject>().Type;
             if (target.gameObject.GetComponent<ResourceObject>().Capacity - GatherSpeed <= 0)
             {
                 if (CurrentResourceAmount + target.gameObject.GetComponent<ResourceObject>().Capacity >= MaxResourceAmount)

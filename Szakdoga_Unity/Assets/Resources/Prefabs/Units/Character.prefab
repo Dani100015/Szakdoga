@@ -75,7 +75,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1735708192239882}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.53, y: -2.1, z: -17.102657}
+  m_LocalPosition: {x: -0.77459717, y: -2.1, z: -19.49295}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children:
   - {fileID: 4542193602071978}
@@ -231,9 +231,13 @@ MonoBehaviour:
   currentHealth: 500
   trainingTime: 0
   isWalkable: 1
-  Owner: 1
+  Owner: Sanyi
+  MenuIcon: {fileID: 2800000, guid: 137f455ed6801fa498275e06f75eaed9, type: 3}
   isGatherer: 0
   GatherSpeed: 0
+  MaxResourceAmount: 0
+  CurrentResourceAmount: 0
+  CurrentCarriedResource: 0
 --- !u!114 &114173718747612698
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -273,6 +277,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   version: 1
   target: {fileID: 0}
+  tempTarget: {fileID: 0}
 --- !u!114 &114750454713357424
 MonoBehaviour:
   m_ObjectHideFlags: 1
