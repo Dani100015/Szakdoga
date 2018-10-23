@@ -5,11 +5,13 @@ using UnityEngine;
 public class Game : MonoBehaviour {
 
     List<SolarSystem> solars;
-    List<Player> players;
+    public static List<Player> players;
     //List<Team> teams;
 
     public static Player currentPlayer;
     public static Player player2;
+
+    public static object[] SharedIcons;
 
     public GameObject starPrefab;
     public GameObject planetPrefab;
@@ -22,8 +24,9 @@ public class Game : MonoBehaviour {
         //Játékosok inicializálása
         players = new List<Player>();
 
-        currentPlayer = new Player(0, 0, 0, "Peti");
-        player2 = new Player(0, 0, 0, "Sanyi");
+        currentPlayer = new Player(100, 100, 100, "Peti");
+        player2 = new Player(100, 100, 100, "Sanyi");
+
         players.Add(currentPlayer);
         players.Add(player2);
 
@@ -36,28 +39,24 @@ public class Game : MonoBehaviour {
             {
                 GameObject unit = Units[i] as GameObject;
                 Texture2D unitIcon = unit.GetComponent<Unit>().MenuIcon;
+                Texture2D unitIconRo = unit.GetComponent<Unit>().MenuIconRo;
 
                 foreach (Player p in players)
                 {
                     p.UnitIcons.Add(unitIcon);
+                    p.UnitIconsRo.Add(unitIconRo);
                     p.UnitNames.Add(unit.name);
                     p.UnitPaths.Add(path + "/" + unit.name);
                 }
             }
         }
 
-        
-
+        SharedIcons = Resources.LoadAll("Icons/Shared");
         solarSystem1 = new SolarSystem("solarSystem1", currentPlayer, null,null);
         solarSystem1.InitCelestials();
 
         InitSolarSystem();
 
-    }
-
-    void OnGUI()
-    {
-      
     }
 	
 	void Update () {

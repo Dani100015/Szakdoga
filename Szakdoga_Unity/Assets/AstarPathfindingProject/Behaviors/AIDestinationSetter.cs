@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 
 namespace Pathfinding
 {
@@ -141,7 +142,7 @@ namespace Pathfinding
             //Set Destination or target
             if (unit.Selected && unit.isWalkable)
             {
-                if (Input.GetMouseButtonDown(1))
+                if (Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject())
                 {
                     ai.isStopped = false;
                     if (Common.ShiftKeysDown())

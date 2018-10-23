@@ -60,7 +60,6 @@ GameObject:
   - component: {fileID: 114750454713357424}
   - component: {fileID: 114001850303985102}
   - component: {fileID: 114725652779241064}
-  - component: {fileID: 54725402339687674}
   m_Layer: 8
   m_Name: Character
   m_TagString: Untagged
@@ -75,7 +74,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1735708192239882}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.77459717, y: -2.1, z: -19.49295}
+  m_LocalPosition: {x: 11.797554, y: -2.1, z: -24.350723}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children:
   - {fileID: 4542193602071978}
@@ -150,21 +149,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1735708192239882}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!54 &54725402339687674
-Rigidbody:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1735708192239882}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 10
-  m_AngularDrag: 10
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 4
-  m_CollisionDetection: 0
 --- !u!65 &65557122211119888
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -225,14 +209,15 @@ MonoBehaviour:
   CurrentTargetLocation: {x: 0, y: 0, z: 0}
   Range: 6
   Projectile: {fileID: 0}
-  attackSpeed: 0
-  attackDamage: 0
+  attackSpeed: 1
+  attackDamage: 10
   maxHealth: 500
   currentHealth: 500
   trainingTime: 0
   isWalkable: 1
-  Owner: Sanyi
+  Owner: Peti
   MenuIcon: {fileID: 2800000, guid: 137f455ed6801fa498275e06f75eaed9, type: 3}
+  MenuIconRo: {fileID: 2800000, guid: bedf8623d358fc7478bccf73f9c044f5, type: 3}
   isGatherer: 0
   GatherSpeed: 0
   MaxResourceAmount: 0

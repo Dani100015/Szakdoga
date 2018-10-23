@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class Mouse : MonoBehaviour
 {
@@ -15,8 +17,6 @@ public class Mouse : MonoBehaviour
 
     #region Variables
     public ArrayList[] Grouping = new ArrayList[10];
-
-
     private KeyCode[] keyCodes = {
          KeyCode.Keypad1,
          KeyCode.Keypad2,
@@ -33,6 +33,7 @@ public class Mouse : MonoBehaviour
 
     public Vector3 RightClickPoint;
     public static ArrayList CurrentlySelectedUnits = new ArrayList();
+    public static GameObject CurrentlyFocusedUnit;
     public static ArrayList UnitsOnScreen = new ArrayList();
     public static ArrayList UnitsInDrag = new ArrayList();
     private bool FinishedDragOnThisFrame;
@@ -81,8 +82,8 @@ public class Mouse : MonoBehaviour
         ClipPlainPoints NearPlainPoints = CameraClipPlanePoints(Camera.main.GetComponent<Camera>().nearClipPlane);
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, MouseLayerMask))
+        
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, MouseLayerMask) && !(EventSystem.current.IsPointerOverGameObject(-1)))
         {
             currentMousePoint = hit.point;
             //Store point at mouse button down
@@ -92,7 +93,6 @@ public class Mouse : MonoBehaviour
                 TimeLeftBeforeDeclareDrag = TimeLimitBeforeDeclareDrag;
                 MouseDragStart = Input.mousePosition;
                 StartedDrag = true;
-
             }
             else if (Input.GetMouseButton(0))
             {
@@ -112,13 +112,14 @@ public class Mouse : MonoBehaviour
                 if (UserIsDragging)
                     FinishedDragOnThisFrame = true;
                 UserIsDragging = false;
-                DragSelectMesh.SetActive(false);
+                DragSelectMesh.SetActive(false);                               
             }
+
             //Mouse click
             if (!UserIsDragging)
             {
                 //Debug.Log(hit.collider.name);
-                if (Input.GetMouseButtonDown(1))
+                if (Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject())
                 {
                     if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Unit"))
                         SelectTargets(hit);
@@ -205,16 +206,21 @@ public class Mouse : MonoBehaviour
                 if (Input.GetMouseButtonUp(0) && DidUserClickLeftMouse(mouseDownPoint))
                 {
                     if (!Common.ShiftKeysDown())
-                        DeselectGameObjectsIfSelected();
+                        DeselectGameObjectsIfSelected();                  
                 }
-            } //End of raycasthit
-        } //End of dragging
+            }
+            //End of dragging            
+        } //End of raycasthit
+
+        if (CurrentlySelectedUnits.Count != 0)
+            CurrentlyFocusedUnit = CurrentlySelectedUnits[0] as GameObject;
+        else CurrentlyFocusedUnit = null;
 
         if (!Common.ShiftKeysDown() && StartedDrag && UserIsDragging)
         {
             DeselectGameObjectsIfSelected();
             StartedDrag = false;
-        }
+        }        
         //Group creation
         if (CurrentlySelectedUnits.Count != 0 && (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)))
         {
@@ -288,7 +294,7 @@ public class Mouse : MonoBehaviour
     void LateUpdate()
     {
         UnitsInDrag.Clear();
-
+       
         if ((UserIsDragging || FinishedDragOnThisFrame) && UnitsOnScreen.Count > 0)
         {
             UpdateDragBoxMesh();
@@ -358,9 +364,8 @@ public class Mouse : MonoBehaviour
         if (FinishedDragOnThisFrame)
         {
             FinishedDragOnThisFrame = false;
-            PutDraggedUnitsInCurrentlySelectedUnits();
-        }
-
+            PutDraggedUnitsInCurrentlySelectedUnits();                
+        }       
     }
 
     void OnGUI()

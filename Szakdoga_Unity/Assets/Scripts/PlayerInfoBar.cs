@@ -3,23 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerInfoBar : MonoBehaviour {
+public class PlayerInfoBar : MonoBehaviour
+{
 
-    Player player;
+    public Text resource1_Palladium;
+    public Text resource2_Iridium;
+    public Text resource3_NullElement;
 
-    public Text resourse1_Palladium;
-    public Text resourse2_Iridium;
-    public Text resourse3_NullElement;
-
-    void Start()
+    void LateUpdate()
     {
-        player = Game.currentPlayer;
-    }
-    void Update()
-    {
-        resourse1_Palladium.text    = "Palladium: " +   player.Palladium.ToString();
-        resourse2_Iridium.text      = "Iridium: " +     player.Iridium.ToString();
-        resourse3_NullElement.text  = "Null Element: "+ player.NullElement.ToString();
+        resource1_Palladium.text = "Palladium: " + Game.currentPlayer.palladium;
+        resource2_Iridium.text = "Iridium: " + Game.currentPlayer.iridium;
+        resource3_NullElement.text = "Null Element: " + Game.currentPlayer.nullElement;
     }
 
     void OnMouseEnter()

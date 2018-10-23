@@ -10,41 +10,27 @@ public class GUISpotGenerate : MonoBehaviour {
     public int spotLimitNumber;     //A panelekbe csak limitált mennyiségű "spotot"/üres helyet lehet berakni
     public int spotNumber;          //Input "spot" generálási mennyiség, 
 
-    void Start()
-    {
-        GenerateSpots(spotNumber);
-    }
     /// <summary>
     /// Spotokat/"Üres helyket generál a külöböző GUI-hoz, attól függően, hogy melyik Panel-ben található
     /// </summary>
-    void GenerateSpots(int spotNumber)
+    public void GenerateSpots()
     {
         switch (ContainerRect.gameObject.name)  //Attól függően melyik Panelbe kell generálni. (Név alapján)
         {
             case "UnitDetail":
                 {
-                    if (spotNumber <= spotLimitNumber)
-                    {
-                        for (int i = 0; i < spotNumber; i++)
-                        {
-                            GameObject scrollItemObject = Instantiate(spotPrefab);
-                            scrollItemObject.transform.SetParent(ContainerRect.transform, false);
-                        }
-                    }
+
+                    transform.Find("UnitName").GetComponent<Text>().text = Mouse.CurrentlyFocusedUnit.name;
+                    //transform.Find("UnitName").GetComponent<Text>().text = Mouse.CurrentlyFocusedUnit.name;
 
                 }
                 break;
-            case "UnitSelector":
-                {
-                    if (spotNumber <= spotLimitNumber)
-                    {
-                        for (int i = 0; i < spotNumber; i++)
+            case "UnitList":
+                {                    
+                        for (int i = 0; i < 30; i++)
                         {
-                            GameObject scrollItemObject = Instantiate(spotPrefab);
-                            scrollItemObject.transform.SetParent(ContainerRect.transform, false);
+                            GameObject scrollItemObject = Instantiate(spotPrefab,ContainerRect.transform);
                         }
-                    }
-
                 }
                 break;
             case "CommandSpots":

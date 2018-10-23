@@ -24,6 +24,7 @@ public class Player {
 
     //Egységek importálása
     public List<Texture2D> UnitIcons = new List<Texture2D>();
+    public List<Texture2D> UnitIconsRo = new List<Texture2D>();
     public List<string> UnitNames = new List<string>();
     public List<string> UnitPaths = new List<string>();
 
