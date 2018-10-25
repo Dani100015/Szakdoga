@@ -142,7 +142,7 @@ namespace Pathfinding
             //Set Destination or target
             if (unit.Selected && unit.isWalkable)
             {
-                if (Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject())
+                if (Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject() && !GUISetup.GhostActive)
                 {
                     ai.isStopped = false;
                     if (Common.ShiftKeysDown())

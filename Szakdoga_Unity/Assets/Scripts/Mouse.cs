@@ -42,7 +42,7 @@ public class Mouse : MonoBehaviour
     public GUIStyle MouseDragSkin;
 
     private static Vector3 mouseDownPoint;
-    private Vector3 currentMousePoint; //in World Space
+    public static Vector3 currentMousePoint; //in World Space
 
     public static bool UserIsDragging;
     private static float TimeLimitBeforeDeclareDrag = 1f;
@@ -86,6 +86,10 @@ public class Mouse : MonoBehaviour
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, MouseLayerMask) && !(EventSystem.current.IsPointerOverGameObject(-1)))
         {
             currentMousePoint = hit.point;
+            #region Visszavonások
+            if (GUISetup.GhostActive)
+                return;
+            #endregion
             //Store point at mouse button down
             if (Input.GetMouseButtonDown(0))
             {
@@ -112,12 +116,13 @@ public class Mouse : MonoBehaviour
                 if (UserIsDragging)
                     FinishedDragOnThisFrame = true;
                 UserIsDragging = false;
-                DragSelectMesh.SetActive(false);                               
+                DragSelectMesh.SetActive(false);                                                            
             }
 
             //Mouse click
             if (!UserIsDragging)
             {
+
                 //Debug.Log(hit.collider.name);
                 if (Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject())
                 {
@@ -139,7 +144,7 @@ public class Mouse : MonoBehaviour
                     {
                         if (!Common.ShiftKeysDown())
                             DeselectGameObjectsIfSelected();
-                    }
+                    }                  
                 }
                 // End of Terrain
                 else
@@ -206,14 +211,15 @@ public class Mouse : MonoBehaviour
                 if (Input.GetMouseButtonUp(0) && DidUserClickLeftMouse(mouseDownPoint))
                 {
                     if (!Common.ShiftKeysDown())
-                        DeselectGameObjectsIfSelected();                  
+                        DeselectGameObjectsIfSelected();                                     
                 }
             }
-            //End of dragging            
+            //End of dragging     
+            
         } //End of raycasthit
 
         if (CurrentlySelectedUnits.Count != 0)
-            CurrentlyFocusedUnit = CurrentlySelectedUnits[0] as GameObject;
+                CurrentlyFocusedUnit = CurrentlySelectedUnits[0] as GameObject;                         
         else CurrentlyFocusedUnit = null;
 
         if (!Common.ShiftKeysDown() && StartedDrag && UserIsDragging)
@@ -293,6 +299,7 @@ public class Mouse : MonoBehaviour
 
     void LateUpdate()
     {
+        
         UnitsInDrag.Clear();
        
         if ((UserIsDragging || FinishedDragOnThisFrame) && UnitsOnScreen.Count > 0)
@@ -364,7 +371,7 @@ public class Mouse : MonoBehaviour
         if (FinishedDragOnThisFrame)
         {
             FinishedDragOnThisFrame = false;
-            PutDraggedUnitsInCurrentlySelectedUnits();                
+            PutDraggedUnitsInCurrentlySelectedUnits();                           
         }       
     }
 
@@ -459,6 +466,8 @@ public class Mouse : MonoBehaviour
     {
         if (CurrentlySelectedUnits.Count > 0)
         {
+            if (CurrentlyFocusedUnit.GetComponent<Unit>() != null)
+                CurrentlyFocusedUnit.GetComponent<Unit>().ShowBuildables = false;
             for (int i = 0; i < CurrentlySelectedUnits.Count; i++)
             {
                 GameObject ArrayListUnit = CurrentlySelectedUnits[i] as GameObject;

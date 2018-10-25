@@ -9,23 +9,59 @@ public class GUISetup : MonoBehaviour
     public GameObject CommandContainer;
     public GameObject DetailContainer;
     public GameObject UnitListContainer;
-    public GameObject BuildingContainer;
     public GameObject prefab;
 
+    public GameObject Ghost;
+    public Material GhostMaterial;
+    public static Material GhostMaterialRed;
+    public static bool GhostActive = false;
+    public static bool canBuildStructure;
+
+    public void BuildClick()
+    {
+        CommandContainer.transform.Find("Movement").gameObject.SetActive(false);
+        Mouse.CurrentlyFocusedUnit.GetComponent<Unit>().ShowBuildables = true;
+    }
 
     void OnGUI()
     {    
         if (Mouse.CurrentlyFocusedUnit != null)
         {
-            if (Mouse.CurrentlyFocusedUnit.GetComponent<Unit>() != null && Mouse.CurrentlyFocusedUnit.GetComponent<Unit>().isGatherer)
+            if (Mouse.CurrentlyFocusedUnit.GetComponent<Unit>() != null && Mouse.CurrentlyFocusedUnit.GetComponent<Unit>().isGatherer && Mouse.CurrentlyFocusedUnit.GetComponent<Unit>().ShowBuildables)
             {
-                GUILayout.BeginArea(new Rect(-Screen.width - CommandContainer.transform.position.x,
-                                             Screen.height- CommandContainer.transform.position.y, 100, 100));
+                int offset = 48;
+                int j = 0;
                 for (int i = 0; i < Game.currentPlayer.UnitNames.Count; i++)
                 {
-                    GUILayout.Button("Teszt");
+                    GameObject unit = Resources.Load(Game.currentPlayer.UnitPaths[i], typeof(GameObject)) as GameObject;
+                    if (unit.GetComponent<Structure>() == null)
+                        continue;
+
+                    GUIStyle Icon = new GUIStyle();
+                    Icon.normal.background = Game.currentPlayer.UnitIcons[i];
+                    Icon.hover.background = Game.currentPlayer.UnitIconsRo[i];      
+
+                    if (GUI.Button(new Rect(Screen.width - 205 + (offset*(j%4)),Screen.height-100 + (offset*(int)(j/4)), 46, 39),"",Icon))
+                    {
+                        if (GhostActive)
+                            Destroy(Ghost.gameObject);
+                        Ghost = Instantiate(unit.GetComponent<Structure>().GUIGhost,Vector3.zero,Quaternion.identity) as GameObject;
+                        Ghost.GetComponent<Renderer>().material = GhostMaterial;
+                        Ghost.AddComponent<UnitGhost>();
+                        Ghost.GetComponent<Renderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+                        Ghost.GetComponent<Renderer>().receiveShadows = false;
+                        Ghost.name = Game.currentPlayer.UnitNames[i];
+                        Ghost.transform.rotation = unit.GetComponent<Structure>().GUIGhost.transform.rotation;
+                        GhostActive = true;
+                    }
+                    j++;
                 }
-                GUILayout.EndArea();
+                j = 7;
+                if (GUI.Button(new Rect(Screen.width - 205 + (offset * (j % 4)), Screen.height - 100 + (offset * (int)(j / 4)), 46, 39), "<--"))
+                {
+                    CommandContainer.transform.Find("Movement").gameObject.SetActive(true);
+                    Mouse.CurrentlyFocusedUnit.GetComponent<Unit>().ShowBuildables = false;
+                }
             }
 
             #region UnitDetails
@@ -52,8 +88,20 @@ public class GUISetup : MonoBehaviour
             #endregion
 
             #region CommandCard
-            if (Mouse.CurrentlyFocusedUnit.GetComponent<Unit>() != null)
+            if (Mouse.CurrentlyFocusedUnit.GetComponent<Unit>() != null && !Mouse.CurrentlyFocusedUnit.GetComponent<Unit>().ShowBuildables)
+            {
                 CommandContainer.transform.Find("Movement").gameObject.SetActive(true);
+                if (!Mouse.CurrentlyFocusedUnit.GetComponent<Unit>().isGatherer)
+                {
+                    CommandContainer.transform.Find("Movement").Find("RepairButton").gameObject.SetActive(false);
+                    CommandContainer.transform.Find("Movement").Find("BuildButton").gameObject.SetActive(false);
+                }
+                else
+                {
+                    CommandContainer.transform.Find("Movement").Find("RepairButton").gameObject.SetActive(true);
+                    CommandContainer.transform.Find("Movement").Find("BuildButton").gameObject.SetActive(true);
+                }
+            }
             else CommandContainer.transform.Find("Movement").gameObject.SetActive(false);
             #endregion
 

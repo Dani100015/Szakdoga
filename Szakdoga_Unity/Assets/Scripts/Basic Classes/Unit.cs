@@ -34,6 +34,8 @@ public class Unit : MonoBehaviour {
     public int MaxResourceAmount;
     public int CurrentResourceAmount;
     public resourceType CurrentCarriedResource;
+    public bool isBuilding;
+    public bool ShowBuildables;
 
     void Start()
     {

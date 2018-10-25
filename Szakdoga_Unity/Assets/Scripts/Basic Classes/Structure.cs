@@ -13,6 +13,7 @@ public class Structure : Unit
     int TimeLeft;
     bool Training;
     public bool isDropOffPoint;
+    public GameObject GUIGhost;
 
     void Start()
     {
