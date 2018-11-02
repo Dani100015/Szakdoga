@@ -6,21 +6,30 @@ using UnityEngine.UI;
 class SolarSystemPanelInfo : MonoBehaviour {
 
     GameObject[] solarSystems;
-    public Text SolarSystemName;
+    Text SolarSystemName;
 
-    void Start()
+    SetSolarSystems setSystems;
+    Game game;
+
+    void Awake()
     {
-        solarSystems = GameObject.FindGameObjectsWithTag("StarSystem");
+        game = GameObject.Find("Game").GetComponent<Game>();
+        setSystems = GameObject.Find("SolarSystemGenerator").GetComponent<SetSolarSystems>();
+
+       // Debug.Log("SolarSystemPanelInfo:")
+
+        SolarSystemName = transform.Find("TextSolarSystem").GetComponent<Text>();
     }
     void Update () {
-        for (int i = 0; i < solarSystems.Length; i++)
-        {
-            if (solarSystems[i].gameObject.activeSelf == true)
-            {
-                SolarSystemName.text = solarSystems[0].gameObject.name;
-            }
-            Debug.Log(solarSystems[0].gameObject.name);
-        }
-        
+        InvokeRepeating("UpdatetSolarSystemText",1,2);
     }
+    void UpdatetSolarSystemText()
+    {
+        if (setSystems != null && setSystems.currentSystemPrefab != null)
+        {
+            SolarSystemName.text = setSystems.currentSystemPrefab.name;
+        }
+          
+    }
+
 }
