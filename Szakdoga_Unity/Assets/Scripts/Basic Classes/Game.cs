@@ -24,8 +24,11 @@ public class Game : MonoBehaviour {
         //Játékosok inicializálása
         players = new List<Player>();
 
-        currentPlayer = new Player(100, 100, 100, "Peti");
-        player2 = new Player(100, 100, 100, "Sanyi");
+        currentPlayer = new Player(10000, 10000, 10000, "Peti",Species.Human);
+        player2 = new Player(10000, 10000, 10000, "Sanyi",Species.Reaper);
+
+        currentPlayer.enemies.Add(player2);
+        player2.enemies.Add(currentPlayer);
 
         players.Add(currentPlayer);
         players.Add(player2);
@@ -38,15 +41,11 @@ public class Game : MonoBehaviour {
             for (int i = 0; i < Units.Length; i++)
             {
                 GameObject unit = Units[i] as GameObject;
-                Texture2D unitIcon = unit.GetComponent<Unit>().MenuIcon;
-                Texture2D unitIconRo = unit.GetComponent<Unit>().MenuIconRo;
-
+                Unit unitobj = unit.GetComponent<Unit>();
                 foreach (Player p in players)
                 {
-                    p.UnitIcons.Add(unitIcon);
-                    p.UnitIconsRo.Add(unitIconRo);
-                    p.UnitNames.Add(unit.name);
-                    p.UnitPaths.Add(path + "/" + unit.name);
+                    if (unitobj.Race == p.species)
+                        p.BuildableUnits.Add(unit);
                 }
             }
         }
@@ -81,6 +80,11 @@ public class Game : MonoBehaviour {
             planet = Instantiate(planetPrefab);
             planet.transform.position = new Vector3(solarSystem1.celestials[i].x, 0, solarSystem1.celestials[i].y);
         }
+
+    }
+
+    public static void ResearchEffects(Player player, Tech tech)
+    {
 
     }
 }
