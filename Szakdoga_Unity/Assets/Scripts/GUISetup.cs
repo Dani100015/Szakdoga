@@ -2,29 +2,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using Pathfinding;
-using System.Linq;
-using System.Text;
 
 public class GUISetup : MonoBehaviour
 {
     public GameObject CommandContainer;
     public GameObject DetailContainer;
     public GameObject UnitListContainer;
-    public GameObject ToolTipContainter;
-    public GameObject PlayerInfoContainer;
     public GameObject prefab;
 
     public GameObject Ghost;
-    public static Material GhostMaterial;
+    public Material GhostMaterial;
     public static Material GhostMaterialRed;
     public static bool GhostActive = false;
     public static bool canBuildStructure;
-    int CurrentGhost;
-
-    public static bool PassedTriggerTest;
 
     public void BuildClick()
     {
@@ -32,77 +23,36 @@ public class GUISetup : MonoBehaviour
         Mouse.CurrentlyFocusedUnit.GetComponent<Unit>().ShowBuildables = true;
     }
 
-    void Start()
-    {
-        GhostMaterial = Resources.Load("Materials/GhostMaterial", typeof(Material)) as Material;
-        GhostMaterialRed = Resources.Load("Materials/GhostMaterialRed", typeof(Material)) as Material;
-    }
-
-    /// <summary>
-    /// Ellenőrzi, van-e elég nyersanyag az egység kiképzéséhez, illetve hely a flottában
-    /// </summary>
-    /// <param name="unit"></param>
-    /// <returns></returns>
-    bool CostCheck(Unit unit)
-    {
-        if (Game.currentPlayer.iridium - unit.iridiumCost >= 0 &&
-            Game.currentPlayer.palladium - unit.palladiumCost >= 0 &&
-            Game.currentPlayer.nullElement - unit.eezoCost >= 0)
-        {
-            Game.currentPlayer.iridium -= unit.iridiumCost;
-            Game.currentPlayer.palladium -= unit.palladiumCost;
-            Game.currentPlayer.nullElement -= unit.eezoCost;
-
-            PlayerInfoContainer.transform.Find("TextIridium").GetComponent<Text>().text = "Iridium: " + Game.currentPlayer.iridium;
-            PlayerInfoContainer.transform.Find("TextPalladium").GetComponent<Text>().text = "Palladium: " + Game.currentPlayer.palladium;
-            PlayerInfoContainer.transform.Find("TextNullElement").GetComponent<Text>().text = "Null elem: " + Game.currentPlayer.nullElement;
-
-            return true;
-        }
-        return false;
-    }
-
     void OnGUI()
-    {
+    {    
         if (Mouse.CurrentlyFocusedUnit != null)
         {
-            #region Építkezés
             if (Mouse.CurrentlyFocusedUnit.GetComponent<Unit>() != null && Mouse.CurrentlyFocusedUnit.GetComponent<Unit>().isGatherer && Mouse.CurrentlyFocusedUnit.GetComponent<Unit>().ShowBuildables)
             {
                 int offset = 48;
                 int j = 0;
-                for (int i = 0; i < Game.currentPlayer.BuildableUnits.Count; i++)
+                for (int i = 0; i < Game.currentPlayer.UnitNames.Count; i++)
                 {
-                    GameObject unit = Game.currentPlayer.BuildableUnits[i];
-                    Unit unitObj = unit.GetComponent<Unit>();
+                    GameObject unit = Resources.Load(Game.currentPlayer.UnitPaths[i], typeof(GameObject)) as GameObject;
                     if (unit.GetComponent<Structure>() == null)
                         continue;
 
                     GUIStyle Icon = new GUIStyle();
-                    Icon.normal.background = unitObj.MenuIcon;
-                    Icon.hover.background = unitObj.MenuIconRo;
+                    Icon.normal.background = Game.currentPlayer.UnitIcons[i];
+                    Icon.hover.background = Game.currentPlayer.UnitIconsRo[i];      
 
-                    if (GUI.Button(new Rect(Screen.width - 205 + (offset * (j % 4)), Screen.height - 100 + (offset * (int)(j / 4)), 46, 39), "", Icon))
+                    if (GUI.Button(new Rect(Screen.width - 205 + (offset*(j%4)),Screen.height-100 + (offset*(int)(j/4)), 46, 39),"",Icon))
                     {
                         if (GhostActive)
                             Destroy(Ghost.gameObject);
-                        Ghost = Instantiate(unit.GetComponent<Structure>().GUIGhost, Vector3.zero, Quaternion.identity) as GameObject;
-                        CurrentGhost = i;
+                        Ghost = Instantiate(unit.GetComponent<Structure>().GUIGhost,Vector3.zero,Quaternion.identity) as GameObject;
                         Ghost.GetComponent<Renderer>().material = GhostMaterial;
                         Ghost.AddComponent<UnitGhost>();
-                        Ghost.AddComponent<GhostTestTrigger>();
                         Ghost.GetComponent<Renderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
                         Ghost.GetComponent<Renderer>().receiveShadows = false;
-                        Ghost.name = unit.name;
+                        Ghost.name = Game.currentPlayer.UnitNames[i];
                         Ghost.transform.rotation = unit.GetComponent<Structure>().GUIGhost.transform.rotation;
                         GhostActive = true;
-
-                        Rigidbody body = Ghost.AddComponent<Rigidbody>();
-                        body.useGravity = false;
-
-                        BoxCollider box = Ghost.AddComponent<BoxCollider>();
-                        box.isTrigger = true;
-
                     }
                     j++;
                 }
@@ -113,83 +63,6 @@ public class GUISetup : MonoBehaviour
                     Mouse.CurrentlyFocusedUnit.GetComponent<Unit>().ShowBuildables = false;
                 }
             }
-            #endregion
-
-            #region Kiképzés
-            if (Mouse.CurrentlyFocusedUnit != null && Mouse.CurrentlyFocusedUnit.GetComponent<Structure>() != null && Mouse.CurrentlyFocusedUnit.GetComponent<Structure>().TrainableUnits.Count != 0)
-            {
-                Structure currentStructure = Mouse.CurrentlyFocusedUnit.GetComponent<Structure>();
-                int offset = 48;
-                int j = 0;
-
-                for (int i = 0; i < currentStructure.TrainableUnits.Count; i++)
-                {
-                    GameObject unit = currentStructure.TrainableUnits[i];
-                    Unit unitObj = unit.GetComponent<Unit>();
-                    GUIContent content = new GUIContent("", unit.name);
-
-                    GUIStyle Icon = new GUIStyle();
-                    Icon.normal.background = unitObj.MenuIcon;
-                    Icon.hover.background = unitObj.MenuIconRo;
-
-                    Rect currentButtonPosition = new Rect(Screen.width - 205 + (offset * (j % 4)), Screen.height - 100 + (offset * (int)(j / 4)), 46, 39);
-                    if (GUI.Button(currentButtonPosition, content, Icon))
-                    {
-
-                        if (currentStructure.TrainingQueue.Count < 7)
-                        {
-                            if (CostCheck(unitObj))
-                            {
-                                currentStructure.TrainingQueue.Add(Game.currentPlayer.BuildableUnits.Where(x => x.name == currentStructure.TrainableUnits[i].name).SingleOrDefault());
-                                if (currentStructure.TrainingQueue.Count == 1)
-                                    currentStructure.StartCoroutine("Train");
-                            }
-                        }
-                    }
-                    j++;
-                }
-
-                //Egység információk
-                if (GUI.tooltip != "")
-                {
-                    GameObject unit = Game.currentPlayer.BuildableUnits.Where(x => x.name == GUI.tooltip).SingleOrDefault();
-                    Unit unitObj = unit.GetComponent<Unit>();
-                    ToolTipContainter.SetActive(true);
-                    ToolTipContainter.transform.Find("TextName").GetComponent<Text>().text = unit.name;
-
-                    //Egysék költségek
-                    StringBuilder sb = new StringBuilder();
-                    if (unitObj.iridiumCost != 0)
-                        sb.Append("Iridium: " + unitObj.iridiumCost);
-                    if (unitObj.palladiumCost != 0)
-                        sb.Append("\r\nPalladium: " + unitObj.palladiumCost);
-                    if (unitObj.eezoCost != 0)
-                        sb.Append("\r\nEezo: " + unitObj.eezoCost);
-
-                    ToolTipContainter.transform.Find("TextInfo").GetComponent<Text>().text = sb.ToString();
-                }
-                else ToolTipContainter.SetActive(false);
-
-                j = 0;
-                for (int i = 0; i < currentStructure.TrainingQueue.Count; i++)
-                {
-                    GameObject unit = ((currentStructure.TrainingQueue).ToArray())[i] as GameObject;
-                    Unit unitObj = unit.GetComponent<Unit>();
-
-                    GUIStyle Icon = new GUIStyle();
-                    Icon.normal.background = unitObj.MenuIcon;
-                    Icon.hover.background = unitObj.MenuIconRo;
-                    if (GUI.Button(new Rect(205 + (offset * (j % 4)), Screen.height - 100 + (offset * (int)(j / 4)), 46, 39), "", Icon))
-                    {
-                        currentStructure.TrainingQueue.RemoveAt(i);
-                        if (currentStructure.TrainingQueue.Count == 0)
-                            currentStructure.StopCoroutine("Train");
-                    }
-                    j++;
-                }
-
-            }
-            #endregion
 
             #region UnitDetails
             DetailContainer.SetActive(true);
@@ -215,7 +88,7 @@ public class GUISetup : MonoBehaviour
             #endregion
 
             #region CommandCard
-            if (Mouse.CurrentlyFocusedUnit.GetComponent<Unit>() != null && !Mouse.CurrentlyFocusedUnit.GetComponent<Unit>().ShowBuildables && !Mouse.CurrentlyFocusedUnit.GetComponent<Structure>())
+            if (Mouse.CurrentlyFocusedUnit.GetComponent<Unit>() != null && !Mouse.CurrentlyFocusedUnit.GetComponent<Unit>().ShowBuildables)
             {
                 CommandContainer.transform.Find("Movement").gameObject.SetActive(true);
                 if (!Mouse.CurrentlyFocusedUnit.GetComponent<Unit>().isGatherer)
@@ -241,42 +114,12 @@ public class GUISetup : MonoBehaviour
         {
             DetailContainer.SetActive(false);
             CommandContainer.transform.Find("Movement").gameObject.SetActive(false);
-            DeleteIcons();
-        }
-
+            var children = new List<GameObject>();
+            foreach (Transform child in UnitListContainer.transform)
+                children.Add(child.gameObject);
+            children.ForEach(child => Destroy(child));
+        }  
+    
     }
 
-    public void DeleteIcons()
-    {
-        var children = new List<GameObject>();
-        foreach (Transform child in UnitListContainer.transform)
-            children.Add(child.gameObject);
-        children.ForEach(child => Destroy(child));
-    }
-
-    void LateUpdate()
-    {
-        if (GhostActive)
-        {
-            if (PassedTriggerTest)
-            {
-                Ghost.GetComponent<Renderer>().material = GhostMaterial;
-                canBuildStructure = true;
-            }
-            else
-            {
-                Ghost.GetComponent<Renderer>().material = GhostMaterialRed;
-                canBuildStructure = false;
-            }
-
-            if (Input.GetMouseButtonUp(0) && canBuildStructure && !(EventSystem.current.IsPointerOverGameObject()))
-            {
-                //Épület létrehozása              
-                GameObject newUnit = Instantiate(Game.currentPlayer.BuildableUnits[CurrentGhost], new Vector3(Mouse.currentMousePoint.x, 5f, Mouse.currentMousePoint.z), Quaternion.identity);
-                newUnit.name = Game.currentPlayer.BuildableUnits[CurrentGhost].name;                
-
-                AstarPath.active.UpdateGraphs(newUnit.GetComponent<Collider>().bounds);
-            }
-        }
-    }
 }
