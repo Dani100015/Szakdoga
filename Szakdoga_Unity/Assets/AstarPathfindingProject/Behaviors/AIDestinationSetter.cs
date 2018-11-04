@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
+using System.Linq;
 
 namespace Pathfinding
 {
@@ -22,6 +23,7 @@ namespace Pathfinding
         private Unit unit;
         public Transform tempTarget;
         public IAstarAI ai;
+        Mouse mouse;
 
         void OnEnable()
         {
@@ -54,12 +56,12 @@ namespace Pathfinding
             {
                 ai.isStopped = true;
             }
-
         }
 
         void Start()
         {
             //StartCoroutine("AutoAttack");
+            mouse = GameObject.Find("Game").GetComponent<Mouse>();
         }
 
         //Auto Attack
@@ -99,7 +101,7 @@ namespace Pathfinding
             }
         }
 
-       public IEnumerator SearchDropOffPoint()
+        public IEnumerator SearchDropOffPoint()
         {
             Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position, 10000, 1 << LayerMask.NameToLayer("Unit"));
             ArrayList dropOffPoints = new ArrayList();
@@ -134,90 +136,120 @@ namespace Pathfinding
         /** Updates the AI's destination every frame */
         void LateUpdate()
         {
+            //Ha van célpont beállítva, menjen a célpont pozíciójához
             if (ai != null && target != null)
             {
                 ai.destination = target.transform.position;
                 ai.isStopped = false;
             }
-            //Set Destination or target
-            if (unit.Selected && unit.isWalkable)
+
+            //Célhely kijelölése
+            if (unit.Selected && unit.isWalkable && unit.Owner == Game.currentPlayer.empireName)
             {
+                //Debug.Log(Game.players.Where(x => x.empireName.Equals(unit.Owner)).SingleOrDefault().enemies.Count);
                 if (Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject() && !GUISetup.GhostActive)
                 {
                     ai.isStopped = false;
+                    //Ha le van nyomva a shift, akkor a sorhoz szeretnénk adni
                     if (Common.ShiftKeysDown())
                     {
+                        //Ha a cselekvési sor üres, csak küldjük a célhelyre
                         if (!ai.hasPath && unit.ActionsQueue.Count == 0)
                         {
-                            if (ai != null) ai.destination = GameObject.Find("Game").GetComponent<Mouse>().RightClickPoint;
+                            if (ai != null) ai.destination = mouse.RightClickPoint;
                         }
+                        //Ha nem, adjuk hozzá a sorhoz a jobb klikk helyét
                         else
                         {
-                            unit.ActionsQueue.Enqueue(GameObject.Find("Game").GetComponent<Mouse>().RightClickPoint);
-                            Debug.Log(unit.ActionsQueue.Count);
+                            unit.ActionsQueue.Enqueue(mouse.RightClickPoint);
                         }
                     }
+                    //Ha nincs lenyomva, akkor nem szeretnénk hozzáadni, valamint kiüríteni a sort ha nem üres
                     else
                     {
                         if (ai != null && target != null) ai.destination = target.transform.position;
-                        if (ai != null) ai.destination = GameObject.Find("Game").GetComponent<Mouse>().RightClickPoint;
+                        if (ai != null) ai.destination = mouse.RightClickPoint;
                         unit.ActionsQueue.Clear();
                     }
                 }
             }
 
-            //Right Click Attack
-            if (target != null && target.gameObject.layer != LayerMask.NameToLayer("Resources") && !target.gameObject.GetComponent<Unit>().Owner.Equals(Game.currentPlayer.empireName) &&
-                Vector3.Distance(target.gameObject.transform.position, gameObject.transform.position) <= gameObject.GetComponent<Unit>().Range * 5)
+            if (ai.isStopped && unit.ActionsQueue.Count >= 1)
             {
-                ai.isStopped = true;
-                if (target.gameObject.GetComponent<Unit>().currentHealth > 0)
-                    gameObject.GetComponent<Unit>().AttackTarget(target);
+                if (unit.ActionsQueue.Peek() is Vector3)
+                    ai.destination = (Vector3)unit.ActionsQueue.Dequeue();
                 else
                 {
+                    if (target == null)
+                    {
+                        gameObject.GetComponent<AIDestinationSetter>().target = (Transform)unit.ActionsQueue.Dequeue();
+                        unit.ActionsQueue.Dequeue();
+                    }
+                }
+
+                ai.isStopped = false;
+            }
+
+            //Jobb Klikk Támadás
+            if (target != null && target.gameObject.layer != LayerMask.NameToLayer("Resources") && 
+                Game.players.Where(x => x.empireName.Equals(unit.Owner)).SingleOrDefault().enemies.Contains(Game.players.Where(x => x.empireName.Equals(target.GetComponent<Unit>().Owner)).SingleOrDefault()) &&
+                Vector3.Distance(target.gameObject.transform.position, gameObject.transform.position) <= unit.Range * 5)
+            {
+                //Ha a célpont lõtávon belül van, megáll és megtámadja a célt
+                ai.isStopped = true;
+                //Csak akkor támadja ha van élete
+                if (target.gameObject.GetComponent<Unit>().currentHealth > 0)
+                    unit.AttackTarget(target);
+                //Különben elpusztul a cél
+                else
+                {
+                    if (Game.players.Where(x => x.empireName.Equals(target.GetComponent<Unit>().Owner)).SingleOrDefault().units.Contains(target.gameObject))
+                        Game.players.Where(x => x.empireName.Equals(target.GetComponent<Unit>().Owner)).SingleOrDefault().units.Remove(target.gameObject);
                     Destroy(target.gameObject);
                     target = null;
                 }
             }
 
-            //Gather
+            //Gyûjtögetés
             if (target != null && target.gameObject.layer == LayerMask.NameToLayer("Resources") &&
                 Vector3.Distance(target.gameObject.transform.position, gameObject.transform.position) <= 20)
             {
-                if (gameObject.GetComponent<Unit>().CurrentResourceAmount != gameObject.GetComponent<Unit>().MaxResourceAmount)
+                //Ha a jelenleg cipelt nyersanyag nem éri el a kapacitást, akkor gyûjt a célpontból
+                if (unit.CurrentResourceAmount != unit.MaxResourceAmount)
                 {
                     ai.isStopped = true;
-                    gameObject.GetComponent<Unit>().GatherTarget(target);
+                    unit.GatherTarget(target);
                 }
+                //Ha tele van, megkeresi a legközelebbi leadópontot
                 else
                 {
                     tempTarget = target;
                     if (target.GetComponent<Structure>() == null || !target.GetComponent<Structure>().isDropOffPoint)
-                    {                        
+                    {
                         StartCoroutine("SearchDropOffPoint");
                         Debug.Log("Keresek");
                     }
                 }
 
-            }           
+            }
 
-            //Resource Drop
+            //Nyersanyag leadás
             if (target != null && target.GetComponent<Structure>() != null && target.GetComponent<Structure>().isDropOffPoint &&
                 Vector3.Distance(transform.position, target.position) < 20 && target.GetComponent<Structure>().Owner.Equals(Game.currentPlayer.empireName))
             {
+                //Cipelt nyersanyag raktárhoz való hozzáadása
                 ai.isStopped = true;
-                if (gameObject.GetComponent<Unit>().CurrentCarriedResource == resourceType.Iridium)
-                    Game.currentPlayer.Iridium += gameObject.GetComponent<Unit>().CurrentResourceAmount;
-                else if (gameObject.GetComponent<Unit>().CurrentCarriedResource == resourceType.Palladium)
-                    Game.currentPlayer.Palladium += gameObject.GetComponent<Unit>().CurrentResourceAmount;
-                else Game.currentPlayer.NullElement += gameObject.GetComponent<Unit>().CurrentResourceAmount;
+                if (unit.CurrentCarriedResource == resourceType.Iridium)
+                    Game.currentPlayer.Iridium += unit.CurrentResourceAmount;
+                else if (unit.CurrentCarriedResource == resourceType.Palladium)
+                    Game.currentPlayer.Palladium += unit.CurrentResourceAmount;
+                else Game.currentPlayer.NullElement += unit.CurrentResourceAmount;
 
-                gameObject.GetComponent<Unit>().CurrentCarriedResource = resourceType.None;
-                gameObject.GetComponent<Unit>().CurrentResourceAmount = 0;
+                unit.CurrentCarriedResource = resourceType.None;
+                unit.CurrentResourceAmount = 0;
                 target = tempTarget;
             }
         }
-
     }
 }
 

@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
+using System.Linq;
 
 public class Structure : Unit
 {
 
     public List<Tech> ResearchableTechs;
+    public List<GameObject> TrainableUnits;
     public Vector3 RallyPoint;
     public Transform RallyTarget;
-    Queue TrainingQueue;
-    int TimeLeft;
+    [HideInInspector]public List<object> TrainingQueue;
+    public int TimeLeft;
     bool Training;
     public bool isDropOffPoint;
     public GameObject GUIGhost;
@@ -19,36 +21,79 @@ public class Structure : Unit
     {
         isWalkable = false;
         ResearchableTechs = new List<Tech>();
-        TrainingQueue = new Queue();
+        TrainingQueue = new List<object>();
         RallyPoint = gameObject.transform.position;
         RallyTarget = null;
     }
+  
+    IEnumerator Train()
+    {       
+        //Technológiát fejlesztünk?
+        if (TrainingQueue[0] is Tech)
+            yield return null;
 
-    IEnumerator Train(string unit)
-    {
-        Training = true;
-        yield return new WaitForSeconds((Resources.Load("Prefabs/Units/"+unit) as GameObject).GetComponent<Unit>().trainingTime);
-        GameObject TrainedUnit = Instantiate(Resources.Load(unit), transform.position, transform.rotation) as GameObject;
+        //Az épület éppen kiképez/fejleszt
+        GameObject TrainableUnit = TrainingQueue[0] as GameObject;
+        Unit unitObj = TrainableUnit.GetComponent<Unit>();
+
+        for (int TimeLeft = 0; TimeLeft < unitObj.trainingTime; TimeLeft++)
+        {
+            yield return new WaitForSeconds(1f);
+        }
+
+        GameObject TrainedUnit = Instantiate(TrainableUnit, transform.position, transform.rotation) as GameObject;
         TrainedUnit.GetComponent<Unit>().Owner = gameObject.GetComponent<Structure>().Owner;
+        AIDestinationSetter setter = TrainedUnit.GetComponent<AIDestinationSetter>();
         if (RallyPoint != gameObject.transform.position)
         {
             if (RallyTarget == null)
-                TrainedUnit.GetComponent<AIDestinationSetter>().ai.destination = RallyPoint;
+            {
+                setter.ai.destination = RallyPoint;
+                setter.ai.isStopped = false;
+            }
             else
-                TrainedUnit.GetComponent<AIDestinationSetter>().target = RallyTarget;
+                setter.target = RallyTarget;
         }
-        TrainedUnit.transform.position = new Vector3(transform.position.x, transform.position.y ,transform.position.z - (TrainedUnit.GetComponent<Collider>().bounds.size.z + 10));
+        TrainedUnit.transform.position = new Vector3(transform.position.x, -2.1f, transform.position.z - (TrainedUnit.GetComponent<Collider>().bounds.size.z));
+        TrainedUnit.name = TrainableUnit.name;
+        //Kiképzett egység hozzáadása az egységek listához, fejlesztésekkel való módosításhoz
+        Game.players.Where(x => x.empireName.Equals(Owner)).SingleOrDefault().units.Add(TrainedUnit);
+
+        TrainingQueue.RemoveAt(0);
+        if (TrainingQueue.Count != 0)
+        {
+            if (TrainingQueue[0] is Tech)
+                StartCoroutine("Research");
+            else StartCoroutine("Train");
+        }
+        Debug.Log(TrainingQueue.Count);
         yield return null;
     }
 
     IEnumerator Research(Tech tech)
     {
-        Training = true;
-        yield return new WaitForSeconds(tech.ResearchTime);
-    }
+        //Egységet képzünk ki?
+        if (TrainingQueue[0] is GameObject)
+            yield return null;
 
-    void Update()
-    {
-        //StartCoroutine("Train", "Gatherer");
+        //Az épület éppen kiképez/fejleszt
+        Tech ResearchingTech = TrainingQueue[0] as Tech;
+
+        for (int TimeLeft = 0; TimeLeft < ResearchingTech.ResearchTime; TimeLeft++)
+        {
+            yield return new WaitForSeconds(1f);
+        }
+
+        Game.ResearchEffects(Game.players.Where(x => x.empireName.Equals(Owner)).SingleOrDefault(), tech);
+              
+        TrainingQueue.RemoveAt(0);
+        if (TrainingQueue.Count != 0)
+        {
+            if (TrainingQueue[0] is Tech)
+                StartCoroutine("Research");
+            else StartCoroutine("Train");
+        }
+        Debug.Log(TrainingQueue.Count);
+        yield return null;
     }
 }

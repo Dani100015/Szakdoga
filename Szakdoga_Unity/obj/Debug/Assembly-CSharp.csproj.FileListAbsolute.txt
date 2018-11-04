@@ -133,6 +133,3 @@ C:\Users\peti\Documents\GitHub\Szakdoga\Szakdoga_Unity\Temp\bin\Debug\UnityEdito
 C:\Users\peti\Documents\GitHub\Szakdoga\Szakdoga_Unity\obj\Debug\Assembly-CSharp.csprojResolveAssemblyReference.cache
 C:\Users\peti\Documents\GitHub\Szakdoga\Szakdoga_Unity\obj\Debug\Assembly-CSharp.dll
 C:\Users\peti\Documents\GitHub\Szakdoga\Szakdoga_Unity\obj\Debug\Assembly-CSharp.pdb
-C:\Users\Deniel\Desktop\Szakdoga\Szakdoga\Szakdoga_Unity\Temp\bin\Debug\Pathfinding.Ionic.Zip.Reduced.dll
-C:\Users\Deniel\Desktop\Szakdoga\Szakdoga\Szakdoga_Unity\Temp\bin\Debug\TextMeshPro-2017.3-Editor.dll
-C:\Users\Deniel\Desktop\Szakdoga\Szakdoga\Szakdoga_Unity\Temp\bin\Debug\TextMeshPro-2017.3-Runtime.dll

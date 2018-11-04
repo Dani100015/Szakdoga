@@ -6,14 +6,14 @@ public class Player {
 
     public string empireName;
     ArrayList structures;
-    Species species;
+    public Species species;
 
     List<SolarSystem> playerSystems; //irányított naprendszerek
     List<Planets> playerColonizedPlanets; //kolonizált player planéták
 
-    List<Unit> units; //
-    List<Player> allies;
-    List<Player> enemies;
+    public List<GameObject> units; //
+    public List<Player> allies;
+    public List<Player> enemies;
 
     public int palladium;      //
     public int iridium;        //Nyersanyagok
@@ -23,17 +23,19 @@ public class Player {
     int maxPopulation;    //Max egységek
 
     //Egységek importálása
-    public List<Texture2D> UnitIcons = new List<Texture2D>();
-    public List<Texture2D> UnitIconsRo = new List<Texture2D>();
-    public List<string> UnitNames = new List<string>();
-    public List<string> UnitPaths = new List<string>();
+    public List<GameObject> BuildableUnits = new List<GameObject>();
+    public List<Tech> ResearchableTechs = new List<Tech>();
 
-    public Player(int pall, int irid, int eezo, string name)
+    public Player(int pall, int irid, int eezo, string name, Species spec)
     {
         palladium = pall;
         iridium = irid;
         nullElement = eezo;
         empireName = name;
+        species = spec;
+        units = new List<GameObject>();
+        allies = new List<Player>();
+        enemies = new List<Player>();
     }
 
     public int Palladium
