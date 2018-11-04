@@ -40,21 +40,6 @@ class Game : MonoBehaviour
         startSolarSystem = Systems[0];
         currentSolarSystem = startSolarSystem;
 
-        //if (GameObject.FindGameObjectsWithTag("Game").Length >= 2)
-        //{
-        //    for (int i = 0; i < GameObject.FindGameObjectsWithTag("Game").Length; i++)
-        //    {
-        //        if (GameObject.FindGameObjectsWithTag("Game")[i].scene.name == "SolarSystem")
-        //        {
-        //            origGame = GameObject.FindGameObjectsWithTag("Game")[i].GetComponent<Game>();
-        //        }
-        //        else
-        //        {
-        //            currentGame = GameObject.FindGameObjectsWithTag("Game")[i].GetComponent<Game>();
-        //        }
-        //    }
-        //}
-
     }
     void Start()
     {
@@ -80,14 +65,14 @@ class Game : MonoBehaviour
             for (int i = 0; i < Units.Length; i++)
             {
                 GameObject unit = Units[i] as GameObject;
-<<<<<<< HEAD
-                Unit unitobj = unit.GetComponent<Unit>();
-                foreach (Player p in players)
-                {
-                    if (unitobj.Race == p.species)
-                        p.BuildableUnits.Add(unit);
-                }
-=======
+//<<<<<<< HEAD
+                //Unit unitobj = unit.GetComponent<Unit>();
+                //foreach (Player p in players)
+                //{
+                //    if (unitobj.Race == p.species)
+                //        p.BuildableUnits.Add(unit);
+                //}
+//=======
                 Texture2D unitIcon = unit.GetComponent<Unit>().MenuIcon;
                 Texture2D unitIconRo = unit.GetComponent<Unit>().MenuIconRo;
 
@@ -98,7 +83,7 @@ class Game : MonoBehaviour
                 //    p.UnitNames.Add(unit.name);
                 //    p.UnitPaths.Add(path + "/" + unit.name);
                 //}
->>>>>>> fc9eb3b6b2190cb5c9adb87445e8ee5f07c74da2
+//>>>>>>> fc9eb3b6b2190cb5c9adb87445e8ee5f07c74da2
             }
         }
 
