@@ -16,10 +16,26 @@ public class Game : MonoBehaviour {
     public GameObject starPrefab;
     public GameObject planetPrefab;
 
+<<<<<<< HEAD
     SolarSystem solarSystem1;
     SolarSystem solarSystem2;
 
     void Start () {
+=======
+    void Awake()
+    {
+        starCount = 5;
+
+        GenerateSolarSystems(starCount);
+        GenerateSystemRelations();
+
+        startSolarSystem = Systems[0];
+        currentSolarSystem = startSolarSystem;
+
+    }
+    void Start()
+    {
+>>>>>>> a4628896c079446445212e8bab00f8bec43f84db
 
         //Játékosok inicializálása
         players = new List<Player>();
@@ -41,12 +57,34 @@ public class Game : MonoBehaviour {
             for (int i = 0; i < Units.Length; i++)
             {
                 GameObject unit = Units[i] as GameObject;
+<<<<<<< HEAD
                 Unit unitobj = unit.GetComponent<Unit>();
                 foreach (Player p in players)
                 {
                     if (unitobj.Race == p.species)
                         p.BuildableUnits.Add(unit);
                 }
+=======
+//<<<<<<< HEAD
+                //Unit unitobj = unit.GetComponent<Unit>();
+                //foreach (Player p in players)
+                //{
+                //    if (unitobj.Race == p.species)
+                //        p.BuildableUnits.Add(unit);
+                //}
+//=======
+                Texture2D unitIcon = unit.GetComponent<Unit>().MenuIcon;
+                Texture2D unitIconRo = unit.GetComponent<Unit>().MenuIconRo;
+
+                //foreach (Player p in players)
+                //{
+                //    p.UnitIcons.Add(unitIcon);
+                //    p.UnitIconsRo.Add(unitIconRo);
+                //    p.UnitNames.Add(unit.name);
+                //    p.UnitPaths.Add(path + "/" + unit.name);
+                //}
+//>>>>>>> fc9eb3b6b2190cb5c9adb87445e8ee5f07c74da2
+>>>>>>> a4628896c079446445212e8bab00f8bec43f84db
             }
         }
 

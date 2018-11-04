@@ -1009,6 +1009,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c491166b52e6cc0489b609457abba8e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< HEAD
   ContainerRect: {fileID: 820673098}
   spotPrefab: {fileID: 1343416570189554, guid: d09ce2d306d8ae74c9b252cc424e8458, type: 2}
   spotLimitNumber: 18
@@ -1029,6 +1030,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bceb95423e98dc649b7db93b4bcece82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+=======
+>>>>>>> a4628896c079446445212e8bab00f8bec43f84db
 --- !u!1 &839030025
 GameObject:
   m_ObjectHideFlags: 0
@@ -1514,10 +1517,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c491166b52e6cc0489b609457abba8e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< HEAD
   ContainerRect: {fileID: 1201191803}
   spotPrefab: {fileID: 1550123598819244, guid: 5724a1c3f7f59a84087406e3d04d7a5a, type: 2}
   spotLimitNumber: 24
   spotNumber: 10
+=======
+>>>>>>> a4628896c079446445212e8bab00f8bec43f84db
 --- !u!224 &1247784756 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 224152400793313936, guid: 84f7ae82943074b4f9f6daf333c0af6d,
@@ -1860,11 +1866,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c491166b52e6cc0489b609457abba8e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< HEAD
   ContainerRect: {fileID: 1331721823}
   spotPrefab: {fileID: 1076829234538536, guid: aa24dc8745f4b70438aec6f8ad5830f3, type: 2}
   spotLimitNumber: 10
   spotNumber: 3
 --- !u!1 &1346726085 stripped
+=======
+--- !u!1 &1347184777
+>>>>>>> a4628896c079446445212e8bab00f8bec43f84db
 GameObject:
   m_PrefabParentObject: {fileID: 1564015287765470, guid: 0893fdef034c8614199d342ead35a0d9,
     type: 2}
