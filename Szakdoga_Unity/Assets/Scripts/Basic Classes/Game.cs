@@ -54,7 +54,7 @@ public class Game : MonoBehaviour {
         solarSystem1 = new SolarSystem("solarSystem1", currentPlayer, null,null);
         solarSystem1.InitCelestials();
 
-        InitSolarSystem();
+        //InitSolarSystem();
 
     }
 	
@@ -68,20 +68,20 @@ public class Game : MonoBehaviour {
     // void EndGame
 
 
-    void InitSolarSystem()
-    {
-        //GameObject star = (GameObject)Instantiate(Resources.Load("Assets/_Prefabs/Galaxy/Star.prefab"));
-        GameObject star = Instantiate(starPrefab);
-        star.transform.position = new Vector3(0, 0, 0);
+    //void InitSolarSystem()
+    //{
+    //    //GameObject star = (GameObject)Instantiate(Resources.Load("Assets/_Prefabs/Galaxy/Star.prefab"));
+    //    GameObject star = Instantiate(starPrefab);
+    //    star.transform.position = new Vector3(0, 0, 0);
 
-        GameObject planet;
-        for (int i = 0; i < solarSystem1.celestials.Count; i++)
-        {
-            planet = Instantiate(planetPrefab);
-            planet.transform.position = new Vector3(solarSystem1.celestials[i].x, 0, solarSystem1.celestials[i].y);
-        }
+    //    GameObject planet;
+    //    for (int i = 0; i < solarSystem1.celestials.Count; i++)
+    //    {
+    //        planet = Instantiate(planetPrefab);
+    //        planet.transform.position = new Vector3(solarSystem1.celestials[i].x, 0, solarSystem1.celestials[i].y);
+    //    }
 
-    }
+    //}
 
     public static void ResearchEffects(Player player, Tech tech)
     {
