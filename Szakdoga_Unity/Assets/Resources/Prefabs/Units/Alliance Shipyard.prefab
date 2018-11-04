@@ -765,8 +765,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43cdf5b8ea774c14dac5ee33263a709c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScreenPos: {x: 840.1599, y: 544.10254}
-  OnScreen: 1
+  ScreenPos: {x: 0, y: 0}
+  OnScreen: 0
   Selected: 0
   CurrentTargetLocation: {x: 0, y: 0, z: 0}
   Range: 0
@@ -776,12 +776,8 @@ MonoBehaviour:
   maxHealth: 500
   currentHealth: 500
   trainingTime: 0
-  palladiumCost: 0
-  iridiumCost: 0
-  eezoCost: 0
   isWalkable: 0
   Owner: Peti
-  Race: 0
   MenuIcon: {fileID: 2800000, guid: 33694bce39322ce4ba2c4d3ba9182724, type: 3}
   MenuIconRo: {fileID: 2800000, guid: 4550fe273dd834b4292f5a0299a8037a, type: 3}
   isGatherer: 0
@@ -791,14 +787,8 @@ MonoBehaviour:
   CurrentCarriedResource: 0
   isBuilding: 0
   ShowBuildables: 0
-  TrainableUnits:
-  - {fileID: 1486496587399266, guid: 9acdf4a98838a564e929ba640be675e8, type: 2}
-  - {fileID: 1475142980316182, guid: 1111acec22d51474695125a32c25221e, type: 2}
-  - {fileID: 1941284513186754, guid: c4d0fdb76ca30184bb9d70f3b4bdeffb, type: 2}
-  - {fileID: 1096479404380448, guid: 4dde2028768d7a440a18c536401ffb9d, type: 2}
-  RallyPoint: {x: 89.1, y: 0.65, z: -63.9}
+  RallyPoint: {x: 0, y: 0, z: 0}
   RallyTarget: {fileID: 0}
-  TimeLeft: 0
   isDropOffPoint: 1
   GUIGhost: {fileID: 1023117308318794}
 --- !u!119 &119959928651155212

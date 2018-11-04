@@ -6,6 +6,7 @@ TagManager:
   tags:
   - StarSystem
   - Projectile
+  - Game
   layers:
   - Default
   - TransparentFX

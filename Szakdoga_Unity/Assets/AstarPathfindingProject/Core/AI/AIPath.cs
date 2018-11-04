@@ -246,7 +246,15 @@ namespace Pathfinding {
 
 			var distanceToEnd = remainingDistance;
 			if (distanceToEnd <= endReachedDistance) {               
-                reachedEndOfPath = true;               
+                reachedEndOfPath = true;
+                if (unit.ActionsQueue.Count >= 1)
+                {
+                    if (unit.ActionsQueue.Peek() is Vector3)
+                        destination = (Vector3)unit.ActionsQueue.Dequeue();
+                    else
+                        gameObject.GetComponent<AIDestinationSetter>().target = (Transform)unit.ActionsQueue.Dequeue();
+                    Debug.Log(unit.ActionsQueue.Count + ", " + destination);
+                }
                 isStopped = true;
                 OnTargetReached();
 			}

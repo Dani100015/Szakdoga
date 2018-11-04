@@ -282,7 +282,6 @@ MonoBehaviour:
   trainingTime: 0
   isWalkable: 0
   Owner: Peti
-  Race: 0
   MenuIcon: {fileID: 2800000, guid: 33694bce39322ce4ba2c4d3ba9182724, type: 3}
   MenuIconRo: {fileID: 2800000, guid: 4550fe273dd834b4292f5a0299a8037a, type: 3}
   isGatherer: 0
@@ -292,8 +291,6 @@ MonoBehaviour:
   CurrentCarriedResource: 0
   isBuilding: 0
   ShowBuildables: 0
-  TrainableUnits:
-  - {fileID: 1707807017763804, guid: 0c162fc5247f1a34c8552843b760c815, type: 2}
   RallyPoint: {x: 0, y: 0, z: 0}
   RallyTarget: {fileID: 0}
   isDropOffPoint: 1

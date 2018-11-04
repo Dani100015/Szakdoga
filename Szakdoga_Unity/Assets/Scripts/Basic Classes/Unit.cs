@@ -22,13 +22,9 @@ public class Unit : MonoBehaviour {
     public int maxHealth;
     public int currentHealth;
     public int trainingTime;
-    public int palladiumCost;
-    public int iridiumCost;
-    public int eezoCost;
 
     public bool isWalkable = true;
     public string Owner;
-    public Species Race;
     public Texture2D MenuIcon;
     public Texture2D MenuIconRo;
 

@@ -239,15 +239,11 @@ MonoBehaviour:
   Projectile: {fileID: 0}
   attackSpeed: 1
   attackDamage: 10
-  maxHealth: 3000
-  currentHealth: 3000
+  maxHealth: 500
+  currentHealth: 500
   trainingTime: 0
-  palladiumCost: 250
-  iridiumCost: 350
-  eezoCost: 175
   isWalkable: 1
   Owner: Peti
-  Race: 0
   MenuIcon: {fileID: 2800000, guid: 137f455ed6801fa498275e06f75eaed9, type: 3}
   MenuIconRo: {fileID: 2800000, guid: bedf8623d358fc7478bccf73f9c044f5, type: 3}
   isGatherer: 0
