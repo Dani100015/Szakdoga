@@ -6,7 +6,12 @@ TagManager:
   tags:
   - StarSystem
   - Projectile
+<<<<<<< HEAD
   - PlaceHolder
+=======
+  - TechCategory
+  - TechTree
+>>>>>>> 18bd8751f96dbea86e2e24a0166c442acec92281
   layers:
   - Default
   - TransparentFX

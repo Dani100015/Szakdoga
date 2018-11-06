@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Game : MonoBehaviour {
+class Game : MonoBehaviour {
 
     List<SolarSystem> solars;
     public static List<Player> players;
@@ -13,13 +13,31 @@ public class Game : MonoBehaviour {
 
     public static object[] SharedIcons;
 
-    public GameObject starPrefab;
-    public GameObject planetPrefab;
+    public List<SolarSystem> Systems;
 
-    SolarSystem solarSystem1;
-    SolarSystem solarSystem2;
+    public List<GameObject> galaxyStarPrefabs;
+    public List<GameObject> solarSystemPrefabs;
+
+    public SolarSystem startSolarSystem;
+    public SolarSystem currentSolarSystem;
+
+    public int starCount;
+
+    void Awake()
+    {
+        starCount = 5;
+
+        GenerateSolarSystems(starCount);
+        GenerateSystemRelations();
+
+        startSolarSystem = Systems[0];
+        currentSolarSystem = startSolarSystem;
+
+    }
 
     void Start () {
+
+        #region Init
 
         //Játékosok inicializálása
         players = new List<Player>();
@@ -51,14 +69,14 @@ public class Game : MonoBehaviour {
         }
 
         SharedIcons = Resources.LoadAll("Icons/Shared");
-        solarSystem1 = new SolarSystem("solarSystem1", currentPlayer, null,null);
-        solarSystem1.InitCelestials();
 
-        //InitSolarSystem();
+        #endregion
 
+        GenerateSolarSystems(starCount);
+        GenerateSystemRelations();
     }
-	
-	void Update () {
+
+    void Update () {
 		
 	}
 
@@ -67,21 +85,61 @@ public class Game : MonoBehaviour {
     // void setNewGame
     // void EndGame
 
+    public void GenerateSolarSystems(int starCount)
+    {
+        //X számú rendszer generálás
+        Systems = new List<SolarSystem>();
 
-    //void InitSolarSystem()
-    //{
-    //    //GameObject star = (GameObject)Instantiate(Resources.Load("Assets/_Prefabs/Galaxy/Star.prefab"));
-    //    GameObject star = Instantiate(starPrefab);
-    //    star.transform.position = new Vector3(0, 0, 0);
+        Vector3 randomV3;
+        Vector3 minDistance = new Vector3(10, 0, 10);
 
-    //    GameObject planet;
-    //    for (int i = 0; i < solarSystem1.celestials.Count; i++)
-    //    {
-    //        planet = Instantiate(planetPrefab);
-    //        planet.transform.position = new Vector3(solarSystem1.celestials[i].x, 0, solarSystem1.celestials[i].y);
-    //    }
+        for (int i = 0; i < starCount; i++)
+        {
+            randomV3 = new Vector3((float)Random.Range(10, 500), (float)13, (float)Random.Range(10, 500));
+            Systems.Add(new SolarSystem(randomV3, i + "._SOLARSYSTEM", null, null));
+        }
 
-    //}
+        //for (int i = 0; i < starCount; i++)
+        //{
+        //    for (int j = 0; j < starCount - 1; j++)
+        //    {
+        //        SolarSystem sol1 = Systems[i];
+        //        SolarSystem sol2 = Systems[j];
+
+        //        Vector3 distance = SolarSystem.DistanceBetweenStars(sol1.position, sol2.position);
+        //        while (distance.x <= minDistance.x || distance.y <= minDistance.y || distance.z <= minDistance.z)
+        //        {
+        //            sol1.position = new Vector3((float)Random.Range(10, 500), (float)13, (float)Random.Range(10, 500));
+        //        }
+        //    }
+
+        //}
+    }
+
+    void GenerateSystemRelations()
+    {
+        //Szomszéd viszonyság generálás
+        for (int i = 0; i < Systems.Count; i++)
+        {
+            Systems[i].neighbourSystems = new List<SolarSystem>();
+
+            int neigbourCount = Random.Range(1, Systems.Count);
+            for (int j = 0; j < neigbourCount; j++)
+            {
+                while (Systems[i].neighbourSystems.Count != neigbourCount)
+                {
+                    int rndIndex = Random.Range(0, Systems.Count);
+
+                    if (!Systems[i].neighbourSystems.Contains(Systems[rndIndex]) && Systems[rndIndex].Name != Systems[i].Name)
+                    {
+                        Systems[i].neighbourSystems.Add(Systems[rndIndex]);
+                    }
+                }
+
+
+            }
+        }
+    }
 
     public static void ResearchEffects(Player player, Tech tech)
     {

@@ -6,9 +6,13 @@ class SolarSystem
 {
 
     string name;
+    public Vector3 position;
     Player owner;                                   //Naprendszer irányítója
     public List<Celestials> celestials;            //Naprendszer égitestjei
-    public List<GameObject> neighbourSystems;     //Szomszédos naprendszerek
+    public List<SolarSystem> neighbourSystems;     //Szomszédos naprendszerek
+    public GameObject solarSystemGObject;
+
+
 
     public string Name
     {
@@ -33,12 +37,12 @@ class SolarSystem
         }
     }
 
-    public SolarSystem(string name, Player owner, List<Celestials> celestials, List<GameObject> neighbourSystems)
+    public SolarSystem(Vector3 position, string name, Player owner, List<Celestials> celestials)
     {
+        this.position = position;
         this.name = name;
         this.owner = owner;
         this.celestials = celestials;
-        this.neighbourSystems = neighbourSystems;
     }
     public void InitCelestials()
     {
