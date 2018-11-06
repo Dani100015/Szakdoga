@@ -5,8 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class Galaxy_SceneManager : MonoBehaviour {
 
-
+    Game game;
     GameObject selectedObject;
+
+    void Start()
+    {
+        game = GameObject.Find("Game").GetComponent<Game>();
+
+    }
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -19,9 +25,9 @@ public class Galaxy_SceneManager : MonoBehaviour {
                 {
                     selectedObject = hitInfo.transform.gameObject;
                 }
-                else
+                else if(selectedObject.tag == "StarSystem")
                 {
-                    SceneManager.LoadScene(selectedObject.name.ToString());
+                    SceneManager.LoadScene("SolarSystems");                  
                 }
             }
         }

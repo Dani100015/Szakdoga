@@ -6,6 +6,8 @@ TagManager:
   tags:
   - StarSystem
   - Projectile
+  - TechCategory
+  - TechTree
   layers:
   - Default
   - TransparentFX
