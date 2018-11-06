@@ -60,7 +60,7 @@ GameObject:
   - component: {fileID: 23413191327041450}
   - component: {fileID: 95334511410339908}
   m_Layer: 8
-  m_Name: AllianceDestroyer
+  m_Name: Unit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -101,7 +101,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1096479404380448}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 35.5, y: -2.1, z: -56.5}
+  m_LocalPosition: {x: -7.29, y: -2.1, z: -56.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4368484870151010}
@@ -246,7 +246,7 @@ MonoBehaviour:
   iridiumCost: 350
   eezoCost: 175
   isWalkable: 1
-  Owner: Peti
+  Owner: Sanyi
   Race: 0
   MenuIcon: {fileID: 2800000, guid: 137f455ed6801fa498275e06f75eaed9, type: 3}
   MenuIconRo: {fileID: 2800000, guid: bedf8623d358fc7478bccf73f9c044f5, type: 3}
@@ -255,7 +255,7 @@ MonoBehaviour:
   MaxResourceAmount: 0
   CurrentResourceAmount: 0
   CurrentCarriedResource: 0
-  isBuilding: 0
+  CurrentlyBuiltObject: {fileID: 0}
   ShowBuildables: 0
 --- !u!114 &114536143056704844
 MonoBehaviour:

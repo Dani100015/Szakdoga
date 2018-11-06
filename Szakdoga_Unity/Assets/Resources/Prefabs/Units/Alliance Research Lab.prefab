@@ -277,11 +277,14 @@ MonoBehaviour:
   Projectile: {fileID: 0}
   attackSpeed: 0
   attackDamage: 0
-  maxHealth: 500
-  currentHealth: 500
-  trainingTime: 0
+  maxHealth: 2500
+  currentHealth: 2500
+  trainingTime: 175
+  palladiumCost: 300
+  iridiumCost: 250
+  eezoCost: 200
   isWalkable: 0
-  Owner: Peti
+  Owner: 
   Race: 0
   MenuIcon: {fileID: 2800000, guid: 33694bce39322ce4ba2c4d3ba9182724, type: 3}
   MenuIconRo: {fileID: 2800000, guid: 4550fe273dd834b4292f5a0299a8037a, type: 3}
@@ -292,9 +295,11 @@ MonoBehaviour:
   CurrentCarriedResource: 0
   isBuilding: 0
   ShowBuildables: 0
+  TrainableUnits: []
   RallyPoint: {x: 0, y: 0, z: 0}
   RallyTarget: {fileID: 0}
-  isDropOffPoint: 1
+  TimeLeft: 0
+  isDropOffPoint: 0
   GUIGhost: {fileID: 1030113730944696}
 --- !u!119 &119943009041672528
 Projector:

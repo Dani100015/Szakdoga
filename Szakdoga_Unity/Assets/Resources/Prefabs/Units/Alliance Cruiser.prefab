@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 23741092788573816}
   - component: {fileID: 95147356380978838}
   m_Layer: 8
-  m_Name: AllianceCruiser
+  m_Name: Unit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -307,7 +307,7 @@ MonoBehaviour:
   MaxResourceAmount: 0
   CurrentResourceAmount: 0
   CurrentCarriedResource: 0
-  isBuilding: 0
+  CurrentlyBuiltObject: {fileID: 0}
   ShowBuildables: 0
 --- !u!114 &114922459712477834
 MonoBehaviour:

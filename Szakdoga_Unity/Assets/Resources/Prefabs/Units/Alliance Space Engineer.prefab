@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 4317033782908232}
   - component: {fileID: 95038218852740974}
   m_Layer: 8
-  m_Name: AllianceConstructorFrigate
+  m_Name: Unit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -444,7 +444,7 @@ MonoBehaviour:
   MaxResourceAmount: 100
   CurrentResourceAmount: 0
   CurrentCarriedResource: 0
-  isBuilding: 0
+  CurrentlyBuiltObject: {fileID: 0}
   ShowBuildables: 0
 --- !u!114 &114408117078781014
 MonoBehaviour:

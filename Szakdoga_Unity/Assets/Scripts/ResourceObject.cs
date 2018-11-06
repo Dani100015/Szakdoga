@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ResourceObject : MonoBehaviour {
 
-    public int Capacity;
+    public float Capacity;
     public resourceType Type;
 
 }

@@ -150,6 +150,9 @@ public class Mouse : MonoBehaviour
                                     DeselectGameObjectsIfSelected();
 
                                 GameObject SelectedObj = UnitGameObject.Find("Selected").gameObject;
+                                if (UnitGameObject.GetComponent<Unit>().Owner != Game.currentPlayer.empireName)
+                                    SelectedObj.GetComponent<Projector>().material.color = Color.red;
+                                else SelectedObj.GetComponent<Projector>().material.color = Color.green;
                                 SelectedObj.SetActive(true);
 
                                 //Add unit to currently selected units
@@ -293,6 +296,7 @@ public class Mouse : MonoBehaviour
                     if (UnitScript.Owner == Game.currentPlayer.empireName)
                     {
                         GameObject SelectedObj = UnitObj.transform.Find("Selected").gameObject;
+                        SelectedObj.GetComponent<Projector>().material.color = Color.green;
 
                         //If not already in the dragged units
                         if (!UnitAlreadyInDraggedUnits(UnitObj))

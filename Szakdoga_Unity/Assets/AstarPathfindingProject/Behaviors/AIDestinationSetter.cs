@@ -24,6 +24,7 @@ namespace Pathfinding
         public Transform tempTarget;
         public IAstarAI ai;
         Mouse mouse;
+        bool isAttacking, isGathering;
 
         void OnEnable()
         {
@@ -59,9 +60,9 @@ namespace Pathfinding
         }
 
         void Start()
-        {
-            //StartCoroutine("AutoAttack");
+        {         
             mouse = GameObject.Find("Game").GetComponent<Mouse>();
+            //StartCoroutine("AutoAttack");
         }
 
         //Auto Attack
@@ -75,7 +76,7 @@ namespace Pathfinding
                     ArrayList enemyUnits = new ArrayList();
                     for (int i = 0; i < hitColliders.Length; i++)
                     {
-                        if (!hitColliders[i].gameObject.GetComponent<Unit>().Owner.Equals(Game.currentPlayer.empireName))
+                        if (!hitColliders[i].gameObject.GetComponent<Unit>().Owner.Equals(unit.Owner))
                         {
                             enemyUnits.Add(hitColliders[i].transform);
                         }
@@ -128,7 +129,6 @@ namespace Pathfinding
                     }
                 }
                 target = bestTarget;
-                Debug.Log(target);
             }
             yield return null;
         }
@@ -149,6 +149,33 @@ namespace Pathfinding
                 //Debug.Log(Game.players.Where(x => x.empireName.Equals(unit.Owner)).SingleOrDefault().enemies.Count);
                 if (Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject() && !GUISetup.GhostActive)
                 {
+                    //Jobb kattra abba hagyja a gyûjtést
+                    if (isGathering)
+                    {
+                        unit.StopCoroutine("GatherTarget");
+                        isGathering = false;
+                        tempTarget = null;
+                    }
+
+                    if (isAttacking)
+                    {
+                        unit.StopCoroutine("AttackTarget");
+                        isAttacking = false;
+                    }
+
+                    if (unit.CurrentlyBuiltObject != null)
+                    {
+                        Structure building = unit.CurrentlyBuiltObject.GetComponent<Structure>();
+                        Game.currentPlayer.iridium += building.iridiumCost;
+                        Game.currentPlayer.palladium += building.palladiumCost;
+                        Game.currentPlayer.nullElement += building.eezoCost;
+
+                        GUISetup.UpdatePlayerInfoBar();
+
+                        unit.CurrentlyBuiltObject = null;
+                        unit.StopCoroutine("Build");
+                    }
+
                     ai.isStopped = false;
                     //Ha le van nyomva a shift, akkor a sorhoz szeretnénk adni
                     if (Common.ShiftKeysDown())
@@ -174,81 +201,118 @@ namespace Pathfinding
                 }
             }
 
-            if (ai.isStopped && unit.ActionsQueue.Count >= 1)
+            //Cselekvési sorban levõ parancsok végrehajtása
+            if (unit.ActionsQueue != null)
             {
-                if (unit.ActionsQueue.Peek() is Vector3)
-                    ai.destination = (Vector3)unit.ActionsQueue.Dequeue();
-                else
+                if (ai.isStopped && unit.ActionsQueue.Count >= 1)
                 {
-                    if (target == null)
+                    if (unit.ActionsQueue.Peek() is Vector3)
+                        ai.destination = (Vector3)unit.ActionsQueue.Dequeue();
+                    else
                     {
-                        gameObject.GetComponent<AIDestinationSetter>().target = (Transform)unit.ActionsQueue.Dequeue();
-                        unit.ActionsQueue.Dequeue();
+                        if (target == null)
+                        {
+                            gameObject.GetComponent<AIDestinationSetter>().target = (Transform)unit.ActionsQueue.Dequeue();
+                            unit.ActionsQueue.Dequeue();
+                        }
                     }
+                    ai.isStopped = false;
                 }
-
-                ai.isStopped = false;
             }
 
-            //Jobb Klikk Támadás
-            if (target != null && target.gameObject.layer != LayerMask.NameToLayer("Resources") && 
+            #region Támadás
+            if (target != null && target.gameObject.layer == LayerMask.NameToLayer("Unit") &&
                 Game.players.Where(x => x.empireName.Equals(unit.Owner)).SingleOrDefault().enemies.Contains(Game.players.Where(x => x.empireName.Equals(target.GetComponent<Unit>().Owner)).SingleOrDefault()) &&
                 Vector3.Distance(target.gameObject.transform.position, gameObject.transform.position) <= unit.Range * 5)
             {
                 //Ha a célpont lõtávon belül van, megáll és megtámadja a célt
                 ai.isStopped = true;
+                var q = new Quaternion();
+                if ((target.position - transform.position) != Vector3.zero)
+                    q = Quaternion.LookRotation(target.position - transform.position);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, q, 150 * Time.deltaTime);
                 //Csak akkor támadja ha van élete
-                if (target.gameObject.GetComponent<Unit>().currentHealth > 0)
-                    unit.AttackTarget(target);
-                //Különben elpusztul a cél
-                else
+                if (transform.rotation == q)
                 {
-                    if (Game.players.Where(x => x.empireName.Equals(target.GetComponent<Unit>().Owner)).SingleOrDefault().units.Contains(target.gameObject))
-                        Game.players.Where(x => x.empireName.Equals(target.GetComponent<Unit>().Owner)).SingleOrDefault().units.Remove(target.gameObject);
-                    Destroy(target.gameObject);
-                    target = null;
+                    if (target.gameObject.GetComponent<Unit>().currentHealth > 0)
+                    {
+                        if (!isAttacking)
+                        {
+                            unit.StartCoroutine("AttackTarget", target);
+                            isAttacking = true;
+                        }
+                    }
+                    //Különben elpusztul a cél
+                    else
+                    {
+                        if (target.GetComponent<Structure>() != null)
+                        {
+                            target.GetComponent<Collider>().enabled = false;
+                            AstarPath.active.UpdateGraphs(target.GetComponent<Collider>().bounds);
+                        }
+                        if (Game.players.Where(x => x.empireName.Equals(target.GetComponent<Unit>().Owner)).SingleOrDefault().units.Contains(target.gameObject))
+                            Game.players.Where(x => x.empireName.Equals(target.GetComponent<Unit>().Owner)).SingleOrDefault().units.Remove(target.gameObject);
+                        Destroy(target.gameObject);
+                        target = null;
+                        isAttacking = false;
+                    }
                 }
             }
+            #endregion
 
-            //Gyûjtögetés
+            #region Gyûjtögetés
             if (target != null && target.gameObject.layer == LayerMask.NameToLayer("Resources") &&
                 Vector3.Distance(target.gameObject.transform.position, gameObject.transform.position) <= 20)
             {
-                //Ha a jelenleg cipelt nyersanyag nem éri el a kapacitást, akkor gyûjt a célpontból
-                if (unit.CurrentResourceAmount != unit.MaxResourceAmount)
+                ai.isStopped = true;
+                var q = new Quaternion();
+                if ((target.position - transform.position) != Vector3.zero)
+                    q = Quaternion.LookRotation(target.position - transform.position);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, q, 150 * Time.deltaTime);
+                if (transform.rotation == q)
                 {
-                    ai.isStopped = true;
-                    unit.GatherTarget(target);
-                }
-                //Ha tele van, megkeresi a legközelebbi leadópontot
-                else
-                {
-                    tempTarget = target;
-                    if (target.GetComponent<Structure>() == null || !target.GetComponent<Structure>().isDropOffPoint)
+                    //Ha a jelenleg cipelt nyersanyag nem éri el a kapacitást, akkor gyûjt a célpontból
+                    if (unit.CurrentResourceAmount != unit.MaxResourceAmount)
                     {
-                        StartCoroutine("SearchDropOffPoint");
-                        Debug.Log("Keresek");
+                        if (!isGathering)
+                        {
+                            unit.StartCoroutine("GatherTarget", target);
+                            isGathering = true;
+                        }
+                    }
+                    //Ha tele van, megkeresi a legközelebbi leadópontot
+                    else
+                    {
+                        tempTarget = target;
+                        if (target.GetComponent<Structure>() == null || !target.GetComponent<Structure>().isDropOffPoint)
+                        {
+                            StartCoroutine("SearchDropOffPoint");
+                            unit.StopCoroutine("GatherTarget");
+                            isGathering = false;
+                        }
                     }
                 }
 
             }
+            #endregion
 
-            //Nyersanyag leadás
+            #region Nyersanyag leadás
             if (target != null && target.GetComponent<Structure>() != null && target.GetComponent<Structure>().isDropOffPoint &&
                 Vector3.Distance(transform.position, target.position) < 20 && target.GetComponent<Structure>().Owner.Equals(Game.currentPlayer.empireName))
             {
                 //Cipelt nyersanyag raktárhoz való hozzáadása
                 ai.isStopped = true;
                 if (unit.CurrentCarriedResource == resourceType.Iridium)
-                    Game.currentPlayer.Iridium += unit.CurrentResourceAmount;
+                    Game.currentPlayer.Iridium += (int)unit.CurrentResourceAmount;
                 else if (unit.CurrentCarriedResource == resourceType.Palladium)
-                    Game.currentPlayer.Palladium += unit.CurrentResourceAmount;
-                else Game.currentPlayer.NullElement += unit.CurrentResourceAmount;
+                    Game.currentPlayer.Palladium += (int)unit.CurrentResourceAmount;
+                else Game.currentPlayer.NullElement += (int)unit.CurrentResourceAmount;
 
                 unit.CurrentCarriedResource = resourceType.None;
                 unit.CurrentResourceAmount = 0;
                 target = tempTarget;
             }
+            #endregion
         }
     }
 }

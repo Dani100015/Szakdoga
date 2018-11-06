@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using Pathfinding;
 using UnityEngine;
+using System.Linq;
 
-public class Unit : MonoBehaviour {
+public class Unit : MonoBehaviour
+{
 
     //for Mouse.cs
     public Vector2 ScreenPos;
@@ -15,7 +17,7 @@ public class Unit : MonoBehaviour {
     public Vector3 CurrentTargetLocation;
     public int Range;
     public GameObject Projectile;
-    public int attackSpeed;
+    public float attackSpeed;
     public int attackDamage;
 
     //Játékmechanika
@@ -34,11 +36,13 @@ public class Unit : MonoBehaviour {
 
     //Gyűjtögetéshez
     public bool isGatherer;
-    public int GatherSpeed;
-    public int MaxResourceAmount;
-    public int CurrentResourceAmount;
+    public float GatherSpeed;
+    public float MaxResourceAmount;
+    public float CurrentResourceAmount;
     public resourceType CurrentCarriedResource;
-    public bool isBuilding;
+    [HideInInspector]
+    public GameObject CurrentlyBuiltObject;
+    [HideInInspector]
     public bool ShowBuildables;
 
     void Start()
@@ -56,47 +60,109 @@ public class Unit : MonoBehaviour {
         if (transform.Find("Selected") != null)
             transform.Find("Selected").gameObject.SetActive(false);
     }
-   
-    public void AttackTarget(Transform target)
+
+    void HideGameObject()
     {
-        var q = new Quaternion();
-        if ((target.position - transform.position) != Vector3.zero)
-            q = Quaternion.LookRotation(target.position - transform.position);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, q, 150 * Time.deltaTime);
-        if (transform.rotation == q)
+        Mouse.CurrentlySelectedUnits.Remove(gameObject);
+        gameObject.transform.Find("Selected").gameObject.SetActive(false);
+        gameObject.GetComponent<Collider>().enabled = false;
+        gameObject.transform.Find("Unit").gameObject.SetActive(false);
+    }
+
+    void RevealGameObject()
+    {
+        gameObject.GetComponent<Collider>().enabled = true;
+        gameObject.transform.Find("Unit").gameObject.SetActive(true);
+    }
+
+    public IEnumerator AttackTarget(Transform target)
+    {
+        while (target != null && Vector3.Distance(target.gameObject.transform.position, gameObject.transform.position) <= Range * 5)
         {
             Projectile = Instantiate(Resources.Load("Prefabs/Projectiles/Bullet"), transform.position, transform.rotation) as GameObject;
             Projectile.GetComponent<Rigidbody>().velocity = (target.position - gameObject.transform.position).normalized * 100;
             target.gameObject.GetComponent<Unit>().currentHealth -= attackDamage;
+            Destroy(Projectile.gameObject, 0.5f);
+            yield return new WaitForSeconds(attackSpeed);
         }
-        Destroy(Projectile.gameObject, 0.5f);
+        yield return null;
     }
 
-    public void GatherTarget(Transform target)
+    public IEnumerator GatherTarget(Transform target)
     {
-        var q = new Quaternion();
-        if ((target.position - transform.position) != Vector3.zero)
-            q = Quaternion.LookRotation(target.position - transform.position);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, q, 150 * Time.deltaTime);
-        if (transform.rotation == q)
+        while (target != null && Vector3.Distance(target.gameObject.transform.position, gameObject.transform.position) <= 20)
         {
+            if (CurrentCarriedResource != target.gameObject.GetComponent<ResourceObject>().Type)
+                CurrentResourceAmount = 0;
             CurrentCarriedResource = target.GetComponent<ResourceObject>().Type;
             if (target.gameObject.GetComponent<ResourceObject>().Capacity - GatherSpeed <= 0)
             {
                 if (CurrentResourceAmount + target.gameObject.GetComponent<ResourceObject>().Capacity >= MaxResourceAmount)
                     CurrentResourceAmount = MaxResourceAmount;
-                else  CurrentResourceAmount += target.gameObject.GetComponent<ResourceObject>().Capacity;
+                else CurrentResourceAmount += target.gameObject.GetComponent<ResourceObject>().Capacity;
                 Destroy(target.gameObject);
                 target = null;
                 gameObject.GetComponent<AIDestinationSetter>().StartCoroutine("SearchDropOffPoint");
-                return;
+                yield return null;
             }
 
             if (CurrentResourceAmount + GatherSpeed >= MaxResourceAmount)
-                CurrentResourceAmount = MaxResourceAmount;                              
+                CurrentResourceAmount = MaxResourceAmount;
             else CurrentResourceAmount += GatherSpeed;
             target.gameObject.GetComponent<ResourceObject>().Capacity -= GatherSpeed;
+            yield return new WaitForSeconds(.2f);
         }
+        yield return null;
+    }
+
+    public IEnumerator Build(GameObject structure)
+    {
+        Debug.Log("Elindul");
+        
+        AIDestinationSetter setter = transform.GetComponent<AIDestinationSetter>();
+        Debug.Log(setter.ai.destination);
+        while ((Vector3.Distance(transform.position, new Vector3(setter.ai.destination.x,-2.1f,setter.ai.destination.z)) > 5))
+        {
+            yield return null;
+        }
+        Structure building = structure.GetComponent<Structure>();
+
+        GameObject placeholder = Instantiate(Resources.Load("Prefabs/Placeholder"), new Vector3(setter.ai.destination.x, 5f, setter.ai.destination.z), Quaternion.identity) as GameObject;
+        placeholder.name = structure.name;
+        Structure phbuild = placeholder.AddComponent<Structure>();
+        phbuild.Owner = Owner;
+        phbuild.maxHealth = building.maxHealth;
+
+        HideGameObject();
+        ShowBuildables = false;
+        int i = 0;
+        while (i < building.trainingTime)
+        {
+            if (CurrentlyBuiltObject != null)
+            {
+                phbuild.currentHealth += (phbuild.maxHealth / building.trainingTime);
+                i++;
+                yield return new WaitForSeconds(1f);
+            }
+            else
+            {
+                RevealGameObject();
+                yield break;
+            }
+        }
+
+        Mouse.DeselectGameObjectsIfSelected();
+        Destroy(placeholder);       
+
+        GameObject newUnit = Instantiate(structure, new Vector3(setter.ai.destination.x, 5f, setter.ai.destination.z), Quaternion.identity);
+        newUnit.name = structure.name;
+        newUnit.GetComponent<Unit>().Owner = Owner;
+        CurrentlyBuiltObject = null;
+        RevealGameObject();
+        gameObject.transform.position = new Vector3(newUnit.transform.position.x, -2.1f, newUnit.transform.position.z - (newUnit.GetComponent<Collider>().bounds.size.z));
+
+        AstarPath.active.UpdateGraphs(newUnit.GetComponent<Collider>().bounds);
+        yield return null;
     }
 
     void Update()

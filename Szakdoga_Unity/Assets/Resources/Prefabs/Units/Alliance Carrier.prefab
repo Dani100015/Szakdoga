@@ -342,7 +342,7 @@ MonoBehaviour:
   MaxResourceAmount: 0
   CurrentResourceAmount: 0
   CurrentCarriedResource: 0
-  isBuilding: 0
+  CurrentlyBuiltObject: {fileID: 0}
   ShowBuildables: 0
 --- !u!114 &114242444182743184
 MonoBehaviour:

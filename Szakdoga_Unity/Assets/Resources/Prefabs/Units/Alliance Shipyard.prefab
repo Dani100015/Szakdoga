@@ -281,7 +281,7 @@ Transform:
   m_LocalScale: {x: 0.5, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4613917647033974}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!4 &4550388590430280
 Transform:
@@ -306,8 +306,8 @@ Transform:
   m_LocalPosition: {x: 89.1, y: 0.65, z: -63.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 4510081098604264}
   - {fileID: 4992815724025902}
+  - {fileID: 4510081098604264}
   - {fileID: 4377034003732840}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -345,11 +345,11 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1064218935560168}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.010000229, y: -0.32000002, z: 0.05999985}
+  m_LocalPosition: {x: -0.010000229, y: 1.42, z: 0.05999985}
   m_LocalScale: {x: 1.1, y: 0.2, z: 1.4}
   m_Children: []
   m_Father: {fileID: 4613917647033974}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &23067085589932646
 MeshRenderer:
@@ -773,14 +773,14 @@ MonoBehaviour:
   Projectile: {fileID: 0}
   attackSpeed: 0
   attackDamage: 0
-  maxHealth: 500
-  currentHealth: 500
-  trainingTime: 0
-  palladiumCost: 0
-  iridiumCost: 0
-  eezoCost: 0
+  maxHealth: 3500
+  currentHealth: 3500
+  trainingTime: 5
+  palladiumCost: 250
+  iridiumCost: 200
+  eezoCost: 50
   isWalkable: 0
-  Owner: Peti
+  Owner: 
   Race: 0
   MenuIcon: {fileID: 2800000, guid: 33694bce39322ce4ba2c4d3ba9182724, type: 3}
   MenuIconRo: {fileID: 2800000, guid: 4550fe273dd834b4292f5a0299a8037a, type: 3}
@@ -789,7 +789,7 @@ MonoBehaviour:
   MaxResourceAmount: 0
   CurrentResourceAmount: 0
   CurrentCarriedResource: 0
-  isBuilding: 0
+  CurrentlyBuiltObject: {fileID: 0}
   ShowBuildables: 0
   TrainableUnits:
   - {fileID: 1486496587399266, guid: 9acdf4a98838a564e929ba640be675e8, type: 2}
@@ -799,7 +799,7 @@ MonoBehaviour:
   RallyPoint: {x: 89.1, y: 0.65, z: -63.9}
   RallyTarget: {fileID: 0}
   TimeLeft: 0
-  isDropOffPoint: 1
+  isDropOffPoint: 0
   GUIGhost: {fileID: 1023117308318794}
 --- !u!119 &119959928651155212
 Projector:

@@ -75,7 +75,7 @@ GameObject:
   - component: {fileID: 23788952785216554}
   - component: {fileID: 95125502888856754}
   m_Layer: 0
-  m_Name: AllianceFighterblend
+  m_Name: Unit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -254,7 +254,7 @@ MonoBehaviour:
   CurrentTargetLocation: {x: 0, y: 0, z: 0}
   Range: 6
   Projectile: {fileID: 0}
-  attackSpeed: 1
+  attackSpeed: 0.2
   attackDamage: 10
   maxHealth: 480
   currentHealth: 480
@@ -272,7 +272,7 @@ MonoBehaviour:
   MaxResourceAmount: 0
   CurrentResourceAmount: 0
   CurrentCarriedResource: 0
-  isBuilding: 0
+  CurrentlyBuiltObject: {fileID: 0}
   ShowBuildables: 0
 --- !u!114 &114485748864421274
 MonoBehaviour:
