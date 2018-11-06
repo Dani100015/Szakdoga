@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 135820319841093922}
   - component: {fileID: 23244210397784896}
   m_Layer: 0
-  m_Name: 3._SOLARSYSTEM
+  m_Name: Omega System
   m_TagString: StarSystem
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

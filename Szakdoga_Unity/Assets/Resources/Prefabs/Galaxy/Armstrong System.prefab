@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 135566072767318720}
   - component: {fileID: 23555169496976794}
   m_Layer: 0
-  m_Name: 0._SOLARSYSTEM
+  m_Name: Armstrong System
   m_TagString: StarSystem
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
