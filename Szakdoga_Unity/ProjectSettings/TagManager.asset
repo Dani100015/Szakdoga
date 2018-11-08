@@ -6,6 +6,7 @@ TagManager:
   tags:
   - StarSystem
   - TechCategory
+  - Tech
   layers:
   - Default
   - TransparentFX

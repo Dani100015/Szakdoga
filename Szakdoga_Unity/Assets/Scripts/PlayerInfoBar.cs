@@ -10,11 +10,17 @@ public class PlayerInfoBar : MonoBehaviour
     public Text resource2_Iridium;
     public Text resource3_NullElement;
 
+    void Awake()
+    {
+        resource1_Palladium = GameObject.Find("TextPalladium").GetComponent<Text>();
+        resource2_Iridium = GameObject.Find("TextIridium").GetComponent<Text>();
+        resource3_NullElement = GameObject.Find("TextNullElement").GetComponent<Text>();
+    }
     void LateUpdate()
     {
-        //resource1_Palladium.text = "Palladium: " + Game.currentPlayer.palladium;
-        //resource2_Iridium.text = "Iridium: " + Game.currentPlayer.iridium;
-        //resource3_NullElement.text = "Null Element: " + Game.currentPlayer.nullElement;
+        resource1_Palladium.text = "Palladium: " + Game.currentPlayer.palladium;
+        resource2_Iridium.text = "Iridium: " + Game.currentPlayer.iridium;
+        resource3_NullElement.text = "Null Element: " + Game.currentPlayer.nullElement;
     }
 
     void OnMouseEnter()
@@ -24,6 +30,6 @@ public class PlayerInfoBar : MonoBehaviour
 
     void OnMouseExit()
     {
-
+        //
     }
 }
