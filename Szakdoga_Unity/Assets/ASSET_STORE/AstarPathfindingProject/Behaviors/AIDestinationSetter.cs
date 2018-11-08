@@ -24,7 +24,7 @@ namespace Pathfinding
         public Transform tempTarget;
         public IAstarAI ai;
         Mouse mouse;
-        bool isAttacking, isGathering;
+        public bool isAttacking, isGathering;
 
         void OnEnable()
         {
@@ -62,7 +62,7 @@ namespace Pathfinding
         void Start()
         {         
             mouse = GameObject.Find("Game").GetComponent<Mouse>();
-            //StartCoroutine("AutoAttack");
+            StartCoroutine("AutoAttack");
         }
 
         //Auto Attack
@@ -70,13 +70,14 @@ namespace Pathfinding
         {
             while (true)
             {
-                if (!gameObject.GetComponent<Unit>().isGatherer && target == null && ai.isStopped)
+                if (!gameObject.GetComponent<Unit>().isGatherer && target == null && (ai.isStopped || unit.aMove))
                 {
                     Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position, gameObject.GetComponent<Unit>().Range * 5, 1 << LayerMask.NameToLayer("Unit"));
                     ArrayList enemyUnits = new ArrayList();
                     for (int i = 0; i < hitColliders.Length; i++)
                     {
-                        if (!hitColliders[i].gameObject.GetComponent<Unit>().Owner.Equals(unit.Owner))
+                        if (hitColliders[i].gameObject.GetComponent<Unit>() != null &&
+                            !hitColliders[i].gameObject.GetComponent<Unit>().Owner.Equals(unit.Owner))
                         {
                             enemyUnits.Add(hitColliders[i].transform);
                         }
@@ -97,6 +98,7 @@ namespace Pathfinding
                         }
                     }
                     target = bestTarget;
+                    yield return null;
                 }
                 yield return null;
             }
@@ -135,9 +137,9 @@ namespace Pathfinding
 
         /** Updates the AI's destination every frame */
         void LateUpdate()
-        {
+        {        
             //Ha van célpont beállítva, menjen a célpont pozíciójához
-            if (ai != null && target != null)
+            if (ai != null && target != null && !unit.HoldPosition)
             {
                 ai.destination = target.transform.position;
                 ai.isStopped = false;
@@ -161,6 +163,7 @@ namespace Pathfinding
                     {
                         unit.StopCoroutine("AttackTarget");
                         isAttacking = false;
+                        target = null;
                     }
 
                     if (unit.CurrentlyBuiltObject != null)
@@ -172,8 +175,9 @@ namespace Pathfinding
 
                         GUISetup.UpdatePlayerInfoBar();
 
-                        unit.CurrentlyBuiltObject = null;
                         unit.StopCoroutine("Build");
+                        unit.CurrentlyBuiltObject = null;
+                        Debug.Log(unit.CurrentlyBuiltObject);                      
                     }
 
                     ai.isStopped = false;
@@ -194,13 +198,19 @@ namespace Pathfinding
                     //Ha nincs lenyomva, akkor nem szeretnénk hozzáadni, valamint kiüríteni a sort ha nem üres
                     else
                     {
-                        if (ai != null && target != null) ai.destination = target.transform.position;
-                        if (ai != null) ai.destination = mouse.RightClickPoint;
-                        unit.ActionsQueue.Clear();
+                        if (mouse.RightClickPoint != Vector3.positiveInfinity && !mouse.MoveMode && !mouse.AttackMode)
+                        {
+                            unit.HoldPosition = false;
+                            if (ai != null && target != null) ai.destination = target.transform.position;
+                            if (ai != null) ai.destination = mouse.RightClickPoint;
+                            unit.ActionsQueue.Clear();
+                        }
+                        else mouse.EndModes();
                     }
                 }
             }
 
+            #region Cselekvési sor
             //Cselekvési sorban levõ parancsok végrehajtása
             if (unit.ActionsQueue != null)
             {
@@ -219,45 +229,71 @@ namespace Pathfinding
                     ai.isStopped = false;
                 }
             }
+            #endregion
 
             #region Támadás
             if (target != null && target.gameObject.layer == LayerMask.NameToLayer("Unit") &&
-                Game.players.Where(x => x.empireName.Equals(unit.Owner)).SingleOrDefault().enemies.Contains(Game.players.Where(x => x.empireName.Equals(target.GetComponent<Unit>().Owner)).SingleOrDefault()) &&
-                Vector3.Distance(target.gameObject.transform.position, gameObject.transform.position) <= unit.Range * 5)
+                Game.players.Where(x => x.empireName.Equals(unit.Owner)).SingleOrDefault().enemies.Contains(Game.players.Where(x => x.empireName.Equals(target.GetComponent<Unit>().Owner)).SingleOrDefault()))
             {
-                //Ha a célpont lõtávon belül van, megáll és megtámadja a célt
-                ai.isStopped = true;
-                var q = new Quaternion();
-                if ((target.position - transform.position) != Vector3.zero)
-                    q = Quaternion.LookRotation(target.position - transform.position);
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, q, 150 * Time.deltaTime);
-                //Csak akkor támadja ha van élete
-                if (transform.rotation == q)
+                if (unit.HoldPosition && Vector3.Distance(target.gameObject.transform.position, gameObject.transform.position) > unit.Range * 5)
                 {
-                    if (target.gameObject.GetComponent<Unit>().currentHealth > 0)
-                    {
-                        if (!isAttacking)
-                        {
-                            unit.StartCoroutine("AttackTarget", target);
-                            isAttacking = true;
-                        }
-                    }
-                    //Különben elpusztul a cél
-                    else
-                    {
-                        if (target.GetComponent<Structure>() != null)
-                        {
-                            target.GetComponent<Collider>().enabled = false;
-                            AstarPath.active.UpdateGraphs(target.GetComponent<Collider>().bounds);
-                        }
-                        if (Game.players.Where(x => x.empireName.Equals(target.GetComponent<Unit>().Owner)).SingleOrDefault().units.Contains(target.gameObject))
-                            Game.players.Where(x => x.empireName.Equals(target.GetComponent<Unit>().Owner)).SingleOrDefault().units.Remove(target.gameObject);
-                        Destroy(target.gameObject);
-                        target = null;
-                        isAttacking = false;
-                    }
+                    target = null;
+                    isAttacking = false;
+                    return;
                 }
+                
+                else if (Vector3.Distance(target.gameObject.transform.position, gameObject.transform.position) <= unit.Range * 5)
+                {
+                    //Ha a célpont lõtávon belül van, megáll és megtámadja a célt
+                    ai.isStopped = true;
+                    var q = new Quaternion();
+                    if ((target.position - transform.position) != Vector3.zero)
+                        q = Quaternion.LookRotation(target.position - transform.position);
+                    transform.rotation = Quaternion.RotateTowards(transform.rotation, q, 150 * Time.deltaTime);
+                    //Csak akkor támadja ha van élete
+                    if (transform.rotation == q)
+                    {
+                        if (target.gameObject.GetComponent<Unit>().currentHealth > 0)
+                        {
+                            if (!isAttacking)
+                            {
+                                unit.StartCoroutine("AttackTarget", target);
+                                isAttacking = true;
+                            }
+                        }
+                        //Különben elpusztul a cél
+                        else
+                        {
+                            if (target.GetComponent<Structure>() != null)
+                            {
+                                target.GetComponent<Collider>().enabled = false;
+                                AstarPath.active.UpdateGraphs(target.GetComponent<Collider>().bounds);
+                            }
+                            if (Game.players.Where(x => x.empireName.Equals(target.GetComponent<Unit>().Owner)).SingleOrDefault().units.Contains(target.gameObject))
+                                Game.players.Where(x => x.empireName.Equals(target.GetComponent<Unit>().Owner)).SingleOrDefault().units.Remove(target.gameObject);
+                            Destroy(target.gameObject);
+                            target = null;
+                            isAttacking = false;
+                        }
+                    }
+                } 
+                else
+                {
+                    unit.StopCoroutine("AttackTarget");
+                    isAttacking = false;
+                }            
             }
+
+            //Leszakadás a célpontról
+            if (target != null && target.gameObject.layer == LayerMask.NameToLayer("Unit") &&
+                Game.players.Where(x => x.empireName.Equals(unit.Owner)).SingleOrDefault().enemies.Contains(Game.players.Where(x => x.empireName.Equals(target.GetComponent<Unit>().Owner)).SingleOrDefault()) &&
+                Vector3.Distance(target.gameObject.transform.position, gameObject.transform.position) >= unit.Range * 10)
+            {
+                ai.isStopped = true;
+                target = null;
+            }
+
+           
             #endregion
 
             #region Gyûjtögetés

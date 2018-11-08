@@ -272,6 +272,7 @@ MonoBehaviour:
   ScreenPos: {x: 0, y: 0}
   OnScreen: 0
   Selected: 0
+  HoldPosition: 0
   CurrentTargetLocation: {x: 0, y: 0, z: 0}
   Range: 0
   Projectile: {fileID: 0}
@@ -283,8 +284,9 @@ MonoBehaviour:
   palladiumCost: 300
   iridiumCost: 250
   eezoCost: 200
+  aMove: 0
   isWalkable: 0
-  Owner: 
+  Owner: Peti
   Race: 0
   MenuIcon: {fileID: 2800000, guid: 33694bce39322ce4ba2c4d3ba9182724, type: 3}
   MenuIconRo: {fileID: 2800000, guid: 4550fe273dd834b4292f5a0299a8037a, type: 3}
@@ -293,7 +295,7 @@ MonoBehaviour:
   MaxResourceAmount: 0
   CurrentResourceAmount: 0
   CurrentCarriedResource: 0
-  isBuilding: 0
+  CurrentlyBuiltObject: {fileID: 0}
   ShowBuildables: 0
   TrainableUnits: []
   RallyPoint: {x: 0, y: 0, z: 0}
@@ -315,7 +317,7 @@ Projector:
   m_AspectRatio: 1
   m_Orthographic: 1
   m_OrthographicSize: 5
-  m_Material: {fileID: 2100000, guid: 7d454338c6929cb41bfe7265788fd034, type: 2}
+  m_Material: {fileID: 2100000, guid: 420c7555f7d21e94792e60f01c46e0f2, type: 2}
   m_IgnoreLayers:
     serializedVersion: 2
     m_Bits: 256

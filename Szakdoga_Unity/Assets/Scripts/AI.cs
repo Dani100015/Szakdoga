@@ -34,7 +34,6 @@ public class AI : MonoBehaviour {
             player = Game.player2;
         if (MainBuilding == null)
             MainBuilding = player.units.Where(x => x.GetComponent<Structure>() != null && x.GetComponent<Structure>().isDropOffPoint).FirstOrDefault();
-        Debug.Log(player.units.Count);
         #region Gyűjtögetők
         #endregion
     }

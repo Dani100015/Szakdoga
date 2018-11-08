@@ -477,7 +477,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1166897544158768}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 35.4, y: -2.54, z: -25.4}
+  m_LocalPosition: {x: -17.699997, y: -2.54, z: -50.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4739526620939800}
@@ -1833,6 +1833,8 @@ MonoBehaviour:
   version: 1
   target: {fileID: 0}
   tempTarget: {fileID: 0}
+  isAttacking: 0
+  isGathering: 0
 --- !u!114 &114129386899652738
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1868,6 +1870,7 @@ MonoBehaviour:
   ScreenPos: {x: 0, y: 0}
   OnScreen: 0
   Selected: 0
+  HoldPosition: 0
   CurrentTargetLocation: {x: 0, y: 0, z: 0}
   Range: 6
   Projectile: {fileID: 0}
@@ -1879,6 +1882,7 @@ MonoBehaviour:
   palladiumCost: 150
   iridiumCost: 285
   eezoCost: 70
+  aMove: 0
   isWalkable: 1
   Owner: Peti
   Race: 0
@@ -1962,7 +1966,7 @@ Projector:
   m_AspectRatio: 1
   m_Orthographic: 1
   m_OrthographicSize: 2
-  m_Material: {fileID: 2100000, guid: 7d454338c6929cb41bfe7265788fd034, type: 2}
+  m_Material: {fileID: 2100000, guid: 420c7555f7d21e94792e60f01c46e0f2, type: 2}
   m_IgnoreLayers:
     serializedVersion: 2
     m_Bits: 256

@@ -248,6 +248,7 @@ namespace Pathfinding {
 			if (distanceToEnd <= endReachedDistance) {               
                 reachedEndOfPath = true;               
                 isStopped = true;
+                transform.GetComponent<Unit>().aMove = false;
                 OnTargetReached();
 			}
 		}

@@ -42,6 +42,8 @@ public class Mouse : MonoBehaviour
     private static Vector2 MouseDragStart;
     private static float clickDragZone = 1.3f;
     public LayerMask MouseLayerMask;
+    public bool MoveMode;
+    public bool AttackMode;
 
     //GUI
     private float BoxWidth;
@@ -50,14 +52,6 @@ public class Mouse : MonoBehaviour
     private float BoxLeft;
     private static Vector2 BoxStart;
     private static Vector2 BoxFinish;
-
-    //DragMesh
-    public LayerMask SelectMeshLayerMask;
-    public float DistanceToGround;
-    public LayerMask TerrainOnly;
-    public GameObject DragSelectMesh;
-    public GameObject Pointer;
-    public Material DragSelectMeshMat;
 
     #endregion
 
@@ -76,10 +70,43 @@ public class Mouse : MonoBehaviour
             //Store point at mouse button down
             if (Input.GetMouseButtonDown(0))
             {
+                if (EventSystem.current.IsPointerOverGameObject())
+                    EndModes();
                 mouseDownPoint = hit.point;
                 TimeLeftBeforeDeclareDrag = TimeLimitBeforeDeclareDrag;
                 MouseDragStart = Input.mousePosition;
                 StartedDrag = true;
+
+                #region CommandRegion
+                if (MoveMode)
+                {
+                    for (int i = 0; i < CurrentlySelectedUnits.Count; i++)
+                    {
+                        AIDestinationSetter setter = (CurrentlySelectedUnits[i] as GameObject).GetComponent<AIDestinationSetter>();
+                        if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Unit"))
+                            setter.target = hit.collider.gameObject.transform;
+                        else setter.ai.destination = mouseDownPoint;
+                        setter.ai.isStopped = false;
+                    }
+                    MoveMode = false;
+                }
+                if (AttackMode)
+                {
+                    for (int i = 0; i < CurrentlySelectedUnits.Count; i++)
+                    {
+                        AIDestinationSetter setter = (CurrentlySelectedUnits[i] as GameObject).GetComponent<AIDestinationSetter>();
+                        if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Unit"))
+                            setter.target = hit.collider.gameObject.transform;
+                        else
+                        {
+                            setter.ai.destination = mouseDownPoint;
+                            (CurrentlySelectedUnits[i] as GameObject).GetComponent<Unit>().aMove = true;
+                        }
+                        setter.ai.isStopped = false;
+                    }
+                    AttackMode = false;
+                }
+                #endregion
             }
             else if (Input.GetMouseButton(0))
             {
@@ -103,11 +130,13 @@ public class Mouse : MonoBehaviour
             if (!UserIsDragging)
             {
                 //Debug.Log(hit.collider.name);
+
+                #region Jobb klikk
                 if (Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject())
                 {
                     if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Unit"))
                     {
-                            SelectTargets(hit);
+                        SelectTargets(hit);
                     }
                     else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Resources"))
                     {
@@ -119,19 +148,15 @@ public class Mouse : MonoBehaviour
                         SelectRally(hit);
                         RightClickPoint = hit.point;
                         DeselectTargets();
-                    }
-
-                    else if (Input.GetMouseButtonUp(0) && DidUserClickLeftMouse(mouseDownPoint))
-                    {
-                        if (!Common.ShiftKeysDown())
-                            DeselectGameObjectsIfSelected();
-                    }
+                    }                   
                 }
+                #endregion
+
                 // End of Terrain
                 else
                 {
                     //Hitting other objects
-                    if (Input.GetMouseButtonUp(0) && DidUserClickLeftMouse(mouseDownPoint))
+                    if (Input.GetMouseButtonUp(0) && DidUserClickLeftMouse(mouseDownPoint) && !EventSystem.current.IsPointerOverGameObject())
                     {
                         //Is the user hitting a unit?
                         if (hit.collider.gameObject.GetComponent<Unit>() || hit.collider.gameObject.layer == LayerMask.NameToLayer("SelectMesh"))
@@ -151,7 +176,10 @@ public class Mouse : MonoBehaviour
 
                                 GameObject SelectedObj = UnitGameObject.Find("Selected").gameObject;
                                 if (UnitGameObject.GetComponent<Unit>().Owner != Game.currentPlayer.empireName)
+                                {
+                                    DeselectGameObjectsIfSelected();
                                     SelectedObj.GetComponent<Projector>().material.color = Color.red;
+                                }
                                 else SelectedObj.GetComponent<Projector>().material.color = Color.green;
                                 SelectedObj.SetActive(true);
 
@@ -167,12 +195,17 @@ public class Mouse : MonoBehaviour
                                 //Unit is currently in the selected units arraylist
                                 //Remove the units
                                 if (Common.ShiftKeysDown())
+                                {
                                     RemoveUnitFromCurrentlySelectedUnits(UnitGameObject.gameObject);
+                                }
                                 else if (!Common.ShiftKeysDown())
                                 {
                                     DeselectGameObjectsIfSelected();
 
                                     GameObject SelectedObj = UnitGameObject.Find("Selected").gameObject;
+                                    if (UnitGameObject.GetComponent<Unit>().Owner != Game.currentPlayer.empireName)
+                                        SelectedObj.GetComponent<Projector>().material.color = Color.red;
+                                    else SelectedObj.GetComponent<Projector>().material.color = Color.green;
                                     SelectedObj.SetActive(true);
                                     UnitGameObject.gameObject.GetComponent<Unit>().Selected = true;
 
@@ -211,7 +244,7 @@ public class Mouse : MonoBehaviour
             DeselectGameObjectsIfSelected();
             StartedDrag = false;
         }
-        //Group creation
+        #region Csoport létrehozás
         if (CurrentlySelectedUnits.Count != 0 && (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)))
         {
             for (int i = 1; i < 10; i++)
@@ -221,14 +254,16 @@ public class Mouse : MonoBehaviour
                     Grouping[i] = new ArrayList();
                     for (int j = 0; j < CurrentlySelectedUnits.Count; j++)
                     {
-                        Grouping[i].Add(CurrentlySelectedUnits[j]);
+                        if ((CurrentlySelectedUnits[j] as GameObject).GetComponent<Unit>().Owner == Game.currentPlayer.empireName)
+                            Grouping[i].Add(CurrentlySelectedUnits[j]);
                     }
                     Debug.Log(Grouping[i].Count);
                 }
             }
         }
+        #endregion
 
-        //Group selection
+        #region Csoport kiválasztás
         if (GetAnyKey(keyCodes))
         {
             for (int i = 1; i < 10; i++)
@@ -251,10 +286,11 @@ public class Mouse : MonoBehaviour
                 Debug.Log(j + ". aktív");
             }
         }
+        #endregion
 
         Debug.DrawRay(ray.origin, ray.direction * 1000, Color.yellow);
-        //GUI Variables
 
+        #region Dragbox variables
         if (UserIsDragging && currentMousePoint != Vector3.positiveInfinity)
         {
             BoxWidth = Camera.main.WorldToScreenPoint(mouseDownPoint).x - Camera.main.WorldToScreenPoint(currentMousePoint).x;
@@ -279,6 +315,7 @@ public class Mouse : MonoBehaviour
 
             BoxFinish = new Vector2(BoxStart.x + Mathf.Abs(BoxWidth), BoxStart.y - Mathf.Abs(BoxHeight));
         }
+        #endregion
     }
 
     void LateUpdate()
@@ -314,6 +351,7 @@ public class Mouse : MonoBehaviour
                             }
                         }
                     }
+                    else continue;
                 }
             }
         }
@@ -333,6 +371,67 @@ public class Mouse : MonoBehaviour
     }
 
     #region Helper
+    public void OnMoveClick()
+    {
+        if (!MoveMode)
+        {
+            MoveMode = true;
+        }
+    }
+    public void OnStopClick()
+    {
+        for (int i = 0; i < CurrentlySelectedUnits.Count; i++)
+        {
+            AIDestinationSetter setter = (CurrentlySelectedUnits[i] as GameObject).GetComponent<AIDestinationSetter>();
+            Unit unitObj = (CurrentlySelectedUnits[i] as GameObject).GetComponent<Unit>();
+
+            unitObj.aMove = false;
+            unitObj.HoldPosition = false;
+
+            setter.isAttacking = false;
+            setter.isGathering = false;
+            setter.ai.isStopped = true;
+            setter.target = null;
+        }
+    }
+    public void OnHoldClick()
+    {
+        for (int i = 0; i < CurrentlySelectedUnits.Count; i++)
+        {
+            AIDestinationSetter setter = (CurrentlySelectedUnits[i] as GameObject).GetComponent<AIDestinationSetter>();
+            Unit unitObj = (CurrentlySelectedUnits[i] as GameObject).GetComponent<Unit>();
+            unitObj.HoldPosition = true;
+
+            unitObj.aMove = false;
+            setter.ai.isStopped = true;
+        }
+    }
+    public void OnAttackClick()
+    {
+        if (!AttackMode)
+        {
+            AttackMode = true;
+        }
+    }
+    public void OnRepairClick()
+    {
+
+    }
+
+    public void EndModes()
+    {
+        if (MoveMode)
+        {
+            MoveMode = false;
+            return;
+        }
+        if (AttackMode)
+        {
+            AttackMode = false;
+            return;
+        }
+    }
+
     bool GetAnyKey(KeyCode[] aKeys)
     {
         foreach (var key in aKeys)
@@ -364,7 +463,7 @@ public class Mouse : MonoBehaviour
     {
         if (CurrentlySelectedUnits.Count > 0)
         {
-            if (CurrentlyFocusedUnit.GetComponent<Unit>() != null)
+            if (CurrentlyFocusedUnit != null && CurrentlyFocusedUnit.GetComponent<Unit>() != null)
                 CurrentlyFocusedUnit.GetComponent<Unit>().ShowBuildables = false;
             for (int i = 0; i < CurrentlySelectedUnits.Count; i++)
             {
@@ -396,20 +495,17 @@ public class Mouse : MonoBehaviour
                         {
                             currentStructure.RallyTarget = null;
                             currentStructure.RallyPoint = CurrentObject.transform.position;
-                            Debug.Log(CurrentObject.name + ": " + currentStructure.RallyPoint);
                             continue;
                         }
                         else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Unit"))
                         {
                             currentStructure.RallyPoint = Vector3.positiveInfinity;
                             currentStructure.RallyTarget = hit.collider.transform;
-                            Debug.Log(CurrentObject.name + ": " + currentStructure.RallyPoint);
                         }
                         else
                         {
                             currentStructure.RallyTarget = null;
                             currentStructure.RallyPoint = hit.point;
-                            Debug.Log(CurrentObject.name + ": " + currentStructure.RallyPoint);
                         }
                     }
                 }
@@ -427,7 +523,8 @@ public class Mouse : MonoBehaviour
                 if (CurrentObject != null)
                 {
                     AIDestinationSetter setter = CurrentObject.GetComponent<AIDestinationSetter>();
-                    if (CurrentObject.GetComponent<Unit>() != null && CurrentObject.GetComponent<Structure>() == null && CurrentObject.GetComponent<Unit>().Owner == Game.currentPlayer.empireName)
+                    Unit unitObj = CurrentObject.GetComponent<Unit>();
+                    if (unitObj != null && CurrentObject.GetComponent<Structure>() == null && unitObj.Owner == Game.currentPlayer.empireName)
                         if (Common.ShiftKeysDown())
                         {
                             CurrentObject.GetComponent<Unit>().ActionsQueue.Enqueue(hit.collider.gameObject.transform);
@@ -463,10 +560,15 @@ public class Mouse : MonoBehaviour
             for (int i = 0; i < CurrentlySelectedUnits.Count; i++)
             {
                 GameObject CurrentObject = CurrentlySelectedUnits[i] as GameObject;
-                if (CurrentObject != null && CurrentObject.GetComponent<AIDestinationSetter>() != null)
+                if (CurrentObject != null)
                 {
-                    CurrentObject.GetComponent<AIDestinationSetter>().target = null;
-                    CurrentObject.GetComponent<AIDestinationSetter>().ai.isStopped = false;
+                    AIDestinationSetter setter = CurrentObject.GetComponent<AIDestinationSetter>();
+                    Unit unitObj = CurrentObject.GetComponent<Unit>();
+                    if (setter != null && unitObj.Owner == Game.currentPlayer.empireName)
+                    {
+                        setter.target = null;
+                        setter.ai.isStopped = false;
+                    }
                 }
             }
         }
@@ -497,9 +599,11 @@ public class Mouse : MonoBehaviour
                 if (ArrayListUnit == Unit)
                 {
                     CurrentlySelectedUnits.RemoveAt(i);
+                    ArrayListUnit.GetComponent<Unit>().Selected = false;
                     ArrayListUnit.transform.Find("Selected").gameObject.SetActive(false);
                 }
             }
+            GameObject.Find("Game").GetComponent<GUISetup>().DeleteIcons();
             return;
         }
         else return;

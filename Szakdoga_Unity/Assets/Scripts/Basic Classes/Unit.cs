@@ -12,6 +12,7 @@ public class Unit : MonoBehaviour
     public bool OnScreen;
     public bool Selected = false;
     private GameObject DragSelect;
+    public bool HoldPosition;
 
     public Queue ActionsQueue;
     public Vector3 CurrentTargetLocation;
@@ -28,6 +29,7 @@ public class Unit : MonoBehaviour
     public int iridiumCost;
     public int eezoCost;
 
+    public bool aMove;
     public bool isWalkable = true;
     public string Owner;
     public Species Race;
@@ -57,7 +59,7 @@ public class Unit : MonoBehaviour
         //Physics.IgnoreLayerCollision(8, 8, true);
         if (transform.Find("DragSelect") != null)
             DragSelect = transform.Find("DragSelect").gameObject;
-        if (transform.Find("Selected") != null)
+        if (transform.Find("Selected") != null)         
             transform.Find("Selected").gameObject.SetActive(false);
     }
 
@@ -115,20 +117,21 @@ public class Unit : MonoBehaviour
         yield return null;
     }
 
-    public IEnumerator Build(GameObject structure)
+    public IEnumerator Build()
     {
-        Debug.Log("Elindul");
+        Debug.Log("Elindul");       
         
         AIDestinationSetter setter = transform.GetComponent<AIDestinationSetter>();
-        Debug.Log(setter.ai.destination);
-        while ((Vector3.Distance(transform.position, new Vector3(setter.ai.destination.x,-2.1f,setter.ai.destination.z)) > 5))
+        while ((Vector3.Distance(transform.position, new Vector3(setter.ai.destination.x,-2.1f,setter.ai.destination.z)) > 2))
         {
             yield return null;
         }
-        Structure building = structure.GetComponent<Structure>();
+        Structure building = CurrentlyBuiltObject.GetComponent<Structure>();
 
+
+        Debug.Log("most itt");
         GameObject placeholder = Instantiate(Resources.Load("Prefabs/Placeholder"), new Vector3(setter.ai.destination.x, 5f, setter.ai.destination.z), Quaternion.identity) as GameObject;
-        placeholder.name = structure.name;
+        placeholder.name = building.name;
         Structure phbuild = placeholder.AddComponent<Structure>();
         phbuild.Owner = Owner;
         phbuild.maxHealth = building.maxHealth;
@@ -154,8 +157,8 @@ public class Unit : MonoBehaviour
         Mouse.DeselectGameObjectsIfSelected();
         Destroy(placeholder);       
 
-        GameObject newUnit = Instantiate(structure, new Vector3(setter.ai.destination.x, 5f, setter.ai.destination.z), Quaternion.identity);
-        newUnit.name = structure.name;
+        GameObject newUnit = Instantiate(CurrentlyBuiltObject, new Vector3(setter.ai.destination.x, 5f, setter.ai.destination.z), Quaternion.identity);
+        newUnit.name = CurrentlyBuiltObject.name;
         newUnit.GetComponent<Unit>().Owner = Owner;
         CurrentlyBuiltObject = null;
         RevealGameObject();

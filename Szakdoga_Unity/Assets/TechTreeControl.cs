@@ -20,6 +20,7 @@ class TechTreeControl : MonoBehaviour {
             techCategories[i].SetActive(false);
         }
         techCategories[0].SetActive(true);  //Firt category active
+        Debug.Log(techCategories.Length);
 
         techPanel.SetActive(false);
     }

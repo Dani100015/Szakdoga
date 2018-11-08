@@ -272,6 +272,8 @@ MonoBehaviour:
   version: 1
   target: {fileID: 0}
   tempTarget: {fileID: 0}
+  isAttacking: 0
+  isGathering: 0
 --- !u!114 &114444144472604598
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -286,6 +288,7 @@ MonoBehaviour:
   ScreenPos: {x: 0, y: 0}
   OnScreen: 0
   Selected: 0
+  HoldPosition: 0
   CurrentTargetLocation: {x: 0, y: 0, z: 0}
   Range: 6
   Projectile: {fileID: 0}
@@ -297,6 +300,7 @@ MonoBehaviour:
   palladiumCost: 125
   iridiumCost: 200
   eezoCost: 45
+  aMove: 0
   isWalkable: 1
   Owner: Peti
   Race: 0
@@ -349,7 +353,7 @@ Projector:
   m_AspectRatio: 1
   m_Orthographic: 1
   m_OrthographicSize: 5
-  m_Material: {fileID: 2100000, guid: 7d454338c6929cb41bfe7265788fd034, type: 2}
+  m_Material: {fileID: 2100000, guid: 420c7555f7d21e94792e60f01c46e0f2, type: 2}
   m_IgnoreLayers:
     serializedVersion: 2
     m_Bits: 256

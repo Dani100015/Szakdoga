@@ -127,6 +127,7 @@ public class GUISetup : MonoBehaviour
 
                             Rigidbody body = Ghost.AddComponent<Rigidbody>();
                             body.useGravity = false;
+                            body.isKinematic = true;
 
                             BoxCollider box = Ghost.AddComponent<BoxCollider>();
                             box.isTrigger = true;
@@ -322,11 +323,11 @@ public class GUISetup : MonoBehaviour
             {
                 //Épület létrehozása  
                 Unit builder = Mouse.CurrentlyFocusedUnit.GetComponent<Unit>();
-                builder.StartCoroutine("Build", Game.currentPlayer.BuildableUnits[CurrentGhost]);
-                BuildCost(Game.currentPlayer.BuildableUnits[CurrentGhost].GetComponent<Structure>());
                 builder.CurrentlyBuiltObject = Game.currentPlayer.BuildableUnits[CurrentGhost];
+                builder.StartCoroutine("Build");
+                BuildCost(Game.currentPlayer.BuildableUnits[CurrentGhost].GetComponent<Structure>());              
+                Debug.Log(builder.CurrentlyBuiltObject.name);
                 builder.gameObject.GetComponent<AIDestinationSetter>().ai.destination = new Vector3(Mouse.currentMousePoint.x, 5f, Mouse.currentMousePoint.z);
-                Debug.Log(Mouse.currentMousePoint);
                 builder.gameObject.GetComponent<AIDestinationSetter>().ai.isStopped = false;
                 GhostActive = false;
                 Destroy(Ghost.gameObject);
