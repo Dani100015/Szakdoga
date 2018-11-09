@@ -323,12 +323,12 @@ public class GUISetup : MonoBehaviour
             {
                 //Épület létrehozása  
                 Unit builder = Mouse.CurrentlyFocusedUnit.GetComponent<Unit>();
-                builder.CurrentlyBuiltObject = Game.currentPlayer.BuildableUnits[CurrentGhost];
-                builder.StartCoroutine("Build");
+                builder.CurrentlyBuiltObject = Game.currentPlayer.BuildableUnits[CurrentGhost];           
                 BuildCost(Game.currentPlayer.BuildableUnits[CurrentGhost].GetComponent<Structure>());              
                 Debug.Log(builder.CurrentlyBuiltObject.name);
                 builder.gameObject.GetComponent<AIDestinationSetter>().ai.destination = new Vector3(Mouse.currentMousePoint.x, 5f, Mouse.currentMousePoint.z);
                 builder.gameObject.GetComponent<AIDestinationSetter>().ai.isStopped = false;
+                builder.StartCoroutine("Build");
                 GhostActive = false;
                 Destroy(Ghost.gameObject);
             }

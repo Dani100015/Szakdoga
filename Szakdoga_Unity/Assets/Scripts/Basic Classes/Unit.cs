@@ -119,7 +119,7 @@ public class Unit : MonoBehaviour
 
     public IEnumerator Build()
     {
-        Debug.Log("Elindul");       
+        
         
         AIDestinationSetter setter = transform.GetComponent<AIDestinationSetter>();
         while ((Vector3.Distance(transform.position, new Vector3(setter.ai.destination.x,-2.1f,setter.ai.destination.z)) > 2))
@@ -128,6 +128,16 @@ public class Unit : MonoBehaviour
         }
         Structure building = CurrentlyBuiltObject.GetComponent<Structure>();
 
+        if (!GUISetup.PassedTriggerTest)
+        {
+            Game.currentPlayer.iridium += building.iridiumCost;
+            Game.currentPlayer.palladium += building.palladiumCost;
+            Game.currentPlayer.nullElement += building.eezoCost;
+
+            GUISetup.UpdatePlayerInfoBar();
+            CurrentlyBuiltObject = null;
+            yield break;
+        }
 
         Debug.Log("most itt");
         GameObject placeholder = Instantiate(Resources.Load("Prefabs/Placeholder"), new Vector3(setter.ai.destination.x, 5f, setter.ai.destination.z), Quaternion.identity) as GameObject;

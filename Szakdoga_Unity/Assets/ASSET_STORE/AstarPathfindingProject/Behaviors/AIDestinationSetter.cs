@@ -176,8 +176,7 @@ namespace Pathfinding
                         GUISetup.UpdatePlayerInfoBar();
 
                         unit.StopCoroutine("Build");
-                        unit.CurrentlyBuiltObject = null;
-                        Debug.Log(unit.CurrentlyBuiltObject);                      
+                        unit.CurrentlyBuiltObject = null;                    
                     }
 
                     ai.isStopped = false;
