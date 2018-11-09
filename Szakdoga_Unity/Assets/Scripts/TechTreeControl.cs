@@ -20,14 +20,8 @@ class TechTreeControl : MonoBehaviour {
             techCategories[i].SetActive(false);
         }
         techCategories[0].SetActive(true);  //Firt category active
-        Debug.Log(techCategories.Length);
 
         techPanel.SetActive(false);
-    }
-
-    void Update()
-    {
-
     }
 
     public void SetActiveCurrentTechCategory(GameObject currentTechCategory)
@@ -37,7 +31,6 @@ class TechTreeControl : MonoBehaviour {
             techCategories[i].SetActive(false);
         }
         currentTechCategory.SetActive(true);
-
     }
 
     public void SetActiveTechPanel(GameObject techPanel)
@@ -52,4 +45,6 @@ class TechTreeControl : MonoBehaviour {
             techPanel.SetActive(false);
         }
     }
+
+
 }

@@ -23,6 +23,8 @@ class Game : MonoBehaviour {
 
     public int starCount;
 
+    public List<Tech> playerTechList = new List<Tech>();
+
     void Awake()
     {
         starCount = 5;
@@ -33,6 +35,7 @@ class Game : MonoBehaviour {
         startSolarSystem = Systems[0];
         currentSolarSystem = startSolarSystem;
 
+        initTechTree();
     }
 
     void Start () {
@@ -74,11 +77,12 @@ class Game : MonoBehaviour {
 
         GenerateSolarSystems(starCount);
         GenerateSystemRelations();
+
+        
     }
 
     void Update () {
-		
-	}
+    }
 
     // void CheckForWin
     // void CheckForLose
@@ -143,6 +147,16 @@ class Game : MonoBehaviour {
 
     public static void ResearchEffects(Player player, Tech tech)
     {
+
+    }
+
+    public void initTechTree()
+    {
+        playerTechList = new List<Tech>();
+        for (int i = 0; i < Tech.techList.Count; i++)
+        {
+            playerTechList.Add(Tech.techList[i]);
+        }
 
     }
 }
