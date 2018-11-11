@@ -35,9 +35,8 @@ class SetGalaxySolarSystems : MonoBehaviour {
         lineContainer = GameObject.Find("LineContainer");
 
         GenerateGalaxyPrefabs();
-        GenerateSystemRelations();
         GenerateSystemRelationsLine();
-            
+           
     }
     void GenerateGalaxyPrefabs()
     {
@@ -60,29 +59,7 @@ class SetGalaxySolarSystems : MonoBehaviour {
             SystemPrefabs[i].name = Systems[i].Name;
         }
     }
-    void GenerateSystemRelations()
-    {
-        //Szomszéd viszonyság generálás
-        for (int i = 0; i < Systems.Count; i++)
-        {
-            Systems[i].neighbourSystems = new List<SolarSystem>();
 
-            int neigbourCount = Random.Range(1, Systems.Count-1);
-            for (int j = 0; j < neigbourCount; j++)
-            {
-                int rndIndex = Random.Range(0, Systems.Count);
-
-                if (Systems[rndIndex].Name != Systems[i].Name)
-                {
-                    Systems[i].neighbourSystems.Add(Systems[rndIndex]);
-                }
-
-               // Debug.Log(Systems[i].Name + ", sz: " + Systems[i].neighbourSystems[j].Name);
-            }
-        }
-
-
-    }
     void GenerateSystemRelationsLine()
     {
 
@@ -96,14 +73,21 @@ class SetGalaxySolarSystems : MonoBehaviour {
                 LineRenderer line = gObject.AddComponent<LineRenderer>();
                 line.transform.SetParent(lineContainer.transform);
 
-                line.startWidth = 0.2f;
-                line.endWidth = 0.2f;
+                Debug.Log(line.transform.parent.name);
+
+                line.startWidth = 0.3f;
+                line.endWidth = 0.3f;
                 line.positionCount = 2;              
 
                 line.SetPosition(0, Systems[i].position);
-                line.SetPosition(1, Systems[i].neighbourSystems[j].position);
+                line.SetPosition(1, Systems[i].neighbourSystems[j].position);              
 
-                neighbourLine.Add(new LineRenderer());
+                //line.transform.SetParent();
+
+                line.material.color = Color.cyan;
+                line.gameObject.layer = 15;
+
+                neighbourLine.Add(line);
             }
         }
     }

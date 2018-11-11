@@ -18,9 +18,9 @@ public class PlayerInfoBar : MonoBehaviour
     }
     void LateUpdate()
     {
-        resource1_Palladium.text = "Palladium: " + Game.currentPlayer.palladium;
-        resource2_Iridium.text = "Iridium: " + Game.currentPlayer.iridium;
-        resource3_NullElement.text = "Null Element: " + Game.currentPlayer.nullElement;
+        //resource1_Palladium.text = "Palladium: " + Game.currentPlayer.palladium;
+        //resource2_Iridium.text = "Iridium: " + Game.currentPlayer.iridium;
+        //resource3_NullElement.text = "Null Element: " + Game.currentPlayer.nullElement;
     }
 
     void OnMouseEnter()

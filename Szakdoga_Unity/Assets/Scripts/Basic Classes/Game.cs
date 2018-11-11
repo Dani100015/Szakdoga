@@ -26,17 +26,43 @@ class Game : MonoBehaviour {
 
     public List<Tech> playerTechList = new List<Tech>();
 
+    public SetSolarSystems setSystems;
+    public GameStartOptions gameStart;
+
+    public bool fromGalaxy;
     void Awake()
     {
-        starCount = 5;
+        DontDestroyOnLoad(this);
 
-        GenerateSolarSystems(starCount);
-        GenerateSystemRelations();
+        if (FindObjectsOfType(GetType()).Length > 1)
+        {
+            Destroy(gameObject);
+        }
 
-        startSolarSystem = Systems[0];
-        currentSolarSystem = startSolarSystem;
+        setSystems = GameObject.Find("SolarSystemGenerator").GetComponent<SetSolarSystems>();
 
-        initTechTree();
+
+        if (ParameterWatcher.firstInit)
+        {
+
+            //gameStart = GameObject.Find("GameStartOptions").GetComponent<GameStartOptions>();
+            //starCount = gameStart.StarCount;
+
+            starCount = 5;
+
+            fromGalaxy = false;
+
+            GenerateSolarSystems(starCount);
+            GenerateSystemRelations();
+
+            startSolarSystem = Systems[0];
+            currentSolarSystem = startSolarSystem;
+
+            initTechTree();
+
+            ParameterWatcher.firstInit = false;
+
+        }
     }
 
     void Start () {
@@ -74,10 +100,6 @@ class Game : MonoBehaviour {
 
         SharedIcons = Resources.LoadAll("Icons/Shared");
         #endregion
-
-        GenerateSolarSystems(starCount);
-        GenerateSystemRelations();
-
         
     }
 
@@ -102,42 +124,39 @@ class Game : MonoBehaviour {
             randomV3 = new Vector3((float)Random.Range(10, 500), (float)13, (float)Random.Range(10, 500));
             Systems.Add(new SolarSystem(randomV3, i + "._SOLARSYSTEM", null, null));
         }
-
-        //for (int i = 0; i < starCount; i++)
-        //{
-        //    for (int j = 0; j < starCount - 1; j++)
-        //    {
-        //        SolarSystem sol1 = Systems[i];
-        //        SolarSystem sol2 = Systems[j];
-
-        //        Vector3 distance = SolarSystem.DistanceBetweenStars(sol1.position, sol2.position);
-        //        while (distance.x <= minDistance.x || distance.y <= minDistance.y || distance.z <= minDistance.z)
-        //        {
-        //            sol1.position = new Vector3((float)Random.Range(10, 500), (float)13, (float)Random.Range(10, 500));
-        //        }
-        //    }
-
-        //}
     }
 
     void GenerateSystemRelations()
     {
-        //Szomszéd viszonyság generálás
         for (int i = 0; i < Systems.Count; i++)
         {
-            Systems[i].neighbourSystems = new List<SolarSystem>();
-
-            int neigbourCount = Random.Range(1, Systems.Count);
-            for (int j = 0; j < neigbourCount; j++)
+            if (Systems[i].neighbourSystems == null)
             {
-                while (Systems[i].neighbourSystems.Count != neigbourCount)
-                {
-                    int rndIndex = Random.Range(0, Systems.Count);
+                Systems[i].neighbourSystems = new List<SolarSystem>();
+            }
 
-                    if (!Systems[i].neighbourSystems.Contains(Systems[rndIndex]) && Systems[rndIndex].Name != Systems[i].Name)
+            int neigbourCount;
+            if (Systems[i].neighbourSystems != null)
+            {
+                neigbourCount = Random.Range(Systems[i].neighbourSystems.Count, Systems.Count);
+            }
+            else
+            {
+                neigbourCount = Random.Range(1, Systems.Count);
+            }
+
+            while (Systems[i].neighbourSystems.Count != neigbourCount)
+            {
+                int rndIndex = Random.Range(0, Systems.Count);
+
+                if (!Systems[i].neighbourSystems.Contains(Systems[rndIndex]) && Systems[rndIndex].Name != Systems[i].Name)
+                {
+                    Systems[i].neighbourSystems.Add(Systems[rndIndex]);
+                    if (Systems[rndIndex].neighbourSystems == null)
                     {
-                        Systems[i].neighbourSystems.Add(Systems[rndIndex]);
+                        Systems[rndIndex].neighbourSystems = new List<SolarSystem>();
                     }
+                    Systems[rndIndex].neighbourSystems.Add(Systems[i]);
                 }
 
 

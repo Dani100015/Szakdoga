@@ -3,16 +3,23 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 using RTS_Cam;
+using UnityEngine.EventSystems;
 
 public class SolarSystem_SceneChange : MonoBehaviour {
 
     Game game;
+    GameObject gameCanvas;
     Vector3 startPos;
     float viewChangeHeight;
 
+    void Awake()
+    {
+        gameCanvas = GameObject.Find("GameCanvas");
+        game = GameObject.Find("Game").GetComponent<Game>();
+    }
     void Start()
     {
-        game = GameObject.Find("Game").GetComponent<Game>();
+     
         startPos = transform.position;
         viewChangeHeight = GetComponent<RTS_Camera>().maxHeight;
         
@@ -22,7 +29,7 @@ public class SolarSystem_SceneChange : MonoBehaviour {
 
         if (transform.position.y > viewChangeHeight)
         {
-            GameObject.DontDestroyOnLoad(game);
+            DontDestroyOnLoad(gameCanvas);
             SceneManager.LoadScene("Galaxy");
         }
 	}

@@ -269,10 +269,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   techName: CitadelDefenceBoard
-  techDisplayName: Citadel Defence Board
   techInfo: The combined forces of the Citadel races have ceded larger portions of
     their command to the Council Defence Committee.
+  researchTime: 0
+  costPalladium: 0
+  costIridiumm: 0
+  costNullElement: 0
   techIcon: {fileID: 35975894}
+  currentProcessBar: {fileID: 0}
 --- !u!1 &70041265
 GameObject:
   m_ObjectHideFlags: 0
@@ -491,10 +495,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   techName: AllianceDefenseBoard
-  techDisplayName: Alliance Defense Board
   techInfo: Alliance military officials agree to deploy more forces to assist the
     Citadel fleet.
+  researchTime: 0
+  costPalladium: 0
+  costIridiumm: 0
+  costNullElement: 0
   techIcon: {fileID: 88614650}
+  currentProcessBar: {fileID: 0}
 --- !u!1 &107395627
 GameObject:
   m_ObjectHideFlags: 0
@@ -766,12 +774,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   techName: 'RapidHarvesting '
-  techDisplayName: 'Rapid harvesting '
   techInfo: Quarian miners are some of the fastest and most efficient in the Council.
     Drawing from their experiance rapidly strip mining planetoids of Eezo to keep
     the migrant fleet fueld, these Quarian experts can improve the overall speed of
     mining for the Council.
+  researchTime: 0
+  costPalladium: 0
+  costIridiumm: 0
+  costNullElement: 0
   techIcon: {fileID: 118708788}
+  currentProcessBar: {fileID: 0}
 --- !u!1 &138820875
 GameObject:
   m_ObjectHideFlags: 0
@@ -1174,12 +1186,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   techName: YorkClassDreadnought
-  techDisplayName: York class Dreadnought
   techInfo: A veteran Alliance York Dreadnought, the Skyang Kangri may not be the
     msoot formidable ship available to the Council, but it remains a powerful brawler.
     With significiant armor and an unrivaled broadside, the Skyang Kangri is most
     at home in the middle of the enemy fleet.
+  researchTime: 0
+  costPalladium: 0
+  costIridiumm: 0
+  costNullElement: 0
   techIcon: {fileID: 278051616}
+  currentProcessBar: {fileID: 0}
 --- !u!114 &278051619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1192,9 +1208,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   techName: 
-  techDisplayName: 
   techInfo: 
+  researchTime: 0
+  costPalladium: 0
+  costIridiumm: 0
+  costNullElement: 0
   techIcon: {fileID: 0}
+  currentProcessBar: {fileID: 0}
 --- !u!1 &280133692
 GameObject:
   m_ObjectHideFlags: 0
@@ -1443,11 +1463,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   techName: QuarianMiracleWorkers
-  techDisplayName: Quarian Miracle Workers
   techInfo: Quarian engineers are seconded to ships throughout the fleet to teach
     crews how to achive more with less when it comes to maintences and reapir. Increases
     maximum hull and passive reapir rate of all hulls.
+  researchTime: 0
+  costPalladium: 0
+  costIridiumm: 0
+  costNullElement: 0
   techIcon: {fileID: 284547036}
+  currentProcessBar: {fileID: 0}
 --- !u!1 &302390016
 GameObject:
   m_ObjectHideFlags: 0
@@ -2430,11 +2454,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   techName: HighStressMaterials
-  techDisplayName: High Stress materials
   techInfo: The Elcor provides advanved materials for ship hull contruction that are
     both more resilient and easier to repair than standards hull materials. this increases
     the maximum hull points and passive repair rate of all hulls.
+  researchTime: 0
+  costPalladium: 0
+  costIridiumm: 0
+  costNullElement: 0
   techIcon: {fileID: 571226425}
+  currentProcessBar: {fileID: 0}
 --- !u!1 &606414635
 GameObject:
   m_ObjectHideFlags: 0
@@ -2517,11 +2545,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   techName: AncientMethods
-  techDisplayName: Ancient methods
   techInfo: From varying sources, information is collected on how the Prothean Empire
     once harvested Eezo. Applying some of these ancient methods of harvesting in modern
     mines further improves  the Council ability to quickly harvest Eezo.
+  researchTime: 0
+  costPalladium: 0
+  costIridiumm: 0
+  costNullElement: 0
   techIcon: {fileID: 0}
+  currentProcessBar: {fileID: 0}
 --- !u!1 &621917453
 GameObject:
   m_ObjectHideFlags: 0
@@ -3304,11 +3336,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   techName: QualityControl
-  techDisplayName: Quality control
   techInfo: The Asari have a far greater understanding of Eezo than many others due
     to their world being naturally rich in it. Asari mining engineers are now employed
     throughout Council space to streamline the harvesting the overall speed of harvesting.
+  researchTime: 0
+  costPalladium: 0
+  costIridiumm: 0
+  costNullElement: 0
   techIcon: {fileID: 768435787}
+  currentProcessBar: {fileID: 0}
 --- !u!1 &784920880
 GameObject:
   m_ObjectHideFlags: 0
@@ -3845,10 +3881,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   techName: KroganMercenaries
-  techDisplayName: Krogan mercenaries
   techInfo: Krogan units have been drafted into the fllet, their combat experiance
     make them valueable warriors.
+  researchTime: 0
+  costPalladium: 0
+  costIridiumm: 0
+  costNullElement: 0
   techIcon: {fileID: 864890255}
+  currentProcessBar: {fileID: 0}
 --- !u!1 &962121759
 GameObject:
   m_ObjectHideFlags: 0
@@ -4047,12 +4087,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   techName: KrogaArmorDesign
-  techDisplayName: Krogan Armor Design
   techInfo: Though Krogan scientists are largely scoffed at by tha galactic community,
     armor is one area in which they have consistenly excelled throughout history.
     By adapting Krogan armor construction techniques to starships, Council fleet survivability
     can be significantly increased.
+  researchTime: 0
+  costPalladium: 0
+  costIridiumm: 0
+  costNullElement: 0
   techIcon: {fileID: 1007421433}
+  currentProcessBar: {fileID: 0}
 --- !u!1 &1024718989
 GameObject:
   m_ObjectHideFlags: 0
@@ -4500,10 +4544,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   techName: TurianMilitaryCities
-  techDisplayName: Turian Military Cities
   techInfo: Cities on Desert worlds are militrarised in classic turian style, encouraging
     greater number of Turians to settle on such worlds.
+  researchTime: 0
+  costPalladium: 0
+  costIridiumm: 0
+  costNullElement: 0
   techIcon: {fileID: 1047185994}
+  currentProcessBar: {fileID: 0}
 --- !u!1 &1052435111
 GameObject:
   m_ObjectHideFlags: 0
@@ -4767,10 +4815,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   techName: AsariMegacities
-  techDisplayName: Asari Megacities
   techInfo: Expert Asari civic planners are emplyed by city leadership on Garden worlds,
     leading to more efficient cities with greater populations.
+  researchTime: 0
+  costPalladium: 0
+  costIridiumm: 0
+  costNullElement: 0
   techIcon: {fileID: 1136605286}
+  currentProcessBar: {fileID: 0}
 --- !u!1 &1141028578
 GameObject:
   m_ObjectHideFlags: 0
@@ -5504,11 +5556,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   techName: TurianDesignElements
-  techDisplayName: Turian Design Elements
   techInfo: Turian bulkhead construction techniques and damage control methods are
     adapted for use throughout the fleet, increasing the maximum hull points and passive
     repair rates of all hulls.
+  researchTime: 0
+  costPalladium: 0
+  costIridiumm: 0
+  costNullElement: 0
   techIcon: {fileID: 1302166660}
+  currentProcessBar: {fileID: 0}
 --- !u!1 &1315737493
 GameObject:
   m_ObjectHideFlags: 0
@@ -7142,12 +7198,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   techName: EinsteinCarrier
-  techDisplayName: 'Einstein carrier '
   techInfo: Access to the heavier Alliance carrier, the Einstein class, is granted.
     this large carrier has the defences needed to operate in the midst of battle,
     as well as carrying a large number of infantry and their landing craft for securing
     planets in the name of the Council.
+  researchTime: 0
+  costPalladium: 0
+  costIridiumm: 0
+  costNullElement: 0
   techIcon: {fileID: 1600494204}
+  currentProcessBar: {fileID: 0}
 --- !u!114 &1600494207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7160,9 +7220,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   techName: 
-  techDisplayName: 
   techInfo: 
+  researchTime: 0
+  costPalladium: 0
+  costIridiumm: 0
+  costNullElement: 0
   techIcon: {fileID: 0}
+  currentProcessBar: {fileID: 0}
 --- !u!1 &1609887812
 GameObject:
   m_ObjectHideFlags: 0
@@ -7436,12 +7500,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   techName: FerroUraniumSlogs
-  techDisplayName: Ferro-Uranium Slogs
   techInfo: Use of significantly harder materials to create the ammunition blocks
     of mass accelertor weapons result in a slug that retains its shape much longer
     upon impact. This improvement increases the damage dealt by all mass accelerator
     weapon
+  researchTime: 0
+  costPalladium: 0
+  costIridiumm: 0
+  costNullElement: 0
   techIcon: {fileID: 1658717205}
+  currentProcessBar: {fileID: 0}
 --- !u!114 &1658717209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7571,9 +7639,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   techName: CSecConscription
-  techDisplayName: C-sec conscription
   techInfo: Local militia have been conscripted to C-Sec to bolster their unit numbers.
+  researchTime: 0
+  costPalladium: 0
+  costIridiumm: 0
+  costNullElement: 0
   techIcon: {fileID: 1679461064}
+  currentProcessBar: {fileID: 0}
 --- !u!1 &1691109957
 GameObject:
   m_ObjectHideFlags: 0
@@ -7846,9 +7918,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   techName: AsariHighCommand
-  techDisplayName: Asari High Command
   techInfo: Commando units will be deployed throughout the fleet.
+  researchTime: 0
+  costPalladium: 0
+  costIridiumm: 0
+  costNullElement: 0
   techIcon: {fileID: 1696110149}
+  currentProcessBar: {fileID: 0}
 --- !u!1 &1707524159
 GameObject:
   m_ObjectHideFlags: 0
@@ -7931,12 +8007,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   techName: EfficientRailTracks
-  techDisplayName: Efficient Rail Tracks
   techInfo: Volus efficiency specialists apply their knowledge to the desing of mass
     accelerator weapon. Resultant improvement to the rail elemnts of the weapon allow
     a higher velocity slug to be fired, increasing the damage of all mass acceleator
     weapons.
+  researchTime: 0
+  costPalladium: 0
+  costIridiumm: 0
+  costNullElement: 0
   techIcon: {fileID: 1707524161}
+  currentProcessBar: {fileID: 0}
 --- !u!1 &1733316951
 GameObject:
   m_ObjectHideFlags: 0
@@ -8093,12 +8173,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   techName: LowerProjectiveMass
-  techDisplayName: 'Lower Projective Mass '
   techInfo: Mass effect field used in accelerators are enhanced by Salarian engineers
     to further lower the mass of projectiles before firing, resultuing in an even
     higher projectile velocity. This will further increase the damage of all mass
     accelerator weapons.
+  researchTime: 0
+  costPalladium: 0
+  costIridiumm: 0
+  costNullElement: 0
   techIcon: {fileID: 1785682159}
+  currentProcessBar: {fileID: 0}
 --- !u!1 &1789319022
 GameObject:
   m_ObjectHideFlags: 0
@@ -9029,12 +9113,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   techName: SilarisDistribution
-  techDisplayName: Silaris Distribution
   techInfo: The Asasi release production specifications for their advanced Silaris
     armor to the rest of the Concuil forces. With this advanced armor being applied
     to critical sections or all ships, Council fleet survivability is significcantly
     increased.
+  researchTime: 0
+  costPalladium: 0
+  costIridiumm: 0
+  costNullElement: 0
   techIcon: {fileID: 1987332836}
+  currentProcessBar: {fileID: 0}
 --- !u!1 &1995301616
 GameObject:
   m_ObjectHideFlags: 0
@@ -9457,12 +9545,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   techName: HawkingCarrier
-  techDisplayName: Hawking carrier
   techInfo: The Systems Alliance eagerly grants the Coouncil fleet production rights
     for the smaller of their carrier designs. this ship is an efficient fighter carrying
     platform, but lacks severely in defense, forcing it to operte ont he edges of
     a battle.
+  researchTime: 0
+  costPalladium: 0
+  costIridiumm: 0
+  costNullElement: 0
   techIcon: {fileID: 2072236085}
+  currentProcessBar: {fileID: 0}
 --- !u!114 &2072236088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9475,9 +9567,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   techName: 
-  techDisplayName: 
   techInfo: 
+  researchTime: 0
+  costPalladium: 0
+  costIridiumm: 0
+  costNullElement: 0
   techIcon: {fileID: 0}
+  currentProcessBar: {fileID: 0}
 --- !u!1 &2073238035
 GameObject:
   m_ObjectHideFlags: 0
@@ -9509,6 +9605,7 @@ MonoBehaviour:
   galaxyStarPrefabs: []
   solarSystemPrefabs: []
   starCount: 0
+  fromGalaxy: 0
 --- !u!4 &2073238037
 Transform:
   m_ObjectHideFlags: 0
@@ -9615,11 +9712,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   techName: KroganHardiness
-  techDisplayName: Krogan Hardiness
   techInfo: "Korgan settlers are capable of setting up colonies almost anywhere. With
     Council support, Desert worlds receive additional Krogan settlers who set up towns
     in even the harshest of the world\u2019s environments."
+  researchTime: 0
+  costPalladium: 0
+  costIridiumm: 0
+  costNullElement: 0
   techIcon: {fileID: 2100843180}
+  currentProcessBar: {fileID: 0}
 --- !u!1 &2128853667
 GameObject:
   m_ObjectHideFlags: 0

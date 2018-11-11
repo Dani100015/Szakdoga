@@ -10,6 +10,8 @@ class TechTreeControl : MonoBehaviour {
 
     //Image[] techPanelImages
 
+    Vector3 activePosition;
+    Vector3 deactivePosition;
     void Start()
     {
         techPanel = GameObject.Find("TechPanel");
@@ -21,14 +23,19 @@ class TechTreeControl : MonoBehaviour {
         }
         techCategories[0].SetActive(true);  //Firt category active
 
-        techPanel.SetActive(false);
+        activePosition = new Vector3(80, 100 , 0f);
+        deactivePosition = techPanel.transform.localPosition;
+
+        techPanel.transform.localPosition = deactivePosition;
+        //Debug.Log("Tech position: " + techPanel.transform.localPosition);
+
     }
 
     public void SetActiveCurrentTechCategory(GameObject currentTechCategory)
     {
         for (int i = 0; i < techCategories.Length; i++)
         {
-            techCategories[i].SetActive(false);
+            techCategories[i].transform.gameObject.SetActive(false);
         }
         currentTechCategory.SetActive(true);
     }
@@ -36,13 +43,14 @@ class TechTreeControl : MonoBehaviour {
     public void SetActiveTechPanel(GameObject techPanel)
     {
 
-        if (techPanel.activeSelf == false)
+        //Debug.Log(techPanel.transform.position);
+        if (techPanel.transform.localPosition == deactivePosition)
         {
-            techPanel.SetActive(true);
+            techPanel.transform.localPosition = activePosition;
         }
-        else if (techPanel.activeSelf == true)
+        else if (techPanel.transform.localPosition == activePosition)
         {
-            techPanel.SetActive(false);
+            techPanel.transform.localPosition = deactivePosition;
         }
     }
 

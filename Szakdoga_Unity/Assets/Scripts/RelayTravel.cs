@@ -32,16 +32,22 @@ class RelayTravel : MonoBehaviour {
 
     bool isRelayPanelActive = true;
 
+
+    Vector3 activePosition;
+    Vector3 deactivePosition;
+
     void Awake()
     {
         itemView = GameObject.Find("RelayTravelPanel").GetComponent<ScrollRect>();
         itemContents = GameObject.Find("RelayListContent");
         itemPrefab = (GameObject)Resources.Load("Prefabs/GUI/Item1", typeof(GameObject));
+
+        game = GameObject.Find("Game").GetComponent<Game>();
+        setSystem = GameObject.Find("SolarSystemGenerator").GetComponent<SetSolarSystems>();
     }
     void Start () {
 
-        game = GameObject.Find("Game").GetComponent<Game>();
-        setSystem = GameObject.Find("Game").GetComponent<SetSolarSystems>();
+        
 
         items = new List<GameObject>();
         changes = new List<ChangeSolarSytem>();
@@ -49,55 +55,64 @@ class RelayTravel : MonoBehaviour {
         systemGObject = transform.parent.gameObject;
         Systems = game.Systems;
 
-        //Debug.Log(systemGObject.name);
+        system = Systems.Find(x => x.Name == setSystem.currentSystemPrefab.name);
 
-        system = Systems.Find(x => x.Name == systemGObject.name);
-
-        currentSolarSystemGObject = game.solarSystemPrefabs.Find(x => x.name == game.currentSolarSystem.Name);
-
-
-
-        neighbourSystems = system.neighbourSystems;
-        itemView.enabled = false;
-
-        
+        activePosition = new Vector3(150,400 ,0f);
+        deactivePosition = itemView.transform.position;
     }
 
-    void GenerateNeighbourSystemList(int starCount)
+    void GenerateNeighbourSystemList(SolarSystem system)
     {
-        for (int i = 0; i < starCount; i++)
+        for (int i = 0; i < system.neighbourSystems.Count; i++)
         {
             GameObject scrollItemObject = Instantiate(itemPrefab);
             items.Add(scrollItemObject);
             scrollItemObject.AddComponent<ChangeSolarSytem>();
-            scrollItemObject.transform.SetParent(itemContents.transform, false);           
+            scrollItemObject.transform.SetParent(itemContents.transform, false);
+
 
             scrollItemObject.name = "Item" + i;
             scrollItemObject.AddComponent<Button>();
             
+
             solarSystemText = scrollItemObject.transform.Find("ItemText").GetComponent<Text>();
-            solarSystemText.text = neighbourSystems[i].Name;
+            solarSystemText.text = system.neighbourSystems[i].Name;
 
         }
 
     }
+    void Update()
+    {
+        if (system.Name != game.currentSolarSystem.Name)
+        {
+            isRelayPanelActive = !isRelayPanelActive;
+            itemView.transform.position = deactivePosition;
+            for (int i = 0; i < itemContents.transform.childCount; i++)
+            {               
+                Destroy(itemContents.transform.GetChild(i).gameObject);            
+            }
+
+            system = Systems.Find(x => x.Name == setSystem.currentSystemPrefab.name);
+        }
+    }
+
 
     void OnMouseDown()
     {
+        system = Systems.Find(x => x.Name == setSystem.currentSystemPrefab.name);
         if (isRelayPanelActive == true)
         {
-            itemView.gameObject.SetActive(true);         
-            GenerateNeighbourSystemList(neighbourSystems.Count);
+            itemView.transform.position = activePosition;
+            GenerateNeighbourSystemList(system);
         }
         else if (isRelayPanelActive == false)
         {
-            itemView.gameObject.SetActive(false);
+            itemView.transform.position = deactivePosition;
             for (int i = 0; i < itemContents.transform.childCount; i++)
             {
                 Destroy(itemContents.transform.GetChild(i).gameObject);
             }
         }
-
         isRelayPanelActive = !isRelayPanelActive;
 
     }

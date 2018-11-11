@@ -14,29 +14,34 @@ class SetSolarSystems : MonoBehaviour {
     public List<SolarSystem> Systems;
     public List<GameObject> SystemPrefabs = new List<GameObject>();
 
+    bool fromGalaxy;
+
     void Awake()
     {
+        fromGalaxy = false;
         game = GameObject.Find("Game").GetComponent<Game>();
-        setSystems = gameObject.GetComponent<SetSolarSystems>();
+        setSystems = GameObject.Find("SolarSystemGenerator").GetComponent<SetSolarSystems>();
+
 
     }
     void Start ()
     {
         Systems = game.Systems;
-
         GenerateSolarSystemPrefabs(game.Systems.Count);
-
         startSystemPrefab = SystemPrefabs.Find(x => x.name == game.startSolarSystem.Name);
         currentSystemPrefab = startSystemPrefab;
-
         InitialSolarSystems(currentSystemPrefab);
-              
     }
 
 	void Update () {
 
+        if (game.currentSolarSystem.Name != currentSystemPrefab.name)
+        {
+            fromGalaxy = true;
+            InitialSolarSystems(SystemPrefabs.Find(x => x.name == game.currentSolarSystem.Name));
+        }
     }
-
+        
     public void InitialSolarSystems(GameObject solarSystem)
     {    
         for (int i = 0; i < Systems.Count; i++)
@@ -60,6 +65,7 @@ class SetSolarSystems : MonoBehaviour {
     
     void SetCurrentSolarSystem(GameObject solarSystem)
     {
+
         foreach (MeshRenderer mesh in solarSystem.GetComponentsInChildren<MeshRenderer>())
         {
             mesh.enabled = true;
@@ -69,6 +75,7 @@ class SetSolarSystems : MonoBehaviour {
             line.enabled = true;
         }
         solarSystem.transform.Find("Star").gameObject.SetActive(true);
+        solarSystem.transform.Find("Star").GetComponent<MeshRenderer>().enabled = true;
 
         currentSystemPrefab = solarSystem;
     }
@@ -81,12 +88,19 @@ class SetSolarSystems : MonoBehaviour {
             SystemPrefabs[i].transform.position = Vector3.zero;
             SystemPrefabs[i].name = Systems[i].Name;
 
+
+
             GameObject asteroid = Instantiate((GameObject)Resources.Load("Prefabs/Palladium Asteroid", typeof(GameObject)));
             asteroid.GetComponent<ResourceObject>().Capacity = Random.Range(100, 1000);
             asteroid.transform.position = new Vector3(200, 0, 100);
             asteroid.transform.SetParent(SystemPrefabs[i].transform.Find("Planets").transform);
-            //asteroid.GetComponent<ResourceObject>().Type = resourceType.
-            //Systems[i].solarSystemGObject = SystemPrefabs[i];
+        }
+
+        List<GameObject> planets;
+        for (int i = 0; i < SystemPrefabs.Count;  i++)
+        {
+            planets = new List<GameObject>();
+            
         }
     }
 }

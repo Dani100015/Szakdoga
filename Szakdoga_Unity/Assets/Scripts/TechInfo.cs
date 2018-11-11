@@ -45,7 +45,6 @@ class TechInfo : MonoBehaviour {
         playerTech = game.playerTechList;
         currentTech = Tech.techList.Find(x => x.Name == gameObject.name);
 
-        Debug.Log(transform.Find("Background").GetComponent<Image>());
         processBacground = transform.Find("Background").GetComponent<Image>();
         currentProcessBar = transform.Find("Background").transform.Find("ProcessBar").GetComponent<Image>();
 
@@ -58,8 +57,7 @@ class TechInfo : MonoBehaviour {
         costNullElement = currentTech.EezoCost;
 
         techIcon = transform.Find("Image").GetComponent<Image>();      
-    
-        
+         
 
         #region EventTrigger
 
@@ -81,7 +79,7 @@ class TechInfo : MonoBehaviour {
         trigger.triggers.Add(entry);
         #endregion
 
-        offset = new Vector3(200, -200, 0);
+        offset = new Vector3(150, -150, 0);
         techTipPanel.SetActive(false);
         processBacground.gameObject.SetActive(false);
     }
@@ -157,10 +155,6 @@ class TechInfo : MonoBehaviour {
     {
         float ratio = hitPoint / maxHitPoint;
         currentProcessBar.GetComponent<RectTransform>().localScale = new Vector3(ratio, 1, 1);
-
-        //Debug.Log(ratio);
-        Debug.Log(maxHitPoint);
-        Debug.Log(hitPoint);
     }
 
     void ResresearchProgress(float num)

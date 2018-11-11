@@ -22,55 +22,8 @@ public class PlanetRingRenderer : MonoBehaviour {
     
     void Start()
     {
-        planets = new List<GameObject>();
-        lines = new List<LineRenderer>();
-
-        segments = 360;
-        //LineObject = transform.parent.transform.Find("LineContainer").gameObject;
-        //central = transform.parent.transform.Find("Star");
-
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            planets.Add(transform.GetChild(i).gameObject);
-        }
-
-        for (int i = 0; i < planets.Count; i++)
-        {
-            LineObject = new GameObject();
-            LineObject.AddComponent<LineRenderer>();
-
-            
-
-            xradius = planets[i].transform.position.x;
-            zradius = planets[i].transform.position.z;
-
-            float distance = Mathf.Sqrt((xradius * xradius) + (zradius * zradius));
-
-            xradius = distance;
-            zradius = distance;
-
-            line = LineObject.GetComponent<LineRenderer>();
-
-            line.startWidth = (1f);
-            line.endWidth = (1f);
-
-            line.material.color = Color.cyan;
-            //line.material = new Material(Shader.Find("Ring"));
-
-
-            line.positionCount = (segments + 1);
-            line.useWorldSpace = false;
-
-            LineObject.transform.SetParent(transform.parent.transform.Find("LineContainer"));
-
-            CreatePoints(line);
-            lines.Add(line);
-
-            line.receiveShadows = false;
-            line.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-
-        }
-        
+        GeneratePlanetLine();
+        GenerateSystemBorderLine();
     }
 
 
@@ -95,5 +48,96 @@ public class PlanetRingRenderer : MonoBehaviour {
         }
 
 
+    }
+
+    void GeneratePlanetLine()
+    {
+        planets = new List<GameObject>();
+        lines = new List<LineRenderer>();
+
+        segments = 360;
+        //LineObject = transform.parent.transform.Find("LineContainer").gameObject;
+        //central = transform.parent.transform.Find("Star");
+
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            planets.Add(transform.GetChild(i).gameObject);
+        }
+
+        for (int i = 0; i < planets.Count; i++)
+        {
+            LineObject = new GameObject();
+            LineObject.AddComponent<LineRenderer>();
+
+            xradius = planets[i].transform.position.x;
+            zradius = planets[i].transform.position.z;
+
+            float distance = Mathf.Sqrt((xradius * xradius) + (zradius * zradius));
+
+            xradius = distance;
+            zradius = distance;
+
+            line = LineObject.GetComponent<LineRenderer>();
+
+            line.startWidth = (0.5f);
+            line.endWidth = (0.5f);
+
+
+            line.material.color = Color.grey;
+            line.material.mainTextureOffset = new Vector2(100, 100);
+            //line.material = new Material(Shader.Find("Ring"));
+
+
+            line.positionCount = (segments + 1);
+            line.useWorldSpace = false;
+
+            LineObject.transform.SetParent(transform.parent.transform.Find("LineContainer"));
+
+            line.gameObject.layer = 15;
+
+            CreatePoints(line);
+            lines.Add(line);
+
+            line.receiveShadows = false;
+            line.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+
+        }
+    }
+
+    void GenerateSystemBorderLine()
+    { 
+        LineObject = new GameObject();
+        LineObject.AddComponent<LineRenderer>();
+
+        xradius = 200;
+        zradius = 200;
+
+        float distance = Mathf.Sqrt((xradius * xradius) + (zradius * zradius));
+
+        xradius = distance;
+        zradius = distance;
+
+        line = LineObject.GetComponent<LineRenderer>();
+
+        line.startWidth = (1f);
+        line.endWidth = (1f);
+
+        line.material.color = Color.cyan;
+        line.material.mainTextureOffset = new Vector2(100, 100);
+        //line.material = new Material(Shader.Find("Ring"));
+
+
+        line.positionCount = (segments + 1);
+        line.useWorldSpace = false;
+
+        LineObject.transform.SetParent(transform.parent.transform.Find("LineContainer"));
+
+        CreatePoints(line);
+        lines.Add(line);
+
+        line.gameObject.layer = 15;
+
+        line.receiveShadows = false;
+        line.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
     }
 }
