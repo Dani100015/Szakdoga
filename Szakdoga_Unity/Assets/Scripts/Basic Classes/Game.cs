@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 class Game : MonoBehaviour {
 
@@ -72,7 +73,6 @@ class Game : MonoBehaviour {
         }
 
         SharedIcons = Resources.LoadAll("Icons/Shared");
-
         #endregion
 
         GenerateSolarSystems(starCount);

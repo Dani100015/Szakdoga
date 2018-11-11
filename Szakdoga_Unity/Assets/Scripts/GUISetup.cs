@@ -229,7 +229,7 @@ public class GUISetup : MonoBehaviour
                     GUIStyle Icon = new GUIStyle();
                     Icon.normal.background = unitObj.MenuIcon;
                     Icon.hover.background = unitObj.MenuIconRo;
-                    if (GUI.Button(new Rect(205 + (offset * (j % 4)), Screen.height - 100 + (offset * (int)(j / 4)), 46, 39), "", Icon))
+                    if (GUI.Button(new Rect(125 + (offset * (j % 4)), Screen.height - 100 + (offset * (int)(j / 4)), 46, 39), "", Icon))
                     {
                         currentStructure.TrainingQueue.RemoveAt(i);
                         if (currentStructure.TrainingQueue.Count == 0)
