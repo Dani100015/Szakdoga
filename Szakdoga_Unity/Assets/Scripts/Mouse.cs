@@ -1,6 +1,7 @@
 ﻿using Pathfinding;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -42,8 +43,7 @@ public class Mouse : MonoBehaviour
     private static Vector2 MouseDragStart;
     private static float clickDragZone = 1.3f;
     public LayerMask MouseLayerMask;
-    public bool MoveMode;
-    public bool AttackMode;
+    public bool MoveMode, AttackMode, RepairMode;
 
     //GUI
     private float BoxWidth;
@@ -106,6 +106,22 @@ public class Mouse : MonoBehaviour
                     }
                     AttackMode = false;
                 }
+
+                if (RepairMode)
+                {
+                    for (int i = 0; i < CurrentlySelectedUnits.Count; i++)
+                    {
+                        AIDestinationSetter setter = (CurrentlySelectedUnits[i] as GameObject).GetComponent<AIDestinationSetter>();
+                        Unit unit = (CurrentlySelectedUnits[i] as GameObject).GetComponent<Unit>();
+                        if (unit.isGatherer && hit.collider.gameObject.layer == LayerMask.NameToLayer("Unit") &&
+                            !Game.players.Where(x => x.empireName.Equals(unit.Owner)).SingleOrDefault().enemies.Contains(Game.players.Where(x => x.empireName.Equals(hit.collider.transform.GetComponent<Unit>().Owner)).SingleOrDefault()))
+                        {
+                            setter.target = hit.collider.gameObject.transform;
+                            setter.ai.isStopped = false;
+                        }
+                    }
+                    RepairMode = false;
+                }
                 #endregion
             }
             else if (Input.GetMouseButton(0))
@@ -148,7 +164,7 @@ public class Mouse : MonoBehaviour
                         SelectRally(hit);
                         RightClickPoint = hit.point;
                         DeselectTargets();
-                    }                   
+                    }
                 }
                 #endregion
 
@@ -415,7 +431,8 @@ public class Mouse : MonoBehaviour
     }
     public void OnRepairClick()
     {
-
+        if (!RepairMode)
+            RepairMode = true;
     }
 
     public void EndModes()
@@ -428,6 +445,11 @@ public class Mouse : MonoBehaviour
         if (AttackMode)
         {
             AttackMode = false;
+            return;
+        }
+        if (RepairMode)
+        {
+            RepairMode = false;
             return;
         }
     }

@@ -20,7 +20,7 @@ class SolarSystemPanelInfo : MonoBehaviour
     void Awake()
     {
         game = GameObject.Find("Game").GetComponent<Game>();     
-        setSystems = GameObject.Find("SolarSystemGenerator").GetComponent<SetSolarSystems>();
+        //setSystems = GameObject.Find("SolarSystemGenerator").GetComponent<SetSolarSystems>();
 
         SolarSystemNameText = transform.Find("TextSolarSystem").GetComponent<Text>();
     }

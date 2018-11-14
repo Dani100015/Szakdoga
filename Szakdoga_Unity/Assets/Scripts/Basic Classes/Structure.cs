@@ -27,7 +27,8 @@ public class Structure : Unit
     }
   
     IEnumerator Train()
-    {       
+    {
+        Debug.Log("indul");
         //Technológiát fejlesztünk?
         if (TrainingQueue[0] is Tech)
             yield return null;
@@ -59,33 +60,6 @@ public class Structure : Unit
         //Kiképzett egység hozzáadása az egységek listához, fejlesztésekkel való módosításhoz
         Game.players.Where(x => x.empireName.Equals(Owner)).SingleOrDefault().units.Add(TrainedUnit);
 
-        TrainingQueue.RemoveAt(0);
-        if (TrainingQueue.Count != 0)
-        {
-            if (TrainingQueue[0] is Tech)
-                StartCoroutine("Research");
-            else StartCoroutine("Train");
-        }
-        Debug.Log(TrainingQueue.Count);
-        yield return null;
-    }
-
-    IEnumerator Research(Tech tech)
-    {
-        //Egységet képzünk ki?
-        if (TrainingQueue[0] is GameObject)
-            yield return null;
-
-        //Az épület éppen kiképez/fejleszt
-        Tech ResearchingTech = TrainingQueue[0] as Tech;
-
-        for (int TimeLeft = 0; TimeLeft < ResearchingTech.ResearchTime; TimeLeft++)
-        {
-            yield return new WaitForSeconds(1f);
-        }
-
-        Game.ResearchEffects(Game.players.Where(x => x.empireName.Equals(Owner)).SingleOrDefault(), tech);
-              
         TrainingQueue.RemoveAt(0);
         if (TrainingQueue.Count != 0)
         {

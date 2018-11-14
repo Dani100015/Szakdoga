@@ -24,7 +24,7 @@ namespace Pathfinding
         public Transform tempTarget;
         public IAstarAI ai;
         Mouse mouse;
-        public bool isAttacking, isGathering;
+        public bool isAttacking, isGathering, isRepairing;
 
         void OnEnable()
         {
@@ -151,7 +151,7 @@ namespace Pathfinding
                 //Debug.Log(Game.players.Where(x => x.empireName.Equals(unit.Owner)).SingleOrDefault().enemies.Count);
                 if (Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject() && !GUISetup.GhostActive)
                 {
-                    //Jobb kattra abba hagyja a gyûjtést
+                    #region Jobb katt parancsvisszavonások
                     if (isGathering)
                     {
                         unit.StopCoroutine("GatherTarget");
@@ -166,6 +166,14 @@ namespace Pathfinding
                         target = null;
                     }
 
+                    if (isRepairing)
+                    {
+                        unit.StopCoroutine("Repair");
+                        isRepairing = false;
+                        target = null;
+                    }
+                    #endregion
+
                     if (unit.CurrentlyBuiltObject != null)
                     {
                         Structure building = unit.CurrentlyBuiltObject.GetComponent<Structure>();
@@ -173,7 +181,7 @@ namespace Pathfinding
                         Game.currentPlayer.palladium += building.palladiumCost;
                         Game.currentPlayer.nullElement += building.eezoCost;
 
-                        GUISetup.UpdatePlayerInfoBar();
+                        GameObject.Find("Game").GetComponent<GUISetup>().UpdatePlayerInfoBar();
 
                         unit.StopCoroutine("Build");
                         unit.CurrentlyBuiltObject = null;                    
@@ -203,11 +211,46 @@ namespace Pathfinding
                             if (ai != null && target != null) ai.destination = target.transform.position;
                             if (ai != null) ai.destination = mouse.RightClickPoint;
                             unit.ActionsQueue.Clear();
+                            Debug.Log(ai.destination);
                         }
                         else mouse.EndModes();
                     }
                 }
             }
+
+            #region Javítás
+            if (target != null && target.gameObject.layer == LayerMask.NameToLayer("Unit") && target.gameObject.GetComponent<Structure>() != null &&
+                !Game.players.Where(x => x.empireName.Equals(unit.Owner)).SingleOrDefault().enemies.Contains(Game.players.Where(x => x.empireName.Equals(target.GetComponent<Unit>().Owner)).SingleOrDefault()))
+            {
+                if (Vector3.Distance(target.gameObject.transform.position, gameObject.transform.position) < 5)
+                {
+                    ai.isStopped = true;
+                    var q = new Quaternion();
+                    if ((target.position - transform.position) != Vector3.zero)
+                        q = Quaternion.LookRotation(target.position - transform.position);
+                    transform.rotation = Quaternion.RotateTowards(transform.rotation, q, 150 * Time.deltaTime);
+                    //Csak akkor javít, ha nincs maxon az élete
+                    if (transform.rotation == q)
+                    {
+                        if (target.gameObject.GetComponent<Structure>().currentHealth < target.gameObject.GetComponent<Structure>().maxHealth)
+                        {
+                            if (!isRepairing)
+                            {
+                                Debug.Log("Belép");
+                                unit.StartCoroutine("Repair", target);
+                                isRepairing = true;
+                            }
+                        }
+                        else
+                        {
+                            unit.StopCoroutine("Repair");
+                            isRepairing = false;
+                            target = null;
+                        }
+                    }
+                }
+            }
+            #endregion
 
             #region Cselekvési sor
             //Cselekvési sorban levõ parancsok végrehajtása
@@ -268,8 +311,13 @@ namespace Pathfinding
                                 target.GetComponent<Collider>().enabled = false;
                                 AstarPath.active.UpdateGraphs(target.GetComponent<Collider>().bounds);
                             }
-                            if (Game.players.Where(x => x.empireName.Equals(target.GetComponent<Unit>().Owner)).SingleOrDefault().units.Contains(target.gameObject))
-                                Game.players.Where(x => x.empireName.Equals(target.GetComponent<Unit>().Owner)).SingleOrDefault().units.Remove(target.gameObject);
+                            Unit unitObj = target.GetComponent<Unit>();
+                            if (Game.players.Where(x => x.empireName.Equals(unitObj.Owner)).SingleOrDefault().units.Contains(target.gameObject))
+                            {
+                                Game.players.Where(x => x.empireName.Equals(unitObj.Owner)).SingleOrDefault().units.Remove(target.gameObject);
+                                Game.players.Where(x => x.empireName.Equals(unitObj.Owner)).SingleOrDefault().CurrentPopulation -= target.GetComponent<Unit>().PopulationCost;
+                                GameObject.Find("Game").GetComponent<GUISetup>().UpdatePlayerInfoBar();
+                            }
                             Destroy(target.gameObject);
                             target = null;
                             isAttacking = false;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using Pathfinding;
 
 class SetSolarSystems : MonoBehaviour {
 
@@ -15,14 +16,13 @@ class SetSolarSystems : MonoBehaviour {
     public List<GameObject> SystemPrefabs = new List<GameObject>();
 
     bool fromGalaxy;
+    public AstarData active;
 
     void Awake()
     {
         fromGalaxy = false;
         game = GameObject.Find("Game").GetComponent<Game>();
         setSystems = GameObject.Find("SolarSystemGenerator").GetComponent<SetSolarSystems>();
-
-
     }
     void Start ()
     {
@@ -30,7 +30,7 @@ class SetSolarSystems : MonoBehaviour {
         GenerateSolarSystemPrefabs(game.Systems.Count);
         startSystemPrefab = SystemPrefabs.Find(x => x.name == game.startSolarSystem.Name);
         currentSystemPrefab = startSystemPrefab;
-        InitialSolarSystems(currentSystemPrefab);
+        InitialSolarSystems(currentSystemPrefab); 
     }
 
 	void Update () {
@@ -58,9 +58,8 @@ class SetSolarSystems : MonoBehaviour {
                     line.enabled = false;
                 }
             }      
-        }
-        SetCurrentSolarSystem(solarSystem);                      
-            
+        }       
+        SetCurrentSolarSystem(solarSystem);                                  
     }
     
     void SetCurrentSolarSystem(GameObject solarSystem)
@@ -76,19 +75,28 @@ class SetSolarSystems : MonoBehaviour {
         }
         solarSystem.transform.Find("Star").gameObject.SetActive(true);
         solarSystem.transform.Find("Star").GetComponent<MeshRenderer>().enabled = true;
-
-        currentSystemPrefab = solarSystem;
+        AstarPath.active = game.GetComponent<AstarPath>();
     }
 
     public void GenerateSolarSystemPrefabs(int starCount)
     {
+        //AstarData data = AstarPath.active.data;
+        //int width = 300;
+        //int depth = 300;
+        //float nodeSize = 2;
+        ////Pathfindinghoz hozzáadunk egy új gráfot
+        //GridGraph gg = data.AddGraph(typeof(GridGraph)) as GridGraph;
+        ////Beállítjuk annak középpontját, méreteit
+        //gg.center = new Vector3(0, -5, 0);
+        //gg.SetDimensions(width, depth, nodeSize);
+        ////Szkennelünk
+        //AstarPath.active.Scan();
+        
         for (int i = 0; i < Systems.Count; i++)
         {
             SystemPrefabs.Add(Instantiate((GameObject)Resources.Load("Prefabs/SolarSystem/SolarSystemPrefab", typeof(GameObject))));
             SystemPrefabs[i].transform.position = Vector3.zero;
-            SystemPrefabs[i].name = Systems[i].Name;
-
-
+            SystemPrefabs[i].name = Systems[i].Name;                               
 
             GameObject asteroid = Instantiate((GameObject)Resources.Load("Prefabs/Palladium Asteroid", typeof(GameObject)));
             asteroid.GetComponent<ResourceObject>().Capacity = Random.Range(100, 1000);
@@ -101,7 +109,7 @@ class SetSolarSystems : MonoBehaviour {
         {
             planets = new List<GameObject>();
             
-        }
+        }        
     }
 }
 

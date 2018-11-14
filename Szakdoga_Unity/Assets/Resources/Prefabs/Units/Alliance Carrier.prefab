@@ -325,14 +325,19 @@ MonoBehaviour:
   CurrentTargetLocation: {x: 0, y: 0, z: 0}
   Range: 6
   Projectile: {fileID: 0}
-  attackSpeed: 1
-  attackDamage: 10
+  attackSpeed: 2
+  attackDamage: 30
   maxHealth: 1500
   currentHealth: 1500
   trainingTime: 0
   palladiumCost: 150
   iridiumCost: 285
   eezoCost: 70
+  HealthIncrement: 500
+  AttackIncrement: 20
+  PopulationCost: 6
+  Armor: 0
+  ArmorIncrement: 0
   aMove: 0
   isWalkable: 1
   Owner: Peti
@@ -440,6 +445,7 @@ MonoBehaviour:
   tempTarget: {fileID: 0}
   isAttacking: 0
   isGathering: 0
+  isRepairing: 0
 --- !u!119 &119729419007497198
 Projector:
   m_ObjectHideFlags: 1

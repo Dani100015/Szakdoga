@@ -263,6 +263,11 @@ MonoBehaviour:
   palladiumCost: 30
   iridiumCost: 75
   eezoCost: 0
+  HealthIncrement: 50
+  AttackIncrement: 2
+  PopulationCost: 0
+  Armor: 0
+  ArmorIncrement: 0
   aMove: 0
   isWalkable: 1
   Owner: Peti
@@ -292,6 +297,7 @@ MonoBehaviour:
   tempTarget: {fileID: 0}
   isAttacking: 0
   isGathering: 0
+  isRepairing: 0
 --- !u!114 &114764502702641582
 MonoBehaviour:
   m_ObjectHideFlags: 1

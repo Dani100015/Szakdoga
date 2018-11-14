@@ -14,13 +14,15 @@ public class Player {
     public List<GameObject> units; //
     public List<Player> allies;
     public List<Player> enemies;
+    public int MaxPopulation;
+    public int CurrentPopulation;
 
     public int palladium;      //
     public int iridium;        //Nyersanyagok
     public int nullElement;    //
 
-    int Population;       //Egységek
-    int maxPopulation;    //Max egységek
+    public int Population;       //Egységek
+    public int maxPopulation;    //Max egységek
 
     //Egységek importálása
     public List<GameObject> BuildableUnits = new List<GameObject>();
@@ -28,6 +30,8 @@ public class Player {
 
     public Player(int pall, int irid, int eezo, string name, Species spec)
     {
+        maxPopulation = 50;
+        CurrentPopulation = 0;
         palladium = pall;
         iridium = irid;
         nullElement = eezo;
@@ -35,7 +39,7 @@ public class Player {
         species = spec;
         units = new List<GameObject>();
         allies = new List<Player>();
-        enemies = new List<Player>();
+        enemies = new List<Player>();       
     }
 
     public int Palladium

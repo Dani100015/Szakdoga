@@ -37,6 +37,8 @@ public class GUISetup : MonoBehaviour
         GhostMaterial = Resources.Load("Materials/GhostMaterial", typeof(Material)) as Material;
         GhostMaterialRed = Resources.Load("Materials/GhostMaterialRed", typeof(Material)) as Material;
         PlayerInfoContainer = GameObject.Find("GameCanvas").transform.Find("PlayerInfoBar").gameObject;
+        UpdatePlayerInfoBar();
+
     }
 
     /// <summary>
@@ -48,11 +50,12 @@ public class GUISetup : MonoBehaviour
     {
         if (Game.currentPlayer.iridium - unit.iridiumCost >= 0 &&
             Game.currentPlayer.palladium - unit.palladiumCost >= 0 &&
-            Game.currentPlayer.nullElement - unit.eezoCost >= 0)
+            Game.currentPlayer.nullElement - unit.eezoCost >= 0 && Game.currentPlayer.CurrentPopulation + unit.PopulationCost <= Game.currentPlayer.MaxPopulation)
         {
             Game.currentPlayer.iridium -= unit.iridiumCost;
             Game.currentPlayer.palladium -= unit.palladiumCost;
             Game.currentPlayer.nullElement -= unit.eezoCost;
+            Game.currentPlayer.CurrentPopulation += unit.PopulationCost;
 
             UpdatePlayerInfoBar();
 
@@ -79,11 +82,12 @@ public class GUISetup : MonoBehaviour
         UpdatePlayerInfoBar();
     }
 
-    public static void UpdatePlayerInfoBar()
+    public void UpdatePlayerInfoBar()
     {
         PlayerInfoContainer.transform.Find("TextIridium").GetComponent<Text>().text = "Iridium: " + Game.currentPlayer.iridium;
         PlayerInfoContainer.transform.Find("TextPalladium").GetComponent<Text>().text = "Palladium: " + Game.currentPlayer.palladium;
         PlayerInfoContainer.transform.Find("TextNullElement").GetComponent<Text>().text = "Null elem: " + Game.currentPlayer.nullElement;
+        PlayerInfoContainer.transform.Find("TextPopulation").GetComponent<Text>().text = "Pop: " + Game.currentPlayer.CurrentPopulation + "/" + Game.currentPlayer.MaxPopulation;       
     }
 
     void OnGUI()
@@ -110,6 +114,7 @@ public class GUISetup : MonoBehaviour
 
                     if (GUI.Button(new Rect(Screen.width - container.anchoredPosition.x - 5 + (offset * (j % 4)), Screen.height + container.anchoredPosition.y + 5 + (offset * (int)(j / 4)), 46, 39), content, Icon))
                     {
+                        Debug.Log(Game.currentPlayer.MaxPopulation);
                         if (BuildCostCheck(unitObj))
                         {
                             if (GhostActive)
@@ -245,6 +250,8 @@ public class GUISetup : MonoBehaviour
             DetailContainer.SetActive(true);
             DetailContainer.transform.Find("UnitName").GetComponent<Text>().text = Mouse.CurrentlyFocusedUnit.name;
             DetailContainer.transform.Find("Icon").transform.Find("UnitHP").GetComponent<Text>().text = Mouse.CurrentlyFocusedUnit.GetComponent<Unit>().maxHealth + " / " + Mouse.CurrentlyFocusedUnit.GetComponent<Unit>().currentHealth;
+            DetailContainer.transform.Find("UnitArmor").GetComponent<Text>().text = "Armor: " + Mouse.CurrentlyFocusedUnit.GetComponent<Unit>().Armor;
+
             if (Mouse.CurrentlyFocusedUnit.GetComponent<Unit>().attackDamage != 0)
             {
                 DetailContainer.transform.Find("UnitAttack").GetComponent<Text>().text = "Attack: " + Mouse.CurrentlyFocusedUnit.GetComponent<Unit>().attackDamage;
@@ -325,7 +332,6 @@ public class GUISetup : MonoBehaviour
                 Unit builder = Mouse.CurrentlyFocusedUnit.GetComponent<Unit>();
                 builder.CurrentlyBuiltObject = Game.currentPlayer.BuildableUnits[CurrentGhost];           
                 BuildCost(Game.currentPlayer.BuildableUnits[CurrentGhost].GetComponent<Structure>());              
-                Debug.Log(builder.CurrentlyBuiltObject.name);
                 builder.gameObject.GetComponent<AIDestinationSetter>().ai.destination = new Vector3(Mouse.currentMousePoint.x, 5f, Mouse.currentMousePoint.z);
                 builder.gameObject.GetComponent<AIDestinationSetter>().ai.isStopped = false;
                 builder.StartCoroutine("Build");

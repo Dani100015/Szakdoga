@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-class Game : MonoBehaviour {
+class Game : MonoBehaviour
+{
 
     List<SolarSystem> solars;
     public static List<Player> players;
@@ -39,7 +42,7 @@ class Game : MonoBehaviour {
             Destroy(gameObject);
         }
 
-        setSystems = GameObject.Find("SolarSystemGenerator").GetComponent<SetSolarSystems>();
+        //setSystems = GameObject.Find("SolarSystemGenerator").GetComponent<SetSolarSystems>();
 
 
         if (ParameterWatcher.firstInit)
@@ -65,15 +68,16 @@ class Game : MonoBehaviour {
         }
     }
 
-    void Start () {
+    void Start()
+    {
 
         #region Init
 
         //Játékosok inicializálása
         players = new List<Player>();
 
-        currentPlayer = new Player(10000, 10000, 10000, "Peti",Species.Human);
-        player2 = new Player(10000, 10000, 10000, "Sanyi",Species.Reaper);
+        currentPlayer = new Player(10000, 10000, 10000, "Peti", Species.Human);
+        player2 = new Player(10000, 10000, 10000, "Sanyi", Species.Reaper);
 
         currentPlayer.enemies.Add(player2);
         player2.enemies.Add(currentPlayer);
@@ -81,10 +85,12 @@ class Game : MonoBehaviour {
         players.Add(currentPlayer);
         players.Add(player2);
 
+        Debug.Log(Game.currentPlayer.MaxPopulation);
+
         //Egységek betöltése és játékosokhoz rendelése
         string path = "Prefabs/Units";
         object[] Units = Resources.LoadAll(path);
-        if (Units.Length>0)
+        if (Units.Length > 0)
         {
             for (int i = 0; i < Units.Length; i++)
             {
@@ -100,10 +106,25 @@ class Game : MonoBehaviour {
 
         SharedIcons = Resources.LoadAll("Icons/Shared");
         #endregion
-        
+
+        #region Induló elemek
+        //A pályán levő egységeket/épületeket a tulajdonosuk listáihoz rendeli
+        var goArray = FindObjectsOfType(typeof(GameObject));
+        List<GameObject> goList = new List<GameObject>();
+        for (int i = 0; i < goArray.Length; i++)
+        {
+            GameObject currentObject = goArray[i] as GameObject;
+            if (currentObject.GetComponent<Unit>() != null || currentObject.GetComponent<Structure>() != null)
+            {
+                players.Where(x => x.empireName.Equals(currentObject.GetComponent<Unit>().Owner)).SingleOrDefault().units.Add(currentObject);
+            }
+
+        }
+        #endregion
     }
 
-    void Update () {
+    void Update()
+    {
     }
 
     // void CheckForWin
@@ -166,7 +187,100 @@ class Game : MonoBehaviour {
 
     public static void ResearchEffects(Player player, Tech tech)
     {
+        switch (tech.name)
+        {
+            case "FerroUraniumSlogs":
+            case "EfficientRailTracks":
+            case "LowerProjectiveMass":
+                break;
 
+            case "HawkingCarrier":
+            case "YorkDreadnought":
+            case "EinsteinCarrier":
+                break;
+
+            case "TurianDesignElements":
+            case "HighStressMaterials":
+            case "QuarianMiracleWorkers":
+                IncreaseMaxHealth(player);
+                break;
+
+            case "KroganArmorDesign":
+            case "SilarisDistribution":
+                IncreaseArmor(player);
+                break;
+
+            case "RapidHarvesting":
+            case "QualityControl":
+            case "AncientMethods":
+                IncreaseGatherSpeed(player);
+                break;
+
+            case "CSecConscription":
+            case "KroganMercenaries":
+            case "AllianceDefenseBoard":
+            case "AsariHighCommand":
+            case "CitadelDefenceBoard":
+                IncreaseMaxPopulation(player);
+                break;
+
+        }
+    }
+
+    public static void IncreaseMaxPopulation(Player player)
+    {
+        player.MaxPopulation += 30;
+    }
+    public static void IncreaseGatherSpeed(Player player)
+    {
+        for (int i = 0; i < player.BuildableUnits.Count; i++)
+        {
+            if (player.BuildableUnits[i].GetComponent<Unit>() != null)
+                player.BuildableUnits[i].GetComponent<Unit>().GatherSpeed += 1f;
+        }
+        for (int i = 0; i < player.units.Count; i++)
+        {
+            if (player.units[i].GetComponent<Unit>() != null)
+                player.units[i].GetComponent<Unit>().GatherSpeed += 1f;
+        }
+    }
+
+    public static void IncreaseMaxHealth(Player player)
+    {       
+        for (int i = 0; i < player.units.Count; i++)
+        {
+            Debug.Log(player.units[i].name);
+            if (player.units[i].GetComponent<Unit>() != null)
+            {
+                Debug.Log(player.units[i].GetComponent<Unit>().maxHealth);
+                player.units[i].GetComponent<Unit>().maxHealth += player.units[i].GetComponent<Unit>().HealthIncrement;
+                Debug.Log(player.units[i].GetComponent<Unit>().maxHealth);
+                player.units[i].GetComponent<Unit>().currentHealth += player.units[i].GetComponent<Unit>().HealthIncrement;
+            }
+        }
+        for (int i = 0; i < player.BuildableUnits.Count; i++)
+        {
+            if (player.BuildableUnits[i].GetComponent<Unit>() != null)
+            {
+                Undo.RecordObject(player.BuildableUnits[i], "Életerő növelés");
+                player.BuildableUnits[i].GetComponent<Unit>().maxHealth += player.BuildableUnits[i].GetComponent<Unit>().HealthIncrement;
+                player.BuildableUnits[i].GetComponent<Unit>().currentHealth += player.BuildableUnits[i].GetComponent<Unit>().HealthIncrement;
+            }
+        }
+    }
+
+    public static void IncreaseArmor(Player player)
+    {
+        for (int i = 0; i < player.BuildableUnits.Count; i++)
+        {
+            if (player.BuildableUnits[i].GetComponent<Unit>() != null)
+                player.BuildableUnits[i].GetComponent<Unit>().Armor += player.BuildableUnits[i].GetComponent<Unit>().ArmorIncrement;
+        }
+        for (int i = 0; i < player.units.Count; i++)
+        {
+            if (player.units[i].GetComponent<Unit>() != null)
+                player.units[i].GetComponent<Unit>().Armor += player.BuildableUnits[i].GetComponent<Unit>().ArmorIncrement;
+        }
     }
 
     public void initTechTree()

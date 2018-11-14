@@ -12,6 +12,7 @@ public class Unit : MonoBehaviour
     public bool OnScreen;
     public bool Selected = false;
     private GameObject DragSelect;
+    [HideInInspector]
     public bool HoldPosition;
 
     public Queue ActionsQueue;
@@ -28,7 +29,13 @@ public class Unit : MonoBehaviour
     public int palladiumCost;
     public int iridiumCost;
     public int eezoCost;
+    public int HealthIncrement;
+    public int AttackIncrement;
+    public int PopulationCost;
+    public int Armor;
+    public int ArmorIncrement;
 
+    [HideInInspector]
     public bool aMove;
     public bool isWalkable = true;
     public string Owner;
@@ -40,13 +47,14 @@ public class Unit : MonoBehaviour
     public bool isGatherer;
     public float GatherSpeed;
     public float MaxResourceAmount;
+    [HideInInspector]
     public float CurrentResourceAmount;
+    [HideInInspector]
     public resourceType CurrentCarriedResource;
     [HideInInspector]
     public GameObject CurrentlyBuiltObject;
     [HideInInspector]
     public bool ShowBuildables;
-
     void Start()
     {
         ActionsQueue = new Queue();
@@ -59,7 +67,7 @@ public class Unit : MonoBehaviour
         //Physics.IgnoreLayerCollision(8, 8, true);
         if (transform.Find("DragSelect") != null)
             DragSelect = transform.Find("DragSelect").gameObject;
-        if (transform.Find("Selected") != null)         
+        if (transform.Find("Selected") != null)
             transform.Find("Selected").gameObject.SetActive(false);
     }
 
@@ -83,7 +91,7 @@ public class Unit : MonoBehaviour
         {
             Projectile = Instantiate(Resources.Load("Prefabs/Projectiles/Bullet"), transform.position, transform.rotation) as GameObject;
             Projectile.GetComponent<Rigidbody>().velocity = (target.position - gameObject.transform.position).normalized * 100;
-            target.gameObject.GetComponent<Unit>().currentHealth -= attackDamage;
+            target.gameObject.GetComponent<Unit>().currentHealth -= (attackDamage - target.gameObject.GetComponent<Unit>().Armor);
             Destroy(Projectile.gameObject, 0.5f);
             yield return new WaitForSeconds(attackSpeed);
         }
@@ -119,10 +127,10 @@ public class Unit : MonoBehaviour
 
     public IEnumerator Build()
     {
-        
-        
+
+
         AIDestinationSetter setter = transform.GetComponent<AIDestinationSetter>();
-        while ((Vector3.Distance(transform.position, new Vector3(setter.ai.destination.x,-2.1f,setter.ai.destination.z)) > 2))
+        while ((Vector3.Distance(transform.position, new Vector3(setter.ai.destination.x, -2.1f, setter.ai.destination.z)) > 2))
         {
             yield return null;
         }
@@ -134,7 +142,7 @@ public class Unit : MonoBehaviour
             Game.currentPlayer.palladium += building.palladiumCost;
             Game.currentPlayer.nullElement += building.eezoCost;
 
-            GUISetup.UpdatePlayerInfoBar();
+            GameObject.Find("Game").GetComponent<GUISetup>().UpdatePlayerInfoBar();
             CurrentlyBuiltObject = null;
             yield break;
         }
@@ -165,7 +173,7 @@ public class Unit : MonoBehaviour
         }
 
         Mouse.DeselectGameObjectsIfSelected();
-        Destroy(placeholder);       
+        Destroy(placeholder);
 
         GameObject newUnit = Instantiate(CurrentlyBuiltObject, new Vector3(setter.ai.destination.x, 5f, setter.ai.destination.z), Quaternion.identity);
         newUnit.name = CurrentlyBuiltObject.name;
@@ -176,6 +184,35 @@ public class Unit : MonoBehaviour
 
         AstarPath.active.UpdateGraphs(newUnit.GetComponent<Collider>().bounds);
         yield return null;
+    }
+
+    public IEnumerator Repair(Transform target)
+    {
+        Structure building = target.GetComponent<Structure>();
+        while (true)
+        {
+            if (target.GetComponent<Structure>().Owner != Owner)
+                yield break;
+            if (building.currentHealth >= building.maxHealth)
+                yield break;
+
+            if (Game.currentPlayer.iridium - building.iridiumCost / 100 <= 0 ||
+                Game.currentPlayer.palladium - building.palladiumCost / 100 <= 0 ||
+                Game.currentPlayer.nullElement - building.eezoCost / 100 <= 0)
+            {
+                transform.GetComponent<AIDestinationSetter>().isRepairing = false;
+                transform.GetComponent<AIDestinationSetter>().target = null;
+                yield break;
+            }               
+
+            Game.currentPlayer.iridium -= (building.iridiumCost / 100);
+            Game.currentPlayer.palladium -= (building.palladiumCost / 100);
+            Game.currentPlayer.nullElement -= (building.eezoCost / 100);
+            building.currentHealth += building.maxHealth / 100;
+
+            yield return new WaitForSeconds(.7f);
+
+        }
     }
 
     void Update()

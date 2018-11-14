@@ -145,6 +145,7 @@ class TechInfo : MonoBehaviour {
         }
 
         currentTech.Researched = true;
+        Game.ResearchEffects(Game.currentPlayer,currentTech);
         processBacground.gameObject.SetActive(false);
 
         hitPoint = 0;
