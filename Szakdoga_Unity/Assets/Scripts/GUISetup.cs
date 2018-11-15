@@ -23,6 +23,8 @@ public class GUISetup : MonoBehaviour
     public static bool GhostActive = false;
     public static bool canBuildStructure;
     int CurrentGhost;
+    Canvas canvas;
+
 
     public static bool PassedTriggerTest;
 
@@ -37,6 +39,7 @@ public class GUISetup : MonoBehaviour
         GhostMaterial = Resources.Load("Materials/GhostMaterial", typeof(Material)) as Material;
         GhostMaterialRed = Resources.Load("Materials/GhostMaterialRed", typeof(Material)) as Material;
         PlayerInfoContainer = GameObject.Find("GameCanvas").transform.Find("PlayerInfoBar").gameObject;
+        canvas = GameObject.Find("GameCanvas").GetComponent<Canvas>();
         UpdatePlayerInfoBar();
 
     }
@@ -66,10 +69,10 @@ public class GUISetup : MonoBehaviour
 
     bool BuildCostCheck(Structure building)
     {
-       if (Game.currentPlayer.iridium - building.iridiumCost >= 0 &&
-           Game.currentPlayer.palladium - building.palladiumCost >= 0 &&
-           Game.currentPlayer.nullElement - building.eezoCost >= 0)
-           return true;
+        if (Game.currentPlayer.iridium - building.iridiumCost >= 0 &&
+            Game.currentPlayer.palladium - building.palladiumCost >= 0 &&
+            Game.currentPlayer.nullElement - building.eezoCost >= 0)
+            return true;
         return false;
     }
 
@@ -87,7 +90,7 @@ public class GUISetup : MonoBehaviour
         PlayerInfoContainer.transform.Find("TextIridium").GetComponent<Text>().text = "Iridium: " + Game.currentPlayer.iridium;
         PlayerInfoContainer.transform.Find("TextPalladium").GetComponent<Text>().text = "Palladium: " + Game.currentPlayer.palladium;
         PlayerInfoContainer.transform.Find("TextNullElement").GetComponent<Text>().text = "Null elem: " + Game.currentPlayer.nullElement;
-        PlayerInfoContainer.transform.Find("TextPopulation").GetComponent<Text>().text = "Pop: " + Game.currentPlayer.CurrentPopulation + "/" + Game.currentPlayer.MaxPopulation;       
+        PlayerInfoContainer.transform.Find("TextPopulation").GetComponent<Text>().text = "Pop: " + Game.currentPlayer.CurrentPopulation + "/" + Game.currentPlayer.MaxPopulation;
     }
 
     void OnGUI()
@@ -97,7 +100,7 @@ public class GUISetup : MonoBehaviour
             #region Építkezés
             if (Mouse.CurrentlyFocusedUnit.GetComponent<Unit>() != null && Mouse.CurrentlyFocusedUnit.GetComponent<Unit>().isGatherer && Mouse.CurrentlyFocusedUnit.GetComponent<Unit>().ShowBuildables)
             {
-                int offset = 48;
+                int offset = (int)(48 * canvas.scaleFactor * 1.6);
                 int j = 0;
                 RectTransform container = CommandContainer.transform as RectTransform;
                 for (int i = 0; i < Game.currentPlayer.BuildableUnits.Count; i++)
@@ -112,9 +115,10 @@ public class GUISetup : MonoBehaviour
                     Icon.normal.background = unitObj.MenuIcon;
                     Icon.hover.background = unitObj.MenuIconRo;
 
-                    if (GUI.Button(new Rect(Screen.width - container.anchoredPosition.x - 5 + (offset * (j % 4)), Screen.height + container.anchoredPosition.y + 5 + (offset * (int)(j / 4)), 46, 39), content, Icon))
+                    Rect currentButtonPosition = new Rect(Screen.width * .805f + (offset * (j % 4)), Screen.height * .83f + (offset * (int)(j / 4)), 46 * canvas.scaleFactor * 1.5f, 39 * canvas.scaleFactor * 1.5f);
+
+                    if (GUI.Button(currentButtonPosition, content, Icon))
                     {
-                        Debug.Log(Game.currentPlayer.MaxPopulation);
                         if (BuildCostCheck(unitObj))
                         {
                             if (GhostActive)
@@ -161,7 +165,7 @@ public class GUISetup : MonoBehaviour
                 }
                 else ToolTipContainter.SetActive(false);
                 j = 7;
-                if (GUI.Button(new Rect(Screen.width - container.anchoredPosition.x - 5 + (offset * (j % 4)), Screen.height + container.anchoredPosition.y + 5 + (offset * (int)(j / 4)), 46, 39), "<--"))
+                if (GUI.Button(new Rect(Screen.width * .95f, Screen.height * .85f + (offset * (int)(j / 4)), 46 * canvas.scaleFactor * 1.5f, 39 * canvas.scaleFactor * 1.5f), "<--"))
                 {
                     CommandContainer.transform.Find("Movement").gameObject.SetActive(true);
                     Mouse.CurrentlyFocusedUnit.GetComponent<Unit>().ShowBuildables = false;
@@ -173,7 +177,7 @@ public class GUISetup : MonoBehaviour
             if (Mouse.CurrentlyFocusedUnit != null && !Mouse.CurrentlyFocusedUnit.tag.Equals("PlaceHolder") && Mouse.CurrentlyFocusedUnit.GetComponent<Structure>() != null && Mouse.CurrentlyFocusedUnit.GetComponent<Structure>().TrainableUnits.Count != 0)
             {
                 Structure currentStructure = Mouse.CurrentlyFocusedUnit.GetComponent<Structure>();
-                int offset = 48;
+                int offset = (int)(48 * canvas.scaleFactor * 1.6);
                 int j = 0;
 
                 for (int i = 0; i < currentStructure.TrainableUnits.Count; i++)
@@ -187,7 +191,8 @@ public class GUISetup : MonoBehaviour
                     Icon.hover.background = unitObj.MenuIconRo;
                     RectTransform container = CommandContainer.transform as RectTransform;
 
-                    Rect currentButtonPosition = new Rect(Screen.width - container.anchoredPosition.x - 5 + (offset * (j % 4)), Screen.height + container.anchoredPosition.y + 5 + (offset * (int)(j / 4)), 46, 39);
+
+                    Rect currentButtonPosition = new Rect(Screen.width * .805f + (offset * (j % 4)), Screen.height * .83f + (offset * (int)(j / 4)), 46 * canvas.scaleFactor * 1.5f, 39 * canvas.scaleFactor * 1.5f);
                     if (GUI.Button(currentButtonPosition, content, Icon))
                     {
 
@@ -226,6 +231,10 @@ public class GUISetup : MonoBehaviour
                 else ToolTipContainter.SetActive(false);
 
                 j = 0;
+                if (currentStructure.TrainingQueue.Count != 0)
+                {
+                    DetailContainer.transform.Find("UnitArmor").gameObject.SetActive(false);
+                }
                 for (int i = 0; i < currentStructure.TrainingQueue.Count; i++)
                 {
                     GameObject unit = ((currentStructure.TrainingQueue).ToArray())[i] as GameObject;
@@ -234,11 +243,25 @@ public class GUISetup : MonoBehaviour
                     GUIStyle Icon = new GUIStyle();
                     Icon.normal.background = unitObj.MenuIcon;
                     Icon.hover.background = unitObj.MenuIconRo;
-                    if (GUI.Button(new Rect(125 + (offset * (j % 4)), Screen.height - 100 + (offset * (int)(j / 4)), 46, 39), "", Icon))
+                    offset = (int)(48 * canvas.scaleFactor * 1.55);
+                    if (GUI.Button(new Rect(Screen.width * .065f + (offset * (j % 4)), Screen.height * .85f + (offset * (int)(j / 4)), 46 * canvas.scaleFactor * 1.5f, 39 * canvas.scaleFactor * 1.5f), "", Icon))
                     {
+                        Game.currentPlayer.iridium += unitObj.iridiumCost;
+                        Game.currentPlayer.palladium += unitObj.palladiumCost;
+                        Game.currentPlayer.nullElement += unitObj.eezoCost;
+                        if (i == 0)
+                        {
+                            currentStructure.StopCoroutine("Train");
+                            currentStructure.StartCoroutine("Train");
+                        }
+
                         currentStructure.TrainingQueue.RemoveAt(i);
                         if (currentStructure.TrainingQueue.Count == 0)
+                        {
                             currentStructure.StopCoroutine("Train");
+                            DetailContainer.transform.Find("UnitArmor").gameObject.SetActive(true);
+
+                        }
                     }
                     j++;
                 }
@@ -330,8 +353,8 @@ public class GUISetup : MonoBehaviour
             {
                 //Épület létrehozása  
                 Unit builder = Mouse.CurrentlyFocusedUnit.GetComponent<Unit>();
-                builder.CurrentlyBuiltObject = Game.currentPlayer.BuildableUnits[CurrentGhost];           
-                BuildCost(Game.currentPlayer.BuildableUnits[CurrentGhost].GetComponent<Structure>());              
+                builder.CurrentlyBuiltObject = Game.currentPlayer.BuildableUnits[CurrentGhost];
+                BuildCost(Game.currentPlayer.BuildableUnits[CurrentGhost].GetComponent<Structure>());
                 builder.gameObject.GetComponent<AIDestinationSetter>().ai.destination = new Vector3(Mouse.currentMousePoint.x, 5f, Mouse.currentMousePoint.z);
                 builder.gameObject.GetComponent<AIDestinationSetter>().ai.isStopped = false;
                 builder.StartCoroutine("Build");

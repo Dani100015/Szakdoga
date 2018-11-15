@@ -77,7 +77,7 @@ class Game : MonoBehaviour
         players = new List<Player>();
 
         currentPlayer = new Player(10000, 10000, 10000, "Peti", Species.Human);
-        player2 = new Player(10000, 10000, 10000, "Sanyi", Species.Reaper);
+        player2 = new Player(10000, 10000, 10000, "Sanyi", Species.Human);
 
         currentPlayer.enemies.Add(player2);
         player2.enemies.Add(currentPlayer);
@@ -89,10 +89,17 @@ class Game : MonoBehaviour
 
         //Egységek betöltése és játékosokhoz rendelése
         string path = "Prefabs/Units";
-        object[] Units = Resources.LoadAll(path);
-        if (Units.Length > 0)
+        object[] LoadedUnits = Resources.LoadAll(path);
+        List<GameObject> Units = new List<GameObject>();
+        for (int i = 0; i < LoadedUnits.Length; i++)
         {
-            for (int i = 0; i < Units.Length; i++)
+            GameObject temp = Instantiate(LoadedUnits[i] as GameObject);
+            Units.Add(temp);
+        }
+
+        if (Units.Count > 0)
+        {
+            for (int i = 0; i < Units.Count; i++)
             {
                 GameObject unit = Units[i] as GameObject;
                 Unit unitobj = unit.GetComponent<Unit>();
@@ -192,6 +199,7 @@ class Game : MonoBehaviour
             case "FerroUraniumSlogs":
             case "EfficientRailTracks":
             case "LowerProjectiveMass":
+                IncreaseAttack(player);
                 break;
 
             case "HawkingCarrier":
@@ -233,16 +241,16 @@ class Game : MonoBehaviour
     }
     public static void IncreaseGatherSpeed(Player player)
     {
-        for (int i = 0; i < player.BuildableUnits.Count; i++)
-        {
-            if (player.BuildableUnits[i].GetComponent<Unit>() != null)
-                player.BuildableUnits[i].GetComponent<Unit>().GatherSpeed += 1f;
-        }
         for (int i = 0; i < player.units.Count; i++)
         {
             if (player.units[i].GetComponent<Unit>() != null)
                 player.units[i].GetComponent<Unit>().GatherSpeed += 1f;
         }
+        for (int i = 0; i < player.BuildableUnits.Count; i++)
+        {
+            if (player.BuildableUnits[i].GetComponent<Unit>() != null)
+                player.BuildableUnits[i].GetComponent<Unit>().GatherSpeed += 1f;
+        }       
     }
 
     public static void IncreaseMaxHealth(Player player)
@@ -271,15 +279,29 @@ class Game : MonoBehaviour
 
     public static void IncreaseArmor(Player player)
     {
+        for (int i = 0; i < player.units.Count; i++)
+        {
+            if (player.units[i].GetComponent<Unit>() != null && player.units[i].GetComponent<Unit>().isGatherer)
+                player.units[i].GetComponent<Unit>().Armor += player.BuildableUnits[i].GetComponent<Unit>().ArmorIncrement;
+        }
         for (int i = 0; i < player.BuildableUnits.Count; i++)
         {
-            if (player.BuildableUnits[i].GetComponent<Unit>() != null)
+            if (player.BuildableUnits[i].GetComponent<Unit>() != null && player.BuildableUnits[i].GetComponent<Unit>().isGatherer)
                 player.BuildableUnits[i].GetComponent<Unit>().Armor += player.BuildableUnits[i].GetComponent<Unit>().ArmorIncrement;
-        }
+        } 
+    }
+
+    public static void IncreaseAttack(Player player)
+    {
         for (int i = 0; i < player.units.Count; i++)
         {
             if (player.units[i].GetComponent<Unit>() != null)
-                player.units[i].GetComponent<Unit>().Armor += player.BuildableUnits[i].GetComponent<Unit>().ArmorIncrement;
+                player.units[i].GetComponent<Unit>().attackDamage += player.BuildableUnits[i].GetComponent<Unit>().AttackIncrement;
+        }
+        for (int i = 0; i < player.BuildableUnits.Count; i++)
+        {
+            if (player.BuildableUnits[i].GetComponent<Unit>() != null)
+                player.BuildableUnits[i].GetComponent<Unit>().attackDamage += player.BuildableUnits[i].GetComponent<Unit>().AttackIncrement;
         }
     }
 

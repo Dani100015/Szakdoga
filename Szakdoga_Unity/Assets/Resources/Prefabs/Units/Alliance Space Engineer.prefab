@@ -437,7 +437,7 @@ MonoBehaviour:
   eezoCost: 0
   HealthIncrement: 0
   AttackIncrement: 0
-  PopulationCost: 1
+  PopulationCost: 0
   Armor: 0
   ArmorIncrement: 0
   aMove: 0

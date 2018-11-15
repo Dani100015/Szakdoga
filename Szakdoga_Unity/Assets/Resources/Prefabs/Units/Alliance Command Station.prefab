@@ -284,6 +284,11 @@ MonoBehaviour:
   palladiumCost: 350
   iridiumCost: 275
   eezoCost: 0
+  HealthIncrement: 0
+  AttackIncrement: 0
+  PopulationCost: 0
+  Armor: 0
+  ArmorIncrement: 0
   aMove: 0
   isWalkable: 0
   Owner: Peti
