@@ -27,10 +27,16 @@ class SetSolarSystems : MonoBehaviour {
     void Start ()
     {
         Systems = game.Systems;
-        GenerateSolarSystemPrefabs(game.Systems.Count);
-        startSystemPrefab = SystemPrefabs.Find(x => x.name == game.startSolarSystem.Name);
-        currentSystemPrefab = startSystemPrefab;
-        InitialSolarSystems(currentSystemPrefab); 
+        if (ParameterWatcher.firstSolarSystemInit)
+        {
+            GenerateSolarSystemPrefabs(game.Systems.Count);
+            startSystemPrefab = SystemPrefabs.Find(x => x.name == game.startSolarSystem.Name);
+            currentSystemPrefab = startSystemPrefab;
+            InitialSolarSystems(currentSystemPrefab);
+            ParameterWatcher.firstSolarSystemInit = false;
+        }
+                    
+
     }
 
 	void Update () {
@@ -53,6 +59,7 @@ class SetSolarSystems : MonoBehaviour {
                     mesh.enabled = false;               
                 }
                 solar.transform.Find("Star").gameObject.SetActive(false);
+                
                 foreach (LineRenderer line in solar.transform.Find("LineContainer").GetComponentsInChildren<LineRenderer>())
                 {
                     line.enabled = false;
@@ -69,7 +76,7 @@ class SetSolarSystems : MonoBehaviour {
         {
             mesh.enabled = true;
         }
-        foreach (LineRenderer line  in solarSystem.transform.Find("LineContainer").GetComponentsInChildren<LineRenderer>())
+        foreach (LineRenderer line in solarSystem.transform.Find("LineContainer").GetComponentsInChildren<LineRenderer>())
         {
             line.enabled = true;
         }
@@ -91,25 +98,41 @@ class SetSolarSystems : MonoBehaviour {
         //gg.SetDimensions(width, depth, nodeSize);
         ////Szkennelünk
         //AstarPath.active.Scan();
-        
+
         for (int i = 0; i < Systems.Count; i++)
         {
-            SystemPrefabs.Add(Instantiate((GameObject)Resources.Load("Prefabs/SolarSystem/SolarSystemPrefab", typeof(GameObject))));
+            SystemPrefabs.Add(Instantiate((GameObject)Resources.Load("Prefabs/SolarSystem/SolarSystemPrefab1", typeof(GameObject))));
             SystemPrefabs[i].transform.position = Vector3.zero;
-            SystemPrefabs[i].name = Systems[i].Name;                               
+            SystemPrefabs[i].name = Systems[i].Name;
+            SystemPrefabs[i].AddComponent<GUI_CelestialToolTip>();
 
-            GameObject asteroid = Instantiate((GameObject)Resources.Load("Prefabs/Palladium Asteroid", typeof(GameObject)));
-            asteroid.GetComponent<ResourceObject>().Capacity = Random.Range(100, 1000);
-            asteroid.transform.position = new Vector3(200, 0, 100);
-            asteroid.transform.SetParent(SystemPrefabs[i].transform.Find("Planets").transform);
-        }
+            GameObject[] planetPrefabs = Resources.LoadAll<GameObject>("Prefabs/SolarSystem/Planets") as GameObject[];
+            int planetNumber = Random.Range(3, 7);
+            for (int j = 0; j < planetNumber; j++)
+            {
+                int planetIndex = Random.Range(0, planetPrefabs.Length);
+                GameObject planet = Instantiate(planetPrefabs[planetIndex]);
+                planet.transform.SetParent(SystemPrefabs[i].transform.Find("Planets"));
+                planet.transform.position = new Vector3(Random.Range(-150,150),0, Random.Range(-250, 250));
+                planet.transform.localScale = new Vector3(planet.transform.localScale.x+0.4f, planet.transform.localScale.y + 0.4f, planet.transform.localScale.z + 0.4f);
+                planet.AddComponent<GUI_CelestialToolTip>();
+            }
 
-        List<GameObject> planets;
-        for (int i = 0; i < SystemPrefabs.Count;  i++)
-        {
-            planets = new List<GameObject>();
-            
-        }        
+            GameObject[] asteriodsPrefabs = Resources.LoadAll<GameObject>("Prefabs/Asteroids") as GameObject[];
+            int asteriodsNumber = Random.Range(3, 7);
+            Debug.Log(asteriodsNumber);
+            for (int j = 0; j < asteriodsNumber; j++)
+            {
+                int asteriodIndex = Random.Range(0, asteriodsPrefabs.Length);
+                GameObject asteroid = Instantiate(asteriodsPrefabs[asteriodIndex]);
+                asteroid.transform.SetParent(SystemPrefabs[i].transform.Find("Planets"));
+                asteroid.GetComponent<ResourceObject>().Capacity = Random.Range(100, 1000);
+                asteroid.transform.position = new Vector3(Random.Range(-250, 250), 0, Random.Range(-250, 250));
+                asteroid.AddComponent<GUI_CelestialToolTip>();
+            }
+
+            SystemPrefabs[i].transform.SetParent(GameObject.Find("SolarSystems").transform);
+        }      
     }
 }
 

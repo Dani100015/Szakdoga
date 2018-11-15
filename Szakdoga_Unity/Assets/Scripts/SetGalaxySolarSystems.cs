@@ -46,14 +46,15 @@ class SetGalaxySolarSystems : MonoBehaviour {
             currentSystem = starPrefabs[Random.Range(0,4)];
 
             currentSystem.name = Systems[i].Name;
-            currentSystem.transform.position = Systems[i].position;
+            currentSystem.transform.position = Systems[i].position + new Vector3(1000,0,1000);
             currentSystem.tag = "StarSystem";
 
             SystemPrefabs.Add(Instantiate(currentSystem));
-
-
         }
-
+        for (int i = 0; i < SystemPrefabs.Count; i++)
+        {
+            SystemPrefabs[i].transform.SetParent(GameObject.Find("Galaxy").transform);
+        }
         for (int i = 0; i < SystemPrefabs.Count; i++)
         {
             SystemPrefabs[i].name = Systems[i].Name;
@@ -73,14 +74,12 @@ class SetGalaxySolarSystems : MonoBehaviour {
                 LineRenderer line = gObject.AddComponent<LineRenderer>();
                 line.transform.SetParent(lineContainer.transform);
 
-                Debug.Log(line.transform.parent.name);
-
                 line.startWidth = 0.3f;
                 line.endWidth = 0.3f;
                 line.positionCount = 2;              
 
-                line.SetPosition(0, Systems[i].position);
-                line.SetPosition(1, Systems[i].neighbourSystems[j].position);              
+                line.SetPosition(0, Systems[i].position + new Vector3(1000,0,1000));
+                line.SetPosition(1, Systems[i].neighbourSystems[j].position + new Vector3(1000, 0, 1000));              
 
                 //line.transform.SetParent();
 

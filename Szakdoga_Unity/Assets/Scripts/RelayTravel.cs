@@ -32,7 +32,6 @@ class RelayTravel : MonoBehaviour {
 
     bool isRelayPanelActive = true;
 
-
     Vector3 activePosition;
     Vector3 deactivePosition;
 
@@ -57,7 +56,7 @@ class RelayTravel : MonoBehaviour {
 
         system = Systems.Find(x => x.Name == setSystem.currentSystemPrefab.name);
 
-        activePosition = new Vector3(150,400 ,0f);
+        activePosition = new Vector3(150,400,0f);
         deactivePosition = itemView.transform.position;
     }
 
@@ -92,14 +91,15 @@ class RelayTravel : MonoBehaviour {
                 Destroy(itemContents.transform.GetChild(i).gameObject);            
             }
 
-            system = Systems.Find(x => x.Name == setSystem.currentSystemPrefab.name);
+            system = game.currentSolarSystem;
         }
     }
 
 
     void OnMouseDown()
     {
-        system = Systems.Find(x => x.Name == setSystem.currentSystemPrefab.name);
+        system = game.currentSolarSystem;
+
         if (isRelayPanelActive == true)
         {
             itemView.transform.position = activePosition;

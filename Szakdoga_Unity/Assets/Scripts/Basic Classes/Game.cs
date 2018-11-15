@@ -32,24 +32,16 @@ class Game : MonoBehaviour
     public SetSolarSystems setSystems;
     public GameStartOptions gameStart;
 
+    public static bool GalaxyView;
+
+    static public Camera mainCamera;
+
     public bool fromGalaxy;
     void Awake()
     {
-        DontDestroyOnLoad(this);
 
-        if (FindObjectsOfType(GetType()).Length > 1)
+        if (ParameterWatcher.firstGameInit)
         {
-            Destroy(gameObject);
-        }
-
-        //setSystems = GameObject.Find("SolarSystemGenerator").GetComponent<SetSolarSystems>();
-
-
-        if (ParameterWatcher.firstInit)
-        {
-
-            //gameStart = GameObject.Find("GameStartOptions").GetComponent<GameStartOptions>();
-            //starCount = gameStart.StarCount;
 
             starCount = 5;
 
@@ -63,7 +55,9 @@ class Game : MonoBehaviour
 
             initTechTree();
 
-            ParameterWatcher.firstInit = false;
+            Game.mainCamera = Camera.main;
+
+            ParameterWatcher.firstGameInit = false;
 
         }
     }

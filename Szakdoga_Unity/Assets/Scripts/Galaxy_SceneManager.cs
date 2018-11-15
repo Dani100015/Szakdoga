@@ -32,9 +32,8 @@ public class Galaxy_SceneManager : MonoBehaviour {
                     selectedObject = hitInfo.transform.gameObject;
 
                     game.currentSolarSystem = game.Systems.Find(x => x.Name == selectedObject.name);
-                    game.fromGalaxy = true; 
-                 
-                    SceneManager.LoadScene("SolarSystems");                                   
+                    Game.GalaxyView = false;
+                    CameraViewChange.ChangeCameraView();
                 }
             }
         }

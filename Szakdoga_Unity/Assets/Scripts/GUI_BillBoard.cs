@@ -8,11 +8,13 @@ public class GUI_BillBoard : MonoBehaviour {
 
     void Start()
     {
-        myCamera = Camera.main;
+        myCamera = Game.mainCamera;
     }
 	void Update () {
         transform.LookAt(transform.position + myCamera.transform.rotation * new Vector3(1f, 0.2f, 2.2f),
                         myCamera.transform.rotation * Vector3.one);
+
+       // Debug.Log(myCamera.name);
 
 	}
 }

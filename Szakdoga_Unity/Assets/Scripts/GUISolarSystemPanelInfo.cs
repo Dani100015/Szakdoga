@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-class SolarSystemPanelInfo : MonoBehaviour
+class GUISolarSystemPanelInfo : MonoBehaviour
 {
 
     GameObject[] solarSystems;
@@ -21,7 +21,6 @@ class SolarSystemPanelInfo : MonoBehaviour
     {
         game = GameObject.Find("Game").GetComponent<Game>();     
         //setSystems = GameObject.Find("SolarSystemGenerator").GetComponent<SetSolarSystems>();
-
         SolarSystemNameText = transform.Find("TextSolarSystem").GetComponent<Text>();
     }
 
@@ -35,19 +34,17 @@ class SolarSystemPanelInfo : MonoBehaviour
     void Update()
     {
         InvokeRepeating("UpdatetSolarSystemText", 1, 2);
-        
     }
     void UpdatetSolarSystemText()
     {
-        if (SceneManager.GetActiveScene().name == "Galaxy")
+        if (Game.GalaxyView == true)
         {
             transform.localPosition = deactivePosition;
         }
-        if (SceneManager.GetActiveScene().name == "SolarSystems")
+        if (Game.GalaxyView == false)
         {
             transform.localPosition = activePosition;
-            setSystems = GameObject.Find("SolarSystemGenerator").GetComponent<SetSolarSystems>();
-            if (setSystems != null && setSystems.currentSystemPrefab != null)
+            if (game != null && game.currentSolarSystem != null)
             {
                 SolarSystemNameText.text = game.currentSolarSystem.Name;
             }

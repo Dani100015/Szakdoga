@@ -78,23 +78,17 @@ public class PlanetRingRenderer : MonoBehaviour {
             zradius = distance;
 
             line = LineObject.GetComponent<LineRenderer>();
-
             line.startWidth = (0.5f);
             line.endWidth = (0.5f);
-
-
             line.material.color = Color.grey;
-            line.material.mainTextureOffset = new Vector2(100, 100);
-            //line.material = new Material(Shader.Find("Ring"));
-
-
+            line.material.mainTextureOffset = new Vector2(100, 100);      
             line.positionCount = (segments + 1);
             line.useWorldSpace = false;
+            line.gameObject.layer = 15;
+            line.name = "RingLine";
 
             LineObject.transform.SetParent(transform.parent.transform.Find("LineContainer"));
-
-            line.gameObject.layer = 15;
-
+            
             CreatePoints(line);
             lines.Add(line);
 

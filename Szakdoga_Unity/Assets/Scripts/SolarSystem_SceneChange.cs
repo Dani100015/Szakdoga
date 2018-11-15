@@ -26,11 +26,17 @@ public class SolarSystem_SceneChange : MonoBehaviour {
     }
 
     void Update () {
+        //if (transform.position.y > viewChangeHeight)
+        //{
+        //    DontDestroyOnLoad(gameCanvas);
+        //    Game.GalaxyView = true;
+        //    CameraViewChange.ChangeCameraView();
+        //}
 
-        if (transform.position.y > viewChangeHeight)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            DontDestroyOnLoad(gameCanvas);
-            SceneManager.LoadScene("Galaxy");
+            Game.GalaxyView = true;
+            CameraViewChange.ChangeCameraView();
         }
 	}
 }

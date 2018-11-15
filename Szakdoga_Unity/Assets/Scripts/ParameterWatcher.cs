@@ -4,6 +4,7 @@ using UnityEngine;
 
 class ParameterWatcher : MonoBehaviour {
 
-    static public bool firstInit = true;
+    static public bool firstGameInit = true;
+    static public bool firstSolarSystemInit = true;
 
 }

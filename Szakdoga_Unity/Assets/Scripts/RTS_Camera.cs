@@ -42,7 +42,7 @@ namespace RTS_Cam
 
         #region Height
 
-        public bool autoHeight = true;
+        public bool autoHeight = false;
         public LayerMask groundMask = -1; //layermask of ground or other objects that affect height
 
         public float maxHeight = 10f; //maximal height
@@ -265,15 +265,15 @@ namespace RTS_Cam
             zoomPos = Mathf.Clamp01(zoomPos);
 
             float targetHeight = Mathf.Lerp(minHeight, maxHeight, zoomPos);
-            //float targetLenght = Mathf.Lerp(transform.position.z + 10, transform.position.z - 10, zoomPos);
+            float targetLenght = Mathf.Lerp(transform.position.z + 10, transform.position.z - 10, zoomPos);
             float difference = 0; 
 
             if(distanceToGround != targetHeight)
                 difference = targetHeight - distanceToGround;
 
             //m_Transform.position = Vector3.Slerp
-            m_Transform.position = Vector3.Slerp(m_Transform.position, 
-                new Vector3(m_Transform.position.x, targetHeight + difference, m_Transform.position.z ), Time.deltaTime * heightDampening);
+            m_Transform.position = Vector3.Slerp(m_Transform.position,
+                new Vector3(m_Transform.position.x, targetHeight + difference, m_Transform.position.z), Time.deltaTime * heightDampening);
         }
 
         /// <summary>
