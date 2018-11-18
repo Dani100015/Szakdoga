@@ -66,6 +66,21 @@ class Game : MonoBehaviour
             ParameterWatcher.firstGameInit = false;
 
         }
+
+        #region Induló elemek
+        //A pályán levő egységeket/épületeket a tulajdonosuk listáihoz rendeli
+        var goArray = FindObjectsOfType(typeof(GameObject));
+        List<GameObject> goList = new List<GameObject>();
+        for (int i = 0; i < goArray.Length; i++)
+        {
+            GameObject currentObject = goArray[i] as GameObject;
+            if (currentObject.GetComponent<Unit>() != null || currentObject.GetComponent<Structure>() != null)
+            {
+                players.Where(x => x.empireName.Equals(currentObject.GetComponent<Unit>().Owner)).SingleOrDefault().units.Add(currentObject);
+            }
+
+        }
+        #endregion
     }
 
     void Start()
@@ -116,20 +131,7 @@ class Game : MonoBehaviour
         SharedIcons = Resources.LoadAll("Icons/Shared");
         #endregion
 
-        #region Induló elemek
-        //A pályán levő egységeket/épületeket a tulajdonosuk listáihoz rendeli
-        var goArray = FindObjectsOfType(typeof(GameObject));
-        List<GameObject> goList = new List<GameObject>();
-        for (int i = 0; i < goArray.Length; i++)
-        {
-            GameObject currentObject = goArray[i] as GameObject;
-            if (currentObject.GetComponent<Unit>() != null || currentObject.GetComponent<Structure>() != null)
-            {
-                players.Where(x => x.empireName.Equals(currentObject.GetComponent<Unit>().Owner)).SingleOrDefault().units.Add(currentObject);
-            }
 
-        }
-        #endregion
     }
 
     void Update()

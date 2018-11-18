@@ -73,6 +73,7 @@ GameObject:
   - component: {fileID: 65339736257861124}
   - component: {fileID: 114170355694922932}
   - component: {fileID: 54239249728779332}
+  - component: {fileID: 114408819480014996}
   m_Layer: 0
   m_Name: BUILDING_Relay
   m_TagString: Untagged
@@ -1217,6 +1218,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ec3ab02c26dda1c42aaf020a4b577b1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114408819480014996
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1174811084687660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e09f47212c27088448ca0d10042944cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &114436369190504566

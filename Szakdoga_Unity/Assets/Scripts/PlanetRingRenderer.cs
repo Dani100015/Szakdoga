@@ -20,18 +20,11 @@ public class PlanetRingRenderer : MonoBehaviour {
     Color c1 = Color.cyan;
     Color c2 = Color.cyan;
 
-
-    void Awake()
+    void Start()
     {
         GeneratePlanetLine();
         GenerateSystemBorderLine();
-
     }
-    void Start()
-    {
-
-    }
-
 
     void CreatePoints(LineRenderer line)
     {
@@ -62,8 +55,6 @@ public class PlanetRingRenderer : MonoBehaviour {
         lines = new List<LineRenderer>();
 
         segments = 360;
-        //LineObject = transform.parent.transform.Find("LineContainer").gameObject;
-        //central = transform.parent.transform.Find("Star");
 
         for (int i = 0; i < transform.childCount; i++)
         {
@@ -86,18 +77,22 @@ public class PlanetRingRenderer : MonoBehaviour {
             line = LineObject.GetComponent<LineRenderer>();
             line.startWidth = (0.5f);
             line.endWidth = (0.5f);
+
             line.material.color = Color.grey;
-            line.material.mainTextureOffset = new Vector2(100, 100);      
+            //line.material.mainTextureOffset = new Vector2(100, 100);   
+               
             line.positionCount = (segments + 1);
             line.useWorldSpace = false;
             line.gameObject.layer = 15;
             line.name = "RingLine";
             line.receiveShadows = false;
 
+           
             LineObject.transform.SetParent(transform.parent.transform.Find("LineContainer"));
-            
-            CreatePoints(line);
             lines.Add(line);
+
+            CreatePoints(line);
+           
 
 
         }
@@ -120,23 +115,19 @@ public class PlanetRingRenderer : MonoBehaviour {
 
         line.startWidth = (1f);
         line.endWidth = (1f);
-
+    
         line.material.color = Color.cyan;
         line.material.mainTextureOffset = new Vector2(100, 100);
-        //line.material = new Material(Shader.Find("Ring"));
-
 
         line.positionCount = (segments + 1);
-        line.useWorldSpace = false;
 
+        line.useWorldSpace = false;
+        line.gameObject.layer = 15;
+
+        lines.Add(line);
         LineObject.transform.SetParent(transform.parent.transform.Find("LineContainer"));
 
         CreatePoints(line);
-        lines.Add(line);
 
-        line.gameObject.layer = 15;
-
-        line.receiveShadows = false;
-        line.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
     }
 }

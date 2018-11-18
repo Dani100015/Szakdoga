@@ -26,26 +26,33 @@ class SetSolarSystems : MonoBehaviour {
         game = GameObject.Find("Game").GetComponent<Game>();
         setSystems = GameObject.Find("SolarSystemGenerator").GetComponent<SetSolarSystems>();
     }
+    IEnumerator WaitForStart()
+    {
+        yield return new WaitForSeconds(1);
+            
+        startSystemPrefab = SystemPrefabs.Find(x => x.name == game.startSolarSystem.Name);
+        currentSystemPrefab = startSystemPrefab;
+
+        DisappiareOtherSolarSystem(currentSystemPrefab);
+    }
     void Start ()
     {
+        //Csak egyszer fut le, alapbeállítások, kezdőbeállítások
         if (ParameterWatcher.firstSolarSystemInit == true)
         {
             Systems = game.Systems;
             GenerateSolarSystemPrefabs(game.Systems.Count);
-            startSystemPrefab = SystemPrefabs.Find(x => x.name == game.startSolarSystem.Name);
-            currentSystemPrefab = startSystemPrefab;
 
-            DisappiareOtherSolarSystem(currentSystemPrefab);
+            StartCoroutine(WaitForStart());
 
             ParameterWatcher.firstSolarSystemInit = false;
         }
-        
 
     }
 
 	void Update () {
 
-        if (game.currentSolarSystem.Name != currentSystemPrefab.name)
+        if (currentSystemPrefab != null &&game.currentSolarSystem.Name != currentSystemPrefab.name)
         {
             fromGalaxy = true;
             DisappiareOtherSolarSystem(SystemPrefabs.Find(x => x.name == game.currentSolarSystem.Name));
@@ -54,34 +61,37 @@ class SetSolarSystems : MonoBehaviour {
         
     public void DisappiareOtherSolarSystem(GameObject solarSystem)
     {
-
         for (int i = 0; i < Systems.Count; i++)
         {
            
             foreach (GameObject solar in SystemPrefabs)
-            {
-                
+            {              
                 foreach (MeshRenderer mesh in solar.GetComponentsInChildren<MeshRenderer>())
                 {              
                     mesh.enabled = false;               
                 }
                 foreach (LineRenderer line in solar.transform.Find("LineContainer").GetComponentsInChildren<LineRenderer>())
-                {                
-                    line.enabled = false;
+                {
+                    if (line.transform.parent.parent.name != solarSystem.name)
+                    {
+                        line.enabled = false;
+                    }               
                 }
                 foreach (BoxCollider item in solar.GetComponentsInChildren<BoxCollider>())
                 {
                     item.enabled = false;
                 }
-                foreach (BoxCollider item in solar.transform.Find("Units").GetComponentsInChildren<BoxCollider>())
-                { 
-                    item.enabled = false;
-                }
-                foreach (SphereCollider item in solar.GetComponentsInChildren<SphereCollider>())
+                foreach (Unit objects in solar.transform.Find("Units").GetComponentsInChildren<Unit>())
                 {
-                    item.enabled = false;
+                    if (objects.tag == "Unit")
+                    {
+                        objects.enabled = false;
+                    }                  
                 }
-
+                foreach (GUI_CelestialToolTip celestials in solar.GetComponentsInChildren<GUI_CelestialToolTip>())
+                {
+                    celestials.enabled = false;
+                }
                 solar.transform.Find("Star").gameObject.SetActive(false);
             }      
         }       
@@ -103,14 +113,18 @@ class SetSolarSystems : MonoBehaviour {
         {
             item.enabled = true;
         }
-        foreach (BoxCollider units in solarSystem.transform.Find("Units").GetComponentsInChildren<BoxCollider>())
+        foreach (GUI_CelestialToolTip celestials in solarSystem.GetComponentsInChildren<GUI_CelestialToolTip>())
         {
-            units.enabled = true;
+            celestials.enabled = true;
         }
-        foreach (SphereCollider item in solarSystem.GetComponentsInChildren<SphereCollider>())
+        foreach (Unit objects in solarSystem.transform.Find("Units").GetComponentsInChildren<Unit>())
         {
-            item.enabled = true;
+            if (objects.tag == "Unit")
+            {
+                objects.enabled = true;
+            }
         }
+
         solarSystem.transform.Find("Star").gameObject.SetActive(true);
         solarSystem.transform.Find("Star").GetComponent<MeshRenderer>().enabled = true;
         AstarPath.active = game.GetComponent<AstarPath>();

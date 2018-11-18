@@ -168,7 +168,7 @@ Prefab:
     - target: {fileID: 224152400793313936, guid: 84f7ae82943074b4f9f6daf333c0af6d,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -39.45
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224152400793313936, guid: 84f7ae82943074b4f9f6daf333c0af6d,
         type: 2}
@@ -228,7 +228,7 @@ Prefab:
     - target: {fileID: 224734804157696586, guid: 84f7ae82943074b4f9f6daf333c0af6d,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -29.45
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224741260190929960, guid: 84f7ae82943074b4f9f6daf333c0af6d,
         type: 2}
@@ -248,7 +248,7 @@ Prefab:
     - target: {fileID: 224741260190929960, guid: 84f7ae82943074b4f9f6daf333c0af6d,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -29.45
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1437818441756318, guid: 84f7ae82943074b4f9f6daf333c0af6d, type: 2}
       propertyPath: m_Name
@@ -874,7 +874,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -882,7 +882,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 7cb2912222469634ba17a77055919ea8, type: 3}
     m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 0
@@ -2220,8 +2220,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1217364723}
   m_HandleRect: {fileID: 1217364722}
   m_Direction: 0
-  m_Value: 1
-  m_Size: 1
+  m_Value: 0
+  m_Size: 0
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -6646,7 +6646,7 @@ Prefab:
     - target: {fileID: 224152400793313936, guid: 84f7ae82943074b4f9f6daf333c0af6d,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -157.25
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224152400793313936, guid: 84f7ae82943074b4f9f6daf333c0af6d,
         type: 2}
@@ -6706,7 +6706,7 @@ Prefab:
     - target: {fileID: 224734804157696586, guid: 84f7ae82943074b4f9f6daf333c0af6d,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -29.45
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224741260190929960, guid: 84f7ae82943074b4f9f6daf333c0af6d,
         type: 2}
@@ -6726,7 +6726,7 @@ Prefab:
     - target: {fileID: 224741260190929960, guid: 84f7ae82943074b4f9f6daf333c0af6d,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -29.45
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1437818441756318, guid: 84f7ae82943074b4f9f6daf333c0af6d, type: 2}
       propertyPath: m_Name
@@ -6977,7 +6977,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -6985,7 +6985,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 7cb2912222469634ba17a77055919ea8, type: 3}
     m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
@@ -7800,7 +7800,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 2024461850}
   m_Direction: 3
   m_Value: 0
-  m_Size: 0.99999994
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -7895,7 +7895,7 @@ Prefab:
     - target: {fileID: 224152400793313936, guid: 84f7ae82943074b4f9f6daf333c0af6d,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -98.350006
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224152400793313936, guid: 84f7ae82943074b4f9f6daf333c0af6d,
         type: 2}
@@ -7955,7 +7955,7 @@ Prefab:
     - target: {fileID: 224734804157696586, guid: 84f7ae82943074b4f9f6daf333c0af6d,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -29.45
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224741260190929960, guid: 84f7ae82943074b4f9f6daf333c0af6d,
         type: 2}
@@ -7975,7 +7975,7 @@ Prefab:
     - target: {fileID: 224741260190929960, guid: 84f7ae82943074b4f9f6daf333c0af6d,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -29.45
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1437818441756318, guid: 84f7ae82943074b4f9f6daf333c0af6d, type: 2}
       propertyPath: m_Name
@@ -8595,7 +8595,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -8603,7 +8603,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 7cb2912222469634ba17a77055919ea8, type: 3}
     m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 0
@@ -8742,7 +8742,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -8750,7 +8750,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 7cb2912222469634ba17a77055919ea8, type: 3}
     m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 0
@@ -9467,7 +9467,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -9475,7 +9475,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 7cb2912222469634ba17a77055919ea8, type: 3}
     m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 0
@@ -11651,7 +11651,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -11659,7 +11659,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 7cb2912222469634ba17a77055919ea8, type: 3}
     m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 0
@@ -14375,7 +14375,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -14383,7 +14383,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 7cb2912222469634ba17a77055919ea8, type: 3}
     m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 0
