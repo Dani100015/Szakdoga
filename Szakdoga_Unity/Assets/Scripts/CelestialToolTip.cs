@@ -27,7 +27,7 @@ class CelestialToolTip   : MonoBehaviour {
         deactivePosition = TipPanel.transform.localPosition;
     }
 
-    void OnMouseEnter()
+    void OnMouseOver()
     {
         TipPanel.transform.localPosition = activePosition;
         TipHeader.text = celestialName;

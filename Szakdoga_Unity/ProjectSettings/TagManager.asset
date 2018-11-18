@@ -9,6 +9,7 @@ TagManager:
   - Tech
   - InputField
   - InputfieldText
+  - Unit
   layers:
   - Default
   - TransparentFX

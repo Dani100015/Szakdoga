@@ -19,11 +19,17 @@ public class PlanetRingRenderer : MonoBehaviour {
 
     Color c1 = Color.cyan;
     Color c2 = Color.cyan;
-    
-    void Start()
+
+
+    void Awake()
     {
         GeneratePlanetLine();
         GenerateSystemBorderLine();
+
+    }
+    void Start()
+    {
+
     }
 
 
@@ -86,14 +92,13 @@ public class PlanetRingRenderer : MonoBehaviour {
             line.useWorldSpace = false;
             line.gameObject.layer = 15;
             line.name = "RingLine";
+            line.receiveShadows = false;
 
             LineObject.transform.SetParent(transform.parent.transform.Find("LineContainer"));
             
             CreatePoints(line);
             lines.Add(line);
 
-            line.receiveShadows = false;
-            line.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
 
         }
     }

@@ -18,6 +18,8 @@ class GUI_CelestialToolTip : MonoBehaviour
     Vector3 offset;
     Vector3 activePosition;
     Vector3 deactivePosition;
+
+    bool isPanelActive;
     void Start()
     {
         TipPanel = GameObject.Find("CelestialTipPanel");
@@ -28,30 +30,26 @@ class GUI_CelestialToolTip : MonoBehaviour
         celestialInfo = transform.position.ToString();
 
         activePosition = new Vector3(120, -120, 0);
-        deactivePosition = TipPanel.transform.position;
+        deactivePosition = new Vector3(-800, -800, 0);
 
-        bool isPanelActive = false;
+        isPanelActive = false;
     }
 
     void Update()
     {
         
-        Debug.Log(offset);
+       // Debug.Log(offset);
     }
-    void OnMouseDown()
+    void OnMouseEnter()
     {
-        if (TipPanel.transform.position == deactivePosition)
-        {
-            offset = Input.mousePosition;
+        TipPanel.transform.localPosition = activePosition;
+        TipHeader.text = celestialName;
+        TipInfo.text = celestialInfo;
+    }
 
-            TipPanel.transform.position = offset + activePosition;
-            TipHeader.text = celestialName;
-            TipInfo.text = celestialInfo;
-        }
-        else if (TipPanel.transform.position == activePosition)
-        {
-            TipPanel.transform.position = deactivePosition;
-        }
+    void OnMouseExit()
+    {
+        TipPanel.transform.localPosition = deactivePosition;
     }
 
 

@@ -15,6 +15,8 @@ class SetSolarSystems : MonoBehaviour {
     public List<SolarSystem> Systems;
     public List<GameObject> SystemPrefabs = new List<GameObject>();
 
+    public List<GameObject> units;
+
     bool fromGalaxy;
     public AstarData active;
 
@@ -26,16 +28,18 @@ class SetSolarSystems : MonoBehaviour {
     }
     void Start ()
     {
-        Systems = game.Systems;
-        if (ParameterWatcher.firstSolarSystemInit)
+        if (ParameterWatcher.firstSolarSystemInit == true)
         {
+            Systems = game.Systems;
             GenerateSolarSystemPrefabs(game.Systems.Count);
             startSystemPrefab = SystemPrefabs.Find(x => x.name == game.startSolarSystem.Name);
             currentSystemPrefab = startSystemPrefab;
-            InitialSolarSystems(currentSystemPrefab);
+
+            DisappiareOtherSolarSystem(currentSystemPrefab);
+
             ParameterWatcher.firstSolarSystemInit = false;
         }
-                    
+        
 
     }
 
@@ -44,26 +48,41 @@ class SetSolarSystems : MonoBehaviour {
         if (game.currentSolarSystem.Name != currentSystemPrefab.name)
         {
             fromGalaxy = true;
-            InitialSolarSystems(SystemPrefabs.Find(x => x.name == game.currentSolarSystem.Name));
+            DisappiareOtherSolarSystem(SystemPrefabs.Find(x => x.name == game.currentSolarSystem.Name));
         }
     }
         
-    public void InitialSolarSystems(GameObject solarSystem)
-    {    
+    public void DisappiareOtherSolarSystem(GameObject solarSystem)
+    {
+
         for (int i = 0; i < Systems.Count; i++)
         {
+           
             foreach (GameObject solar in SystemPrefabs)
             {
+                
                 foreach (MeshRenderer mesh in solar.GetComponentsInChildren<MeshRenderer>())
-                {
+                {              
                     mesh.enabled = false;               
                 }
-                solar.transform.Find("Star").gameObject.SetActive(false);
-                
                 foreach (LineRenderer line in solar.transform.Find("LineContainer").GetComponentsInChildren<LineRenderer>())
-                {
+                {                
                     line.enabled = false;
                 }
+                foreach (BoxCollider item in solar.GetComponentsInChildren<BoxCollider>())
+                {
+                    item.enabled = false;
+                }
+                foreach (BoxCollider item in solar.transform.Find("Units").GetComponentsInChildren<BoxCollider>())
+                { 
+                    item.enabled = false;
+                }
+                foreach (SphereCollider item in solar.GetComponentsInChildren<SphereCollider>())
+                {
+                    item.enabled = false;
+                }
+
+                solar.transform.Find("Star").gameObject.SetActive(false);
             }      
         }       
         SetCurrentSolarSystem(solarSystem);                                  
@@ -79,6 +98,18 @@ class SetSolarSystems : MonoBehaviour {
         foreach (LineRenderer line in solarSystem.transform.Find("LineContainer").GetComponentsInChildren<LineRenderer>())
         {
             line.enabled = true;
+        }
+        foreach (BoxCollider item in solarSystem.GetComponentsInChildren<BoxCollider>())
+        {
+            item.enabled = true;
+        }
+        foreach (BoxCollider units in solarSystem.transform.Find("Units").GetComponentsInChildren<BoxCollider>())
+        {
+            units.enabled = true;
+        }
+        foreach (SphereCollider item in solarSystem.GetComponentsInChildren<SphereCollider>())
+        {
+            item.enabled = true;
         }
         solarSystem.transform.Find("Star").gameObject.SetActive(true);
         solarSystem.transform.Find("Star").GetComponent<MeshRenderer>().enabled = true;
@@ -120,7 +151,6 @@ class SetSolarSystems : MonoBehaviour {
 
             GameObject[] asteriodsPrefabs = Resources.LoadAll<GameObject>("Prefabs/Asteroids") as GameObject[];
             int asteriodsNumber = Random.Range(3, 7);
-            Debug.Log(asteriodsNumber);
             for (int j = 0; j < asteriodsNumber; j++)
             {
                 int asteriodIndex = Random.Range(0, asteriodsPrefabs.Length);
@@ -129,9 +159,11 @@ class SetSolarSystems : MonoBehaviour {
                 asteroid.GetComponent<ResourceObject>().Capacity = Random.Range(100, 1000);
                 asteroid.transform.position = new Vector3(Random.Range(-250, 250), 0, Random.Range(-250, 250));
                 asteroid.AddComponent<GUI_CelestialToolTip>();
+                asteroid.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
             }
 
             SystemPrefabs[i].transform.SetParent(GameObject.Find("SolarSystems").transform);
+            game.solarSystemPrefabs = SystemPrefabs;
         }      
     }
 }

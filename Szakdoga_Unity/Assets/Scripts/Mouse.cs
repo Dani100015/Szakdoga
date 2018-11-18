@@ -156,7 +156,6 @@ public class Mouse : MonoBehaviour
                     }
                     else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Resources"))
                     {
-                        Debug.Log("Hit Resource");
                         SelectGatherTargets(hit);
                     }
                     else if (hit.collider.name == "TerrainMain")

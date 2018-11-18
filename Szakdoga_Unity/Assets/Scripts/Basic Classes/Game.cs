@@ -8,6 +8,8 @@ using UnityEngine.UI;
 class Game : MonoBehaviour
 {
 
+    public static Game game;
+
     List<SolarSystem> solars;
     public static List<Player> players;
     //List<Team> teams;
@@ -37,6 +39,8 @@ class Game : MonoBehaviour
     static public Camera mainCamera;
 
     public bool fromGalaxy;
+
+    public List<GameObject> units = new List<GameObject>();
     void Awake()
     {
 
@@ -56,6 +60,8 @@ class Game : MonoBehaviour
             initTechTree();
 
             Game.mainCamera = Camera.main;
+
+            Game.game = transform.GetComponent<Game>();
 
             ParameterWatcher.firstGameInit = false;
 
@@ -79,8 +85,6 @@ class Game : MonoBehaviour
         players.Add(currentPlayer);
         players.Add(player2);
 
-        Debug.Log(Game.currentPlayer.MaxPopulation);
-
         //Egységek betöltése és játékosokhoz rendelése
         string path = "Prefabs/Units";
         object[] LoadedUnits = Resources.LoadAll(path);
@@ -88,6 +92,8 @@ class Game : MonoBehaviour
         for (int i = 0; i < LoadedUnits.Length; i++)
         {
             GameObject temp = Instantiate(LoadedUnits[i] as GameObject);
+            temp.transform.SetParent(GameObject.Find("SolarSystems").transform.Find(currentSolarSystem.Name).transform.Find("Units"));
+            temp.gameObject.tag = "Unit";
             Units.Add(temp);
         }
 
@@ -103,6 +109,8 @@ class Game : MonoBehaviour
                         p.BuildableUnits.Add(unit);
                 }
             }
+
+            units = Units;
         }
 
         SharedIcons = Resources.LoadAll("Icons/Shared");
@@ -126,6 +134,7 @@ class Game : MonoBehaviour
 
     void Update()
     {
+        
     }
 
     // void CheckForWin

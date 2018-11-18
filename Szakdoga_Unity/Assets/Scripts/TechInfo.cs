@@ -85,7 +85,6 @@ class TechInfo : MonoBehaviour {
     }
     void Update()
     {
-
         if (playerTech.Find(x => x.name == techIcon.transform.parent.name).Researched == false)
         {
             techIcon.color = Color.grey;

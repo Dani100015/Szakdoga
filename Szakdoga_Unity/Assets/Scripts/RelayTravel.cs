@@ -12,7 +12,7 @@ class RelayTravel : MonoBehaviour {
     List<ChangeSolarSytem> changes;
 
     GameObject systemGObject;
-    SolarSystem system;
+    SolarSystem currentSystem;
 
     Component[] meshComponents;
 
@@ -35,6 +35,8 @@ class RelayTravel : MonoBehaviour {
     Vector3 activePosition;
     Vector3 deactivePosition;
 
+
+
     void Awake()
     {
         itemView = GameObject.Find("RelayTravelPanel").GetComponent<ScrollRect>();
@@ -54,7 +56,8 @@ class RelayTravel : MonoBehaviour {
         systemGObject = transform.parent.gameObject;
         Systems = game.Systems;
 
-        system = Systems.Find(x => x.Name == setSystem.currentSystemPrefab.name);
+        currentSystem = Systems.Find(x => x.Name == game.currentSolarSystem.Name);
+
 
         activePosition = new Vector3(150,400,0f);
         deactivePosition = itemView.transform.position;
@@ -82,7 +85,8 @@ class RelayTravel : MonoBehaviour {
     }
     void Update()
     {
-        if (system.Name != game.currentSolarSystem.Name)
+        
+        if (currentSystem.Name != game.currentSolarSystem.Name)
         {
             isRelayPanelActive = !isRelayPanelActive;
             itemView.transform.position = deactivePosition;
@@ -91,19 +95,19 @@ class RelayTravel : MonoBehaviour {
                 Destroy(itemContents.transform.GetChild(i).gameObject);            
             }
 
-            system = game.currentSolarSystem;
+            currentSystem = game.currentSolarSystem;
         }
     }
 
 
     void OnMouseDown()
     {
-        system = game.currentSolarSystem;
+        currentSystem = game.currentSolarSystem;
 
         if (isRelayPanelActive == true)
         {
             itemView.transform.position = activePosition;
-            GenerateNeighbourSystemList(system);
+            GenerateNeighbourSystemList(currentSystem);
         }
         else if (isRelayPanelActive == false)
         {

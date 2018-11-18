@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Syste
+namespace SystemPath
 {
     class SystemPathFinder : MonoBehaviour
     {
@@ -12,7 +12,11 @@ namespace Syste
         void Start()
         {
             game = GameObject.Find("Game").GetComponent<Game>();
-            AbsztraktAllapot SystemsAllapot = new SolarSystemAllapot(game.currentSolarSystem, game.Systems[3], game.Systems);
+           
+        }
+        public void FindTheWay(SolarSystem current, SolarSystem target)
+        {
+            AbsztraktAllapot SystemsAllapot = new SolarSystemAllapot(current, target, game.Systems);
             GrafKereso Gk = new BackTrack(5);
             Csucs celcsucs = Gk.Keres(new Csucs(SystemsAllapot));
             if (celcsucs == null)
@@ -26,11 +30,13 @@ namespace Syste
                 {
                     cs = cs.Szulo;
                 }
+                Debug.Log("Siker");
             }
 
         }
-
     }
+
+
 
     abstract class AbsztraktAllapot
     {

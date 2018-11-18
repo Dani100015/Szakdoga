@@ -22,6 +22,9 @@ public class Unit : MonoBehaviour
     public float attackSpeed;
     public int attackDamage;
 
+    //RelayTravel
+    public GameObject solarSystemTarget;
+
     //Játékmechanika
     public int maxHealth;
     public int currentHealth;
