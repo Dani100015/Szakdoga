@@ -10,6 +10,11 @@ TagManager:
   - InputField
   - InputfieldText
   - Unit
+  - PlaceHolder
+  - Projectile
+  - Iridium
+  - Palladium
+  - ElementZero
   layers:
   - Default
   - TransparentFX

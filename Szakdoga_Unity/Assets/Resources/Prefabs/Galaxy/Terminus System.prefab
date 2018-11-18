@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 135817833619741916}
   - component: {fileID: 23001240452264892}
   m_Layer: 0
-  m_Name: 2._SOLARSYSTEM
+  m_Name: Terminus System
   m_TagString: StarSystem
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

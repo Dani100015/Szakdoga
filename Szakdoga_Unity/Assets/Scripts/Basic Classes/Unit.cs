@@ -45,14 +45,13 @@ public class Unit : MonoBehaviour
     public Species Race;
     public Texture2D MenuIcon;
     public Texture2D MenuIconRo;
+    public bool Idle;
 
     //Gyűjtögetéshez
     public bool isGatherer;
     public float GatherSpeed;
     public float MaxResourceAmount;
-    [HideInInspector]
     public float CurrentResourceAmount;
-    [HideInInspector]
     public resourceType CurrentCarriedResource;
     [HideInInspector]
     public GameObject CurrentlyBuiltObject;
@@ -62,7 +61,11 @@ public class Unit : MonoBehaviour
     {
         ActionsQueue = new Queue();
         if (isGatherer)
+        {
+            Idle = true;
             CurrentCarriedResource = resourceType.None;
+        }
+        else Idle = false;
     }
 
     void Awake()
@@ -103,7 +106,7 @@ public class Unit : MonoBehaviour
 
     public IEnumerator GatherTarget(Transform target)
     {
-        while (target != null && Vector3.Distance(target.gameObject.transform.position, gameObject.transform.position) <= 20)
+        while (target != null && Vector3.Distance(target.gameObject.transform.position, gameObject.transform.position) <= 15)
         {
             if (CurrentCarriedResource != target.gameObject.GetComponent<ResourceObject>().Type)
                 CurrentResourceAmount = 0;
@@ -122,7 +125,8 @@ public class Unit : MonoBehaviour
             if (CurrentResourceAmount + GatherSpeed >= MaxResourceAmount)
                 CurrentResourceAmount = MaxResourceAmount;
             else CurrentResourceAmount += GatherSpeed;
-            target.gameObject.GetComponent<ResourceObject>().Capacity -= GatherSpeed;
+            if (target != null)
+                target.gameObject.GetComponent<ResourceObject>().Capacity -= GatherSpeed;
             yield return new WaitForSeconds(.2f);
         }
         yield return null;
@@ -130,8 +134,6 @@ public class Unit : MonoBehaviour
 
     public IEnumerator Build()
     {
-
-
         AIDestinationSetter setter = transform.GetComponent<AIDestinationSetter>();
         while ((Vector3.Distance(transform.position, new Vector3(setter.ai.destination.x, -2.1f, setter.ai.destination.z)) > 2))
         {
@@ -150,7 +152,6 @@ public class Unit : MonoBehaviour
             yield break;
         }
 
-        Debug.Log("most itt");
         GameObject placeholder = Instantiate(Resources.Load("Prefabs/Placeholder"), new Vector3(setter.ai.destination.x, 5f, setter.ai.destination.z), Quaternion.identity) as GameObject;
         placeholder.name = building.name;
         Structure phbuild = placeholder.AddComponent<Structure>();
@@ -197,7 +198,10 @@ public class Unit : MonoBehaviour
             if (target.GetComponent<Structure>().Owner != Owner)
                 yield break;
             if (building.currentHealth >= building.maxHealth)
+            {
+                building.currentHealth = building.maxHealth;
                 yield break;
+            }
 
             if (Game.currentPlayer.iridium - building.iridiumCost / 100 <= 0 ||
                 Game.currentPlayer.palladium - building.palladiumCost / 100 <= 0 ||
@@ -206,7 +210,7 @@ public class Unit : MonoBehaviour
                 transform.GetComponent<AIDestinationSetter>().isRepairing = false;
                 transform.GetComponent<AIDestinationSetter>().target = null;
                 yield break;
-            }               
+            }
 
             Game.currentPlayer.iridium -= (building.iridiumCost / 100);
             Game.currentPlayer.palladium -= (building.palladiumCost / 100);

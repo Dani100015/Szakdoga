@@ -11,9 +11,10 @@ public class Structure : Unit
     public List<GameObject> TrainableUnits;
     public Vector3 RallyPoint;
     public Transform RallyTarget;
-    [HideInInspector]public List<object> TrainingQueue;
+    [HideInInspector]
+    public List<GameObject> TrainingQueue;
     public int TimeLeft;
-    bool Training;
+    public bool Training;
     public bool isDropOffPoint;
     public GameObject GUIGhost;
 
@@ -21,20 +22,16 @@ public class Structure : Unit
     {
         isWalkable = false;
         ResearchableTechs = new List<Tech>();
-        TrainingQueue = new List<object>();
+        TrainingQueue = new List<GameObject>();
         RallyPoint = gameObject.transform.position;
         RallyTarget = null;
     }
-  
+
     IEnumerator Train()
     {
-        Debug.Log("indul");
-        //Technológiát fejlesztünk?
-        if (TrainingQueue[0] is Tech)
-            yield return null;
-
-        //Az épület éppen kiképez/fejleszt
-        GameObject TrainableUnit = TrainingQueue[0] as GameObject;
+        Training = true;
+        //Az épület éppen kiképez
+        GameObject TrainableUnit = TrainingQueue[0];
         Unit unitObj = TrainableUnit.GetComponent<Unit>();
 
         for (int TimeLeft = 0; TimeLeft < unitObj.trainingTime; TimeLeft++)
@@ -44,6 +41,7 @@ public class Structure : Unit
 
         GameObject TrainedUnit = Instantiate(TrainableUnit, transform.position, transform.rotation) as GameObject;
         TrainedUnit.GetComponent<Unit>().Owner = gameObject.GetComponent<Structure>().Owner;
+        TrainedUnit.SetActive(true);
         AIDestinationSetter setter = TrainedUnit.GetComponent<AIDestinationSetter>();
         if (RallyPoint != gameObject.transform.position)
         {
@@ -59,15 +57,13 @@ public class Structure : Unit
         TrainedUnit.name = TrainableUnit.name;
         //Kiképzett egység hozzáadása az egységek listához, fejlesztésekkel való módosításhoz
         Game.players.Where(x => x.empireName.Equals(Owner)).SingleOrDefault().units.Add(TrainedUnit);
+        if (TrainedUnit.GetComponent<Unit>().isGatherer)
+            Game.players.Where(x => x.empireName.Equals(Owner)).SingleOrDefault().CurrentWorkers.Add(TrainedUnit);
 
         TrainingQueue.RemoveAt(0);
+        Training = false;
         if (TrainingQueue.Count != 0)
-        {
-            if (TrainingQueue[0] is Tech)
-                StartCoroutine("Research");
-            else StartCoroutine("Train");
-        }
-        Debug.Log(TrainingQueue.Count);
+            StartCoroutine("Train");
         yield return null;
     }
 }

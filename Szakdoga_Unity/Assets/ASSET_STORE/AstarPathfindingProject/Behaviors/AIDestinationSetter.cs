@@ -24,7 +24,7 @@ namespace Pathfinding
         public Transform tempTarget;
         public IAstarAI ai;
         Mouse mouse;
-        public bool isAttacking, isGathering, isRepairing;
+        public bool isAttacking, isGathering, isRepairing, repairStarted;
 
         void OnEnable()
         {
@@ -60,7 +60,7 @@ namespace Pathfinding
         }
 
         void Start()
-        {         
+        {
             mouse = GameObject.Find("Game").GetComponent<Mouse>();
             StartCoroutine("AutoAttack");
         }
@@ -112,11 +112,11 @@ namespace Pathfinding
             {
                 if (hitColliders[i].gameObject.GetComponent<Structure>() != null &&
                     hitColliders[i].gameObject.GetComponent<Structure>().isDropOffPoint &&
-                    hitColliders[i].gameObject.GetComponent<Structure>().Owner.Equals(Game.currentPlayer.empireName))
+                    hitColliders[i].gameObject.GetComponent<Structure>().Owner.Equals(Game.players.Where(x => x.empireName.Equals(unit.Owner)).SingleOrDefault().empireName))
                 {
                     dropOffPoints.Add(hitColliders[i].transform);
                 }
-                //Find Closest Enemy
+                //Find Closest Target
                 Transform bestTarget = null;
                 float closestDistanceSqr = Mathf.Infinity;
                 Vector3 currentPosition = transform.position;
@@ -137,13 +137,41 @@ namespace Pathfinding
 
         /** Updates the AI's destination every frame */
         void LateUpdate()
-        {        
+        {
             //Ha van célpont beállítva, menjen a célpont pozíciójához
             if (ai != null && target != null && !unit.HoldPosition)
             {
                 ai.destination = target.transform.position;
                 ai.isStopped = false;
             }
+
+            #region Idle egységek
+            //Az épp munkát nem végzõ egységek eltárolása
+            if (unit.isGatherer)
+            {
+                if (ai.isStopped && !isGathering && !isRepairing)
+                {
+                    if (!Game.players.Where(x => x.empireName.Equals(unit.Owner)).SingleOrDefault().IdleWorkers.Contains(gameObject))
+                    {
+                        unit.Idle = true;
+                        Game.players.Where(x => x.empireName.Equals(unit.Owner)).SingleOrDefault().IdleWorkers.Add(gameObject);
+                    }
+                }
+                else
+                {
+                    if (Game.players.Where(x => x.empireName.Equals(unit.Owner)).SingleOrDefault().IdleWorkers.Contains(gameObject))
+                    {
+                        unit.Idle = false;
+                        Game.players.Where(x => x.empireName.Equals(unit.Owner)).SingleOrDefault().IdleWorkers.Remove(gameObject);
+                    }
+                }
+                if (isGathering && target == null)
+                {
+                    isGathering = false;
+                    ai.isStopped = true;
+                }
+            }
+            #endregion
 
             //Célhely kijelölése
             if (unit.Selected && unit.isWalkable && unit.Owner == Game.currentPlayer.empireName)
@@ -156,6 +184,7 @@ namespace Pathfinding
                     {
                         unit.StopCoroutine("GatherTarget");
                         isGathering = false;
+                        repairStarted = false;
                         tempTarget = null;
                     }
 
@@ -184,7 +213,7 @@ namespace Pathfinding
                         GameObject.Find("Game").GetComponent<GUISetup>().UpdatePlayerInfoBar();
 
                         unit.StopCoroutine("Build");
-                        unit.CurrentlyBuiltObject = null;                    
+                        unit.CurrentlyBuiltObject = null;
                     }
 
                     ai.isStopped = false;
@@ -219,10 +248,11 @@ namespace Pathfinding
             }
 
             #region Javítás
-            if (target != null && target.gameObject.layer == LayerMask.NameToLayer("Unit") && target.gameObject.GetComponent<Structure>() != null &&
+            if (unit.isGatherer && target != null && target.gameObject.layer == LayerMask.NameToLayer("Unit") && target.gameObject.GetComponent<Structure>() != null &&
                 !Game.players.Where(x => x.empireName.Equals(unit.Owner)).SingleOrDefault().enemies.Contains(Game.players.Where(x => x.empireName.Equals(target.GetComponent<Unit>().Owner)).SingleOrDefault()))
             {
-                if (Vector3.Distance(target.gameObject.transform.position, gameObject.transform.position) < 5)
+                isRepairing = true;
+                if (Vector3.Distance(target.gameObject.transform.position, gameObject.transform.position) < 10)
                 {
                     ai.isStopped = true;
                     var q = new Quaternion();
@@ -230,21 +260,18 @@ namespace Pathfinding
                         q = Quaternion.LookRotation(target.position - transform.position);
                     transform.rotation = Quaternion.RotateTowards(transform.rotation, q, 150 * Time.deltaTime);
                     //Csak akkor javít, ha nincs maxon az élete
-                    if (transform.rotation == q)
+                    if (target.gameObject.GetComponent<Structure>().currentHealth < target.gameObject.GetComponent<Structure>().maxHealth)
                     {
-                        if (target.gameObject.GetComponent<Structure>().currentHealth < target.gameObject.GetComponent<Structure>().maxHealth)
+                        if (!repairStarted)
                         {
-                            if (!isRepairing)
-                            {
-                                Debug.Log("Belép");
-                                unit.StartCoroutine("Repair", target);
-                                isRepairing = true;
-                            }
+                            unit.StartCoroutine("Repair", target);
+                            repairStarted = true;
                         }
                         else
                         {
                             unit.StopCoroutine("Repair");
                             isRepairing = false;
+                            repairStarted = false;
                             target = null;
                         }
                     }
@@ -283,7 +310,7 @@ namespace Pathfinding
                     isAttacking = false;
                     return;
                 }
-                
+
                 else if (Vector3.Distance(target.gameObject.transform.position, gameObject.transform.position) <= unit.Range * 5)
                 {
                     //Ha a célpont lõtávon belül van, megáll és megtámadja a célt
@@ -316,6 +343,8 @@ namespace Pathfinding
                             {
                                 Game.players.Where(x => x.empireName.Equals(unitObj.Owner)).SingleOrDefault().units.Remove(target.gameObject);
                                 Game.players.Where(x => x.empireName.Equals(unitObj.Owner)).SingleOrDefault().CurrentPopulation -= target.GetComponent<Unit>().PopulationCost;
+                                if (Game.players.Where(x => x.empireName.Equals(unitObj.Owner)).SingleOrDefault().CurrentWorkers.Contains(target.gameObject))
+                                    Game.players.Where(x => x.empireName.Equals(unitObj.Owner)).SingleOrDefault().CurrentWorkers.Remove(target.gameObject);
                                 GameObject.Find("Game").GetComponent<GUISetup>().UpdatePlayerInfoBar();
                             }
                             Destroy(target.gameObject);
@@ -323,12 +352,12 @@ namespace Pathfinding
                             isAttacking = false;
                         }
                     }
-                } 
+                }
                 else
                 {
                     unit.StopCoroutine("AttackTarget");
                     isAttacking = false;
-                }            
+                }
             }
 
             //Leszakadás a célpontról
@@ -340,12 +369,12 @@ namespace Pathfinding
                 target = null;
             }
 
-           
+
             #endregion
 
             #region Gyûjtögetés
             if (target != null && target.gameObject.layer == LayerMask.NameToLayer("Resources") &&
-                Vector3.Distance(target.gameObject.transform.position, gameObject.transform.position) <= 20)
+                Vector3.Distance(target.gameObject.transform.position, gameObject.transform.position) <= 15)
             {
                 ai.isStopped = true;
                 var q = new Quaternion();
@@ -380,16 +409,17 @@ namespace Pathfinding
             #endregion
 
             #region Nyersanyag leadás
-            if (target != null && target.GetComponent<Structure>() != null && target.GetComponent<Structure>().isDropOffPoint &&
-                Vector3.Distance(transform.position, target.position) < 20 && target.GetComponent<Structure>().Owner.Equals(Game.currentPlayer.empireName))
+            if (target != null && !isRepairing && target.GetComponent<Structure>() != null && target.GetComponent<Structure>().isDropOffPoint &&
+                Vector3.Distance(transform.position, target.position) < 20 && target.GetComponent<Structure>().Owner.Equals(Game.players.Where(x => x.empireName.Equals(unit.Owner)).SingleOrDefault().empireName))
+
             {
                 //Cipelt nyersanyag raktárhoz való hozzáadása
                 ai.isStopped = true;
                 if (unit.CurrentCarriedResource == resourceType.Iridium)
-                    Game.currentPlayer.Iridium += (int)unit.CurrentResourceAmount;
+                    Game.players.Where(x => x.empireName.Equals(unit.Owner)).SingleOrDefault().Iridium += (int)unit.CurrentResourceAmount;
                 else if (unit.CurrentCarriedResource == resourceType.Palladium)
-                    Game.currentPlayer.Palladium += (int)unit.CurrentResourceAmount;
-                else Game.currentPlayer.NullElement += (int)unit.CurrentResourceAmount;
+                    Game.players.Where(x => x.empireName.Equals(unit.Owner)).SingleOrDefault().palladium += (int)unit.CurrentResourceAmount;
+                else Game.players.Where(x => x.empireName.Equals(unit.Owner)).SingleOrDefault().nullElement += (int)unit.CurrentResourceAmount;
 
                 unit.CurrentCarriedResource = resourceType.None;
                 unit.CurrentResourceAmount = 0;

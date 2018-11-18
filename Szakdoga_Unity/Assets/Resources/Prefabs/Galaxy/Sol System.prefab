@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 135815899719315296}
   - component: {fileID: 23485584282767510}
   m_Layer: 0
-  m_Name: 3._SOLARSYSTEM
+  m_Name: Sol System
   m_TagString: StarSystem
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

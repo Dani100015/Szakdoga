@@ -65,27 +65,11 @@ class Game : MonoBehaviour
 
             ParameterWatcher.firstGameInit = false;
 
-        }
-
-        #region Induló elemek
-        //A pályán levő egységeket/épületeket a tulajdonosuk listáihoz rendeli
-        var goArray = FindObjectsOfType(typeof(GameObject));
-        List<GameObject> goList = new List<GameObject>();
-        for (int i = 0; i < goArray.Length; i++)
-        {
-            GameObject currentObject = goArray[i] as GameObject;
-            if (currentObject.GetComponent<Unit>() != null || currentObject.GetComponent<Structure>() != null)
-            {
-                players.Where(x => x.empireName.Equals(currentObject.GetComponent<Unit>().Owner)).SingleOrDefault().units.Add(currentObject);
-            }
-
-        }
-        #endregion
+        }     
     }
 
     void Start()
     {
-
         #region Init
 
         //Játékosok inicializálása
@@ -93,6 +77,7 @@ class Game : MonoBehaviour
 
         currentPlayer = new Player(10000, 10000, 10000, "Peti", Species.Human);
         player2 = new Player(10000, 10000, 10000, "Sanyi", Species.Human);
+		player2.MaxPopulation = 200;
 
         currentPlayer.enemies.Add(player2);
         player2.enemies.Add(currentPlayer);
@@ -107,8 +92,12 @@ class Game : MonoBehaviour
         for (int i = 0; i < LoadedUnits.Length; i++)
         {
             GameObject temp = Instantiate(LoadedUnits[i] as GameObject);
-            temp.transform.SetParent(GameObject.Find("SolarSystems").transform.Find(currentSolarSystem.Name).transform.Find("Units"));
+            if (GameObject.Find("SolarSystems") != null)
+                temp.transform.SetParent(GameObject.Find("SolarSystems").transform.Find(currentSolarSystem.Name).transform.Find("Units"));
             temp.gameObject.tag = "Unit";
+			temp.name = (LoadedUnits[i] as GameObject).name;
+            temp.hideFlags = HideFlags.HideInHierarchy;
+            temp.SetActive(false);
             Units.Add(temp);
         }
 
@@ -124,13 +113,25 @@ class Game : MonoBehaviour
                         p.BuildableUnits.Add(unit);
                 }
             }
-
-            units = Units;
         }
 
         SharedIcons = Resources.LoadAll("Icons/Shared");
         #endregion
 
+        #region Induló elemek
+        //A pályán levő egységeket/épületeket a tulajdonosuk listáihoz rendeli
+        var goArray = FindObjectsOfType(typeof(GameObject));
+        List<GameObject> goList = new List<GameObject>();
+        for (int i = 0; i < goArray.Length; i++)
+        {
+            GameObject currentObject = goArray[i] as GameObject;
+            if (currentObject.GetComponent<Unit>() != null || currentObject.GetComponent<Structure>() != null)
+            {
+                players.Where(x => x.empireName.Equals(currentObject.GetComponent<Unit>().Owner)).SingleOrDefault().units.Add(currentObject);
+            }
+
+        }
+        #endregion
 
     }
 
@@ -287,7 +288,7 @@ class Game : MonoBehaviour
         for (int i = 0; i < player.units.Count; i++)
         {
             if (player.units[i].GetComponent<Unit>() != null && player.units[i].GetComponent<Unit>().isGatherer)
-                player.units[i].GetComponent<Unit>().Armor += player.BuildableUnits[i].GetComponent<Unit>().ArmorIncrement;
+                player.units[i].GetComponent<Unit>().Armor += player.units[i].GetComponent<Unit>().ArmorIncrement;
         }
         for (int i = 0; i < player.BuildableUnits.Count; i++)
         {
@@ -301,7 +302,7 @@ class Game : MonoBehaviour
         for (int i = 0; i < player.units.Count; i++)
         {
             if (player.units[i].GetComponent<Unit>() != null)
-                player.units[i].GetComponent<Unit>().attackDamage += player.BuildableUnits[i].GetComponent<Unit>().AttackIncrement;
+                player.units[i].GetComponent<Unit>().attackDamage += player.units[i].GetComponent<Unit>().AttackIncrement;
         }
         for (int i = 0; i < player.BuildableUnits.Count; i++)
         {

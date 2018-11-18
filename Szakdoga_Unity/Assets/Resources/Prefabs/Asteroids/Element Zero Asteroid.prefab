@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 114966331074711932}
   m_Layer: 14
   m_Name: Element Zero Asteroid
-  m_TagString: Untagged
+  m_TagString: ElementZero
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -96,7 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd03f8d2ec0b07e4a9122772c36f18c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Capacity: 1000
+  Capacity: 50000
   Type: 3
 --- !u!224 &224350874327018342
 RectTransform:
@@ -113,6 +113,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 59.4, y: -2.1}
+  m_AnchoredPosition: {x: -214.8, y: -2.1}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}

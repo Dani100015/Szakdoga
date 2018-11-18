@@ -169,8 +169,10 @@ class SetSolarSystems : MonoBehaviour {
             {
                 int asteriodIndex = Random.Range(0, asteriodsPrefabs.Length);
                 GameObject asteroid = Instantiate(asteriodsPrefabs[asteriodIndex]);
+                asteroid.name = asteriodsPrefabs[asteriodIndex].name;
+
                 asteroid.transform.SetParent(SystemPrefabs[i].transform.Find("Planets"));
-                asteroid.GetComponent<ResourceObject>().Capacity = Random.Range(100, 1000);
+                asteroid.GetComponent<ResourceObject>().Capacity = Random.Range(10000, 50000);
                 asteroid.transform.position = new Vector3(Random.Range(-250, 250), 0, Random.Range(-250, 250));
                 asteroid.AddComponent<GUI_CelestialToolTip>();
                 asteroid.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);

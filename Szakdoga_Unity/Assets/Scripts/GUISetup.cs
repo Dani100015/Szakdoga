@@ -174,7 +174,9 @@ public class GUISetup : MonoBehaviour
             #endregion
 
             #region Kiképzés
-            if (Mouse.CurrentlyFocusedUnit != null && !Mouse.CurrentlyFocusedUnit.tag.Equals("PlaceHolder") && Mouse.CurrentlyFocusedUnit.GetComponent<Structure>() != null && Mouse.CurrentlyFocusedUnit.GetComponent<Structure>().TrainableUnits.Count != 0)
+            if (Mouse.CurrentlyFocusedUnit != null && !Mouse.CurrentlyFocusedUnit.tag.Equals("PlaceHolder") &&
+                Mouse.CurrentlyFocusedUnit.GetComponent<Structure>() != null && Mouse.CurrentlyFocusedUnit.GetComponent<Structure>().TrainableUnits.Count != 0 &&
+                Mouse.CurrentlyFocusedUnit.GetComponent<Structure>().Owner == Game.currentPlayer.empireName)
             {
                 Structure currentStructure = Mouse.CurrentlyFocusedUnit.GetComponent<Structure>();
                 int offset = (int)(48 * canvas.scaleFactor * 1.6);
@@ -182,7 +184,7 @@ public class GUISetup : MonoBehaviour
 
                 for (int i = 0; i < currentStructure.TrainableUnits.Count; i++)
                 {
-                    GameObject unit = currentStructure.TrainableUnits[i];
+                    GameObject unit = Game.currentPlayer.BuildableUnits.Where(x => x.gameObject.name.Equals(currentStructure.TrainableUnits[i].name)).First();
                     Unit unitObj = unit.GetComponent<Unit>();
                     GUIContent content = new GUIContent("", unit.name);
 
@@ -200,7 +202,7 @@ public class GUISetup : MonoBehaviour
                         {
                             if (CostCheck(unitObj))
                             {
-                                currentStructure.TrainingQueue.Add(Game.currentPlayer.BuildableUnits.Where(x => x.name == currentStructure.TrainableUnits[i].name).SingleOrDefault());
+                                currentStructure.TrainingQueue.Add(Game.currentPlayer.BuildableUnits.Where(x => x.name == currentStructure.TrainableUnits[i].name).FirstOrDefault());
                                 if (currentStructure.TrainingQueue.Count == 1)
                                     currentStructure.StartCoroutine("Train");
                             }
@@ -212,7 +214,7 @@ public class GUISetup : MonoBehaviour
                 //Egység információk
                 if (GUI.tooltip != "")
                 {
-                    GameObject unit = Game.currentPlayer.BuildableUnits.Where(x => x.name == GUI.tooltip).SingleOrDefault();
+                    GameObject unit = Game.currentPlayer.BuildableUnits.Where(x => x.name == GUI.tooltip).FirstOrDefault();
                     Unit unitObj = unit.GetComponent<Unit>();
                     ToolTipContainter.SetActive(true);
                     ToolTipContainter.transform.Find("TextName").GetComponent<Text>().text = unit.name;
