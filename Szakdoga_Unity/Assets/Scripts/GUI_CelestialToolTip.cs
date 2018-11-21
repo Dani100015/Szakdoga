@@ -40,7 +40,7 @@ class GUI_CelestialToolTip : MonoBehaviour
         
        // Debug.Log(offset);
     }
-    void OnMouseEnter()
+    void OnMouseDown()
     {
         TipPanel.transform.localPosition = activePosition;
         TipHeader.text = celestialName;

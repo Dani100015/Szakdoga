@@ -16,12 +16,12 @@ public class MenuControl : MonoBehaviour {
 
     void Start () {
 
-        menuPanel = GameObject.Find("MenuPanel");
+        //menuPanel = GameObject.Find("MenuPanel");
 
-        activePosition = new Vector3(0f, 0f, 0f);
-        deactivePosition = new Vector3(1000,1000,0f);
+        //activePosition = new Vector3(0f, 0f, 0f);
+        //deactivePosition = new Vector3(1000,1000,0f);
 
-        menuPanel.transform.localPosition = deactivePosition;
+        //menuPanel.transform.localPosition = deactivePosition;
     }
 	
 

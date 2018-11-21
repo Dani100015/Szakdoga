@@ -1,31 +1,47 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ScrollScript : MonoBehaviour {
+class ScrollScript : MonoBehaviour {
 
 	public ScrollRect scrollView;
     public GameObject scrollContent;
     public GameObject scrollItemPrefab;
 
+    public Player currentPlayer;
+
+    List<GameObject> UnitItemCount = new List<GameObject>();
+    public Game game;
 	void Start () {
-        for (int i = 0; i < 10; i++)
-        {
-            GenerateItems(i);
-        }
+
+        game = GameObject.Find("Game").GetComponent<Game>();
+        currentPlayer = Game.currentPlayer;
+
         //scrollView.verticalNormalizedPosition = 1;
-	}
+    }
 	
 	
 	void Update () {
-		
-	}
+        //InvokeRepeating("GenerateItems", 1, 2);
+    }
 
-    void GenerateItems(int itemNumber)
+    void GenerateItems()
     {
-        GameObject scrollItemObject = Instantiate(scrollItemPrefab);
-        scrollItemObject.transform.SetParent(scrollContent.transform,false);
-        //scrollItemObject.transform.Find("Item").gameObject.GetComponent<Text>().text = itemNumber.ToString(); 
+        if (UnitItemCount.Count != currentPlayer.units.Count)
+        {
+            GameObject playerUnitItem;
+
+            UnitItemCount = currentPlayer.units;
+            for (int i = 0; i < UnitItemCount.Count; i++)
+            {
+                playerUnitItem = Instantiate(scrollItemPrefab);
+                playerUnitItem.transform.SetParent(scrollContent.transform, false);
+                playerUnitItem.transform.Find("ItemText").GetComponent<TextMeshProUGUI>().text = UnitItemCount[i].gameObject.name;
+                playerUnitItem.GetComponent<GUI_ImperialInfoPanel_UnitDetail>().unitObject = UnitItemCount[i].gameObject;
+            }
+        }
+
     }
 }

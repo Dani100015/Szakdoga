@@ -23,7 +23,7 @@ class ChangeSolarSytem : MonoBehaviour {
         transform.GetComponent<Button>().onClick.AddListener(() => ChangeSystem());
 
         solarSystems = game.Systems;
-        solarSystemPrefabs = setSolarSystem.SystemPrefabs;
+        solarSystemPrefabs = SetSolarSystems.SystemPrefabs;
 
         ItemGObject = transform.gameObject;
         ItemStarnameText = ItemGObject.transform.Find("ItemText").GetComponent<Text>();

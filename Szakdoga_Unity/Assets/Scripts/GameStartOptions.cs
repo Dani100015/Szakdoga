@@ -6,9 +6,9 @@ using UnityEngine.SceneManagement;
 
 class GameStartOptions : MonoBehaviour {
 
-    public string PlayerName;
-    public string EnemyName;
-    public int StarCount;
+    public static string PlayerName;
+    public static string EnemyName;
+    public static int StarCount;
 
     public Text playnerNameText;
     public Text enemyNameText;

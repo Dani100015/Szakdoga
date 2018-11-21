@@ -16,8 +16,6 @@ class Timer : MonoBehaviour {
         hours = (int)(Time.time / 120);
         minutes = (int)(Time.time / 60f);
         seconds = (int)(Time.time % 60f);
-
-        //gameTime.text = hours.ToString("00") + ":" + minutes.ToString("00") + ":" + seconds.ToString("00");
         gameTime.text = Time.timeSinceLevelLoad.ToString("00:00:00");
 	}
 }

@@ -6,26 +6,25 @@ using UnityEngine;
 
 class GameSaveManager : MonoBehaviour {
 
+   
+    //public GameLoad gameLoad;
+    public Game game;
+    //public Game savedGame = new Game();
 
-    Game game;
-    List<SolarSystem> Systems;
+    public List<GameObject> objects = new List<GameObject>();
 
-    GameSaveManager instance;
+    public string SAVE_FILE = "/SAVEGAME";
+    public string FILE_EXTENSION = ".TXT";
+
     void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else if(instance != this)
-        {
-            Destroy(this);
-        }
-        DontDestroyOnLoad(this);
-
+        //gameLoad = new GameLoad();
         game = GameObject.Find("Game").GetComponent<Game>();
-        Systems = new List<SolarSystem>();
-        Systems = game.Systems;
+    }
+    void Start()
+    {
+        //gameLoad.game = Game.game;
+        objects = game.solarSystemPrefabs;
     }
 
     public bool isSaveFile()
@@ -35,36 +34,56 @@ class GameSaveManager : MonoBehaviour {
 
     public void SaveGame()
     {
-        if (!isSaveFile())
-        {
-            Directory.CreateDirectory(Application.persistentDataPath + "/game_save");
-        }
-        if (!Directory.Exists(Application.persistentDataPath + "/game_save/game_data"))
-        {
-            Directory.CreateDirectory(Application.persistentDataPath + "/game_save/game_data");
-        }
 
         BinaryFormatter bf = new BinaryFormatter();
-        FileStream file = File.Create(Application.persistentDataPath + "/game_save/game_data/game_saved.txt");
-        var json = JsonUtility.ToJson(Systems.Count);
+        FileStream file = File.Create(Application.dataPath + SAVE_FILE + FILE_EXTENSION);
+        var json = JsonUtility.ToJson(objects);
         bf.Serialize(file, json);
         file.Close();
     }
 
     public void LoadGame()
     {
-        if (!Directory.Exists(Application.persistentDataPath + "/game_save/game_data"))
+        if (File.Exists(Application.dataPath + SAVE_FILE + FILE_EXTENSION))
         {
-            Directory.CreateDirectory(Application.persistentDataPath + "/game_save/game_data");
-        }
-        BinaryFormatter bf = new BinaryFormatter();
-        if (File.Exists(Application.persistentDataPath + "game_save/game_data/game_saved.txt"))
-        {
-            FileStream file = File.Open(Application.persistentDataPath + "game_save/game_data/game_saved.", FileMode.Open);
-            JsonUtility.FromJsonOverwrite((string)bf.Deserialize(file), Systems.Count);
+            FileStream file = File.Open(Application.dataPath + SAVE_FILE + FILE_EXTENSION,FileMode.Open);
+            BinaryFormatter bf = new BinaryFormatter();
+            JsonUtility.FromJsonOverwrite((string)bf.Deserialize(file), objects);
+
+            for (int i = 0; i < objects.Count; i++)
+            {
+                Debug.Log(objects[i].name);
+            }
+
             file.Close();
         }
-
-    
     }
+
+    //public void SaveGame()
+    //{
+    //    Stream stream = File.Open(Application.dataPath + SAVE_FILE + FILE_EXTENSION, FileMode.OpenOrCreate);
+    //    BinaryFormatter bf = new BinaryFormatter();
+
+    //    savedGame = gameLoad.game;
+
+    //    var json = JsonUtility.ToJson(savedGame);
+    //    bf.Serialize(stream, json);
+
+
+    //    bf.Serialize(stream, savedGame);
+    //    stream.Close();
+
+    //}
+
+    //public void LoadGame()
+    //{
+    //    Stream stream = File.Open(Application.dataPath + SAVE_FILE + FILE_EXTENSION, FileMode.Open);
+    //    BinaryFormatter bf = new BinaryFormatter();
+
+    //    savedGame = (Game)bf.Deserialize(stream);
+    //    stream.Close();
+
+
+
+    //}
 }

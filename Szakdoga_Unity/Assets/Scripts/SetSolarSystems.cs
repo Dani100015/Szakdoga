@@ -14,8 +14,8 @@ class SetSolarSystems : MonoBehaviour
     public GameObject startSystemPrefab;
     public GameObject currentSystemPrefab;
 
-    public List<SolarSystem> Systems;
-    public List<GameObject> SystemPrefabs = new List<GameObject>();
+    public static List<SolarSystem> Systems;
+    public static List<GameObject> SystemPrefabs = new List<GameObject>();
 
     public List<GameObject> units;
 
@@ -83,7 +83,6 @@ class SetSolarSystems : MonoBehaviour
                         rend.enabled = false;
                     }
                 }
-
                 foreach (MeshRenderer mesh in solar.GetComponentsInChildren<MeshRenderer>())
                 {
                     mesh.enabled = false;
@@ -95,10 +94,13 @@ class SetSolarSystems : MonoBehaviour
                         line.enabled = false;
                     }
                 }
+<<<<<<< HEAD
                 //foreach (BoxCollider item in solar.GetComponentsInChildren<BoxCollider>())
                 //{
                 //    item.enabled = false;
                 //}
+=======
+>>>>>>> 091ecfb0d0731d730d0463a188648637b65c7c5c
                 foreach (GUI_CelestialToolTip celestials in solar.GetComponentsInChildren<GUI_CelestialToolTip>())
                 {
                     celestials.enabled = false;
@@ -203,6 +205,60 @@ class SetSolarSystems : MonoBehaviour
             SystemPrefabs[i].transform.SetParent(GameObject.Find("SolarSystems").transform);
             game.solarSystemPrefabs = SystemPrefabs;
         }
+
+        #region Init
+
+        //Játékosok inicializálása
+
+
+        //Egységek betöltése és játékosokhoz rendelése
+        string path = "Prefabs/Units";
+        object[] LoadedUnits = Resources.LoadAll(path);
+        List<GameObject> Units = new List<GameObject>();
+        for (int i = 0; i < LoadedUnits.Length; i++)
+        {
+            GameObject temp = Instantiate(LoadedUnits[i] as GameObject);
+            if (GameObject.Find("SolarSystems") != null)
+                temp.transform.SetParent(GameObject.Find("SolarSystems").transform.Find(game.currentSolarSystem.Name).transform.Find("Units"));
+            temp.gameObject.tag = "Unit";
+            temp.name = (LoadedUnits[i] as GameObject).name;
+            temp.hideFlags = HideFlags.HideInHierarchy;
+            temp.SetActive(false);
+            temp.GetComponent<BoxCollider>().enabled = true;
+            Units.Add(temp);
+        }
+
+        if (Units.Count > 0)
+        {
+            for (int i = 0; i < Units.Count; i++)
+            {
+                GameObject unit = Units[i] as GameObject;
+                Unit unitobj = unit.GetComponent<Unit>();
+                foreach (Player p in Game.players)
+                {
+                    if (unitobj.Race == p.species)
+                        p.BuildableUnits.Add(unit);
+                }
+            }
+        }
+
+        Game.SharedIcons = Resources.LoadAll("Icons/Shared");
+        #endregion
+
+        #region Induló elemek
+        //A pályán levő egységeket/épületeket a tulajdonosuk listáihoz rendeli
+        var goArray = FindObjectsOfType(typeof(GameObject));
+        List<GameObject> goList = new List<GameObject>();
+        for (int i = 0; i < goArray.Length; i++)
+        {
+            GameObject currentObject = goArray[i] as GameObject;
+            if (currentObject.GetComponent<Unit>() != null || currentObject.GetComponent<Structure>() != null)
+            {
+                Game.players.Where(x => x.empireName.Equals(currentObject.GetComponent<Unit>().Owner)).SingleOrDefault().units.Add(currentObject);
+            }
+
+        }
+        #endregion
     }
 }
 
