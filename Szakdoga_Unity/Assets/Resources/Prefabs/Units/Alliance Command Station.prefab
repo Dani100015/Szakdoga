@@ -57,7 +57,7 @@ GameObject:
   - component: {fileID: 114758514349209490}
   m_Layer: 8
   m_Name: Alliance Command Station
-  m_TagString: Untagged
+  m_TagString: Unit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -278,6 +278,7 @@ MonoBehaviour:
   Projectile: {fileID: 0}
   attackSpeed: 0
   attackDamage: 0
+  solarSystemTarget: {fileID: 0}
   maxHealth: 5000
   currentHealth: 5000
   trainingTime: 5
@@ -295,6 +296,7 @@ MonoBehaviour:
   Race: 0
   MenuIcon: {fileID: 2800000, guid: 33694bce39322ce4ba2c4d3ba9182724, type: 3}
   MenuIconRo: {fileID: 2800000, guid: 4550fe273dd834b4292f5a0299a8037a, type: 3}
+  Idle: 0
   isGatherer: 0
   GatherSpeed: 0
   MaxResourceAmount: 0
@@ -306,7 +308,9 @@ MonoBehaviour:
   - {fileID: 1707807017763804, guid: 0c162fc5247f1a34c8552843b760c815, type: 2}
   RallyPoint: {x: 0, y: 0, z: 0}
   RallyTarget: {fileID: 0}
+  TrainingQueue: []
   TimeLeft: 0
+  Training: 0
   isDropOffPoint: 1
   GUIGhost: {fileID: 1167152439772626}
 --- !u!119 &119068910841774534

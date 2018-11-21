@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 4317033782908232}
   - component: {fileID: 95038218852740974}
   m_Layer: 8
-  m_Name: Unit
+  m_Name: Graphic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,7 +76,7 @@ GameObject:
   - component: {fileID: 65344377571983418}
   m_Layer: 8
   m_Name: Alliance Space Engineer
-  m_TagString: Untagged
+  m_TagString: Unit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -429,6 +429,7 @@ MonoBehaviour:
   Projectile: {fileID: 0}
   attackSpeed: 0
   attackDamage: 0
+  solarSystemTarget: {fileID: 0}
   maxHealth: 220
   currentHealth: 220
   trainingTime: 5
@@ -446,6 +447,7 @@ MonoBehaviour:
   Race: 0
   MenuIcon: {fileID: 2800000, guid: 4a9e95b75f564e74e9852d0c47f2e16a, type: 3}
   MenuIconRo: {fileID: 2800000, guid: 3b1e2a33e0ccf1641af71152bacabc96, type: 3}
+  Idle: 0
   isGatherer: 1
   GatherSpeed: 2
   MaxResourceAmount: 100
@@ -527,6 +529,7 @@ MonoBehaviour:
   isAttacking: 0
   isGathering: 0
   isRepairing: 0
+  repairStarted: 0
 --- !u!114 &114832136648745680
 MonoBehaviour:
   m_ObjectHideFlags: 1

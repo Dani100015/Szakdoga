@@ -45,6 +45,7 @@ public class Galaxy_SceneManager : MonoBehaviour
                                 if (unitObj != null && CurrentObject.GetComponent<Structure>() == null && unitObj.Owner == Game.currentPlayer.empireName)
                                 {
                                     Transform unitOwnSolarSystem = CurrentObject.transform.parent.parent;
+                                    Debug.Log(unitOwnSolarSystem.gameObject.name);
                                     setter.target = GameObject.Find("SolarSystems").transform.Find(unitOwnSolarSystem.name).transform.Find("BUILDING_Relay");
                                     unitObj.solarSystemTarget = selectedObject;
 
@@ -75,6 +76,7 @@ public class Galaxy_SceneManager : MonoBehaviour
 
                     game.currentSolarSystem = game.Systems.Find(x => x.Name == selectedObject.name);
                     Game.GalaxyView = false;
+
                     CameraViewChange.ChangeCameraView();
                 }
             }

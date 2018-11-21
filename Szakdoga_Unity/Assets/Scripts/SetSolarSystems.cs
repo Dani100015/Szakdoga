@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using Pathfinding;
+using System.Linq;
 
-class SetSolarSystems : MonoBehaviour {
+class SetSolarSystems : MonoBehaviour
+{
 
     Game game;
     SetSolarSystems setSystems;
@@ -29,13 +31,13 @@ class SetSolarSystems : MonoBehaviour {
     IEnumerator WaitForStart()
     {
         yield return new WaitForSeconds(1);
-            
+
         startSystemPrefab = SystemPrefabs.Find(x => x.name == game.startSolarSystem.Name);
         currentSystemPrefab = startSystemPrefab;
 
-        DisappiareOtherSolarSystem(currentSystemPrefab);
+        DisappearOtherSolarSystem(currentSystemPrefab);
     }
-    void Start ()
+    void Start()
     {
         //Csak egyszer fut le, alapbeállítások, kezdőbeállítások
         if (ParameterWatcher.firstSolarSystemInit == true)
@@ -47,59 +49,85 @@ class SetSolarSystems : MonoBehaviour {
 
             ParameterWatcher.firstSolarSystemInit = false;
         }
-
     }
 
-	void Update () {
 
-        if (currentSystemPrefab != null &&game.currentSolarSystem.Name != currentSystemPrefab.name)
+
+    void Update()
+    {
+        if (currentSystemPrefab != null && game.currentSolarSystem.Name != currentSystemPrefab.name)
         {
             fromGalaxy = true;
-            DisappiareOtherSolarSystem(SystemPrefabs.Find(x => x.name == game.currentSolarSystem.Name));
+            DisappearOtherSolarSystem(SystemPrefabs.Where(x => x.name == game.currentSolarSystem.Name).First());
         }
     }
-        
-    public void DisappiareOtherSolarSystem(GameObject solarSystem)
+
+    public void DisappearOtherSolarSystem(GameObject solarSystem)
     {
         for (int i = 0; i < Systems.Count; i++)
         {
-           
+
             foreach (GameObject solar in SystemPrefabs)
-            {              
+            {
+                List<Transform> unitslist = new List<Transform>();
+                foreach (Transform T in solar.transform.Find("Units"))
+                {
+                    if (T.gameObject.activeInHierarchy)
+                        unitslist.Add(T);
+                }
+                foreach (Transform T in unitslist)
+                {
+                    Renderer[] R = T.GetComponentsInChildren<Renderer>(true);
+                    foreach (Renderer rend in R)
+                    {
+                        rend.enabled = false;
+                    }
+                }
+
                 foreach (MeshRenderer mesh in solar.GetComponentsInChildren<MeshRenderer>())
-                {              
-                    mesh.enabled = false;               
+                {
+                    mesh.enabled = false;
                 }
                 foreach (LineRenderer line in solar.transform.Find("LineContainer").GetComponentsInChildren<LineRenderer>())
                 {
                     if (line.transform.parent.parent.name != solarSystem.name)
                     {
                         line.enabled = false;
-                    }               
+                    }
                 }
                 foreach (BoxCollider item in solar.GetComponentsInChildren<BoxCollider>())
                 {
                     item.enabled = false;
                 }
-                foreach (Unit objects in solar.transform.Find("Units").GetComponentsInChildren<Unit>())
-                {
-                    if (objects.tag == "Unit")
-                    {
-                        objects.enabled = false;
-                    }                  
-                }
                 foreach (GUI_CelestialToolTip celestials in solar.GetComponentsInChildren<GUI_CelestialToolTip>())
                 {
                     celestials.enabled = false;
                 }
+
+
                 solar.transform.Find("Star").gameObject.SetActive(false);
-            }      
-        }       
-        SetCurrentSolarSystem(solarSystem);                                  
+            }
+        }
+        SetCurrentSolarSystem(solarSystem);
     }
-    
+
     void SetCurrentSolarSystem(GameObject solarSystem)
     {
+
+        List<Transform> unitslist = new List<Transform>();
+        foreach (Transform T in solarSystem.transform.Find("Units"))
+        {
+            if (T.gameObject.activeInHierarchy)
+                unitslist.Add(T);
+        }
+        foreach (Transform T in unitslist)
+        {
+            Renderer[] R = T.GetComponentsInChildren<Renderer>(true);
+            foreach (Renderer rend in R)
+            {
+                rend.enabled = false;
+            }
+        }
 
         foreach (MeshRenderer mesh in solarSystem.GetComponentsInChildren<MeshRenderer>())
         {
@@ -117,13 +145,7 @@ class SetSolarSystems : MonoBehaviour {
         {
             celestials.enabled = true;
         }
-        foreach (Unit objects in solarSystem.transform.Find("Units").GetComponentsInChildren<Unit>())
-        {
-            if (objects.tag == "Unit")
-            {
-                objects.enabled = true;
-            }
-        }
+
 
         solarSystem.transform.Find("Star").gameObject.SetActive(true);
         solarSystem.transform.Find("Star").GetComponent<MeshRenderer>().enabled = true;
@@ -158,8 +180,8 @@ class SetSolarSystems : MonoBehaviour {
                 int planetIndex = Random.Range(0, planetPrefabs.Length);
                 GameObject planet = Instantiate(planetPrefabs[planetIndex]);
                 planet.transform.SetParent(SystemPrefabs[i].transform.Find("Planets"));
-                planet.transform.position = new Vector3(Random.Range(-150,150),0, Random.Range(-250, 250));
-                planet.transform.localScale = new Vector3(planet.transform.localScale.x+0.4f, planet.transform.localScale.y + 0.4f, planet.transform.localScale.z + 0.4f);
+                planet.transform.position = new Vector3(Random.Range(-150, 150), 0, Random.Range(-250, 250));
+                planet.transform.localScale = new Vector3(planet.transform.localScale.x + 0.4f, planet.transform.localScale.y + 0.4f, planet.transform.localScale.z + 0.4f);
                 planet.AddComponent<GUI_CelestialToolTip>();
             }
 
@@ -180,7 +202,7 @@ class SetSolarSystems : MonoBehaviour {
 
             SystemPrefabs[i].transform.SetParent(GameObject.Find("SolarSystems").transform);
             game.solarSystemPrefabs = SystemPrefabs;
-        }      
+        }
     }
 }
 

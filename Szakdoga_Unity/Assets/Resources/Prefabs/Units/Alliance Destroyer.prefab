@@ -27,7 +27,7 @@ GameObject:
   - component: {fileID: 65662289703024238}
   m_Layer: 8
   m_Name: Alliance Destroyer
-  m_TagString: Untagged
+  m_TagString: Unit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -60,7 +60,7 @@ GameObject:
   - component: {fileID: 23413191327041450}
   - component: {fileID: 95334511410339908}
   m_Layer: 8
-  m_Name: Unit
+  m_Name: Graphic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -223,6 +223,7 @@ MonoBehaviour:
   isAttacking: 0
   isGathering: 0
   isRepairing: 0
+  repairStarted: 0
 --- !u!114 &114184021280296376
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -243,6 +244,7 @@ MonoBehaviour:
   Projectile: {fileID: 0}
   attackSpeed: 1.4
   attackDamage: 25
+  solarSystemTarget: {fileID: 0}
   maxHealth: 3000
   currentHealth: 3000
   trainingTime: 0
@@ -260,6 +262,7 @@ MonoBehaviour:
   Race: 0
   MenuIcon: {fileID: 2800000, guid: 137f455ed6801fa498275e06f75eaed9, type: 3}
   MenuIconRo: {fileID: 2800000, guid: bedf8623d358fc7478bccf73f9c044f5, type: 3}
+  Idle: 0
   isGatherer: 0
   GatherSpeed: 0
   MaxResourceAmount: 0

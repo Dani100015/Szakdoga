@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.006859818, g: 0.018562809, b: 0.022389142, a: 1}
+  m_IndirectSpecularColor: {r: 0.006857207, g: 0.018554846, b: 0.02237892, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -7800,7 +7800,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 2024461850}
   m_Direction: 3
   m_Value: 0
-  m_Size: 0.9999999
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -15170,6 +15170,7 @@ GameObject:
   - component: {fileID: 2073238044}
   - component: {fileID: 2073238045}
   - component: {fileID: 2073238046}
+  - component: {fileID: 2073238047}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -15533,6 +15534,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 520cbbcfbc5a0ce49beeb67108cea4ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2073238047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2073238035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91974d1757b0c0d478836c7f50beaf64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxWorkerCount: 15
+  defenceIntensity: 0
+  attackIntensity: 0
+  CurrentlyAttacking: 0
+  AttackOnCooldown: 0
+  PalladiumGatherers: []
+  IridiumGatherers: []
+  EezoGatherers: []
+  AttackForce: []
+  DefenceForce: []
+  MainBuilding: {fileID: 0}
+  mainStructure: {fileID: 0}
+  mainBarracks: {fileID: 0}
 --- !u!1 &2083186778
 GameObject:
   m_ObjectHideFlags: 0

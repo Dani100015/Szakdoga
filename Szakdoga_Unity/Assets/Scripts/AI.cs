@@ -144,6 +144,8 @@ public class AI : MonoBehaviour {
         #endregion
     }
 
+    
+
     IEnumerator AttackCooldown()
     {
         AttackOnCooldown = true;
@@ -155,14 +157,35 @@ public class AI : MonoBehaviour {
         }
 
         CurrentlyAttacking = true;
+        Transform destination = player.enemies[(int)Random.Range(0, player.enemies.Count)].units.Where(x => x.GetComponent<Structure>() && x.GetComponent<Structure>().isDropOffPoint).First().transform;
+
         foreach (GameObject Attacker in AttackForce)
         {
+            Transform RelayObject = GameObject.Find("SolarSystems").transform.Find(mainBarracks.transform.parent.parent.name).transform.Find("BUILDING_Relay");
+
+            if (Attacker.transform.parent.parent != destination.parent.parent)
+            {
+                Unit unitObj = Attacker.GetComponent<Unit>();
+                AIDestinationSetter setter = Attacker.GetComponent<AIDestinationSetter>();
+
+                unitObj.solarSystemTarget = destination.parent.parent.gameObject;
+                setter.target = RelayObject;
+                yield return null;
+            }
+        }
+
+        while(AttackForce.All(x =>x.transform.parent.parent != destination.parent.parent))
+        {
+            yield return null;
+        }
+
+        foreach (GameObject Attacker in AttackForce)
+        {          
             Vector3 randomPos = Random.insideUnitSphere * 50;
             randomPos.y = 0;
-            Vector3 destination = player.enemies[(int)Random.Range(0, player.enemies.Count)].units.Where(x => x.GetComponent<Structure>() && x.GetComponent<Structure>().isDropOffPoint).First().transform.position;
             if (destination != null)
             {
-                Attacker.GetComponent<AIDestinationSetter>().ai.destination = destination;
+                Attacker.GetComponent<AIDestinationSetter>().ai.destination = destination.position + randomPos;
                 Attacker.GetComponent<AIDestinationSetter>().ai.isStopped = false;
             }
             else
@@ -202,9 +225,13 @@ public class AI : MonoBehaviour {
 
     public GameObject FindClosestResource(string type)
     {
-        GameObject[] gos;
+        List<GameObject> gos = new List<GameObject>();
         //Itt kell átírni, hogyha csak a naprendszeren belül akar keresni
-        gos = GameObject.FindGameObjectsWithTag(type);
+        foreach (Transform t in MainBuilding.transform.parent.parent.Find("Planets"))
+        {
+            if (t.tag.Equals(type))
+                gos.Add(t.gameObject);
+        }
         GameObject closest = null;
         float distance = Mathf.Infinity;
         Vector3 position = transform.position;

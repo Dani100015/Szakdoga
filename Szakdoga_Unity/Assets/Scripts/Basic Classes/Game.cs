@@ -41,6 +41,7 @@ class Game : MonoBehaviour
     public bool fromGalaxy;
 
     public List<GameObject> units = new List<GameObject>();
+    bool GenerationComplete;
     void Awake()
     {
 
@@ -70,6 +71,7 @@ class Game : MonoBehaviour
 
     void Start()
     {
+        GenerationComplete = false;
         #region Init
 
         //Játékosok inicializálása
@@ -133,11 +135,58 @@ class Game : MonoBehaviour
         }
         #endregion
 
+        //Alap egységek legenerálása
+        for (int i = 0; i < players.Count; i++)
+        {
+            GameObject mainBuilding = Instantiate(players[i].BuildableUnits.Where(x => x.GetComponent<Structure>() && x.GetComponent<Structure>().isDropOffPoint).First());
+            mainBuilding.GetComponent<Structure>().Owner = players[i].empireName;
+            mainBuilding.name = players[i].BuildableUnits.Where(x => x.GetComponent<Structure>() && x.GetComponent<Structure>().isDropOffPoint).First().name;
+            mainBuilding.SetActive(true);
+            mainBuilding.transform.SetParent(solarSystemPrefabs[i].transform.Find("Units"));
+            mainBuilding.transform.position = GetStartingPosition(i);
+            players[i].units.Add(mainBuilding);
+
+            GameObject mainBarracks = Instantiate(players[i].BuildableUnits.Where(x => x.GetComponent<Structure>() && x.GetComponent<Structure>().TrainableUnits.Count>1).First());
+            mainBarracks.GetComponent<Structure>().Owner = players[i].empireName;
+            mainBarracks.name = players[i].BuildableUnits.Where(x => x.GetComponent<Structure>() && x.GetComponent<Structure>().TrainableUnits.Count>1).First().name;
+            mainBarracks.SetActive(true);
+            mainBarracks.transform.SetParent(solarSystemPrefabs[i].transform.Find("Units"));
+            mainBarracks.transform.position = mainBuilding.transform.position + new Vector3(25, 0, 25);
+            players[i].units.Add(mainBarracks);
+
+            for (int j = 0; j < 5; j++)
+            {
+                GameObject gatherer = Instantiate(players[i].BuildableUnits.Where(x => x.GetComponent<Unit>() && x.GetComponent<Unit>().isGatherer).First());
+                gatherer.GetComponent<Unit>().Owner = players[i].empireName;
+                gatherer.name = players[i].BuildableUnits.Where(x => x.GetComponent<Unit>() && x.GetComponent<Unit>().isGatherer).First().name;
+                gatherer.SetActive(true);
+                gatherer.transform.SetParent(solarSystemPrefabs[i].transform.Find("Units"));
+                gatherer.transform.position = mainBuilding.transform.position + new Vector3(j * 4, -5, 5);
+                players[i].units.Add(gatherer);
+            }
+        }
+    }
+
+    Vector3 GetStartingPosition(int i)
+    {
+        Vector3 startPosition = new Vector3();
+
+        if (solarSystemPrefabs[i].transform.Find("Planets").Find("Iridium Asteroid") != null)
+            startPosition = solarSystemPrefabs[i].transform.Find("Planets").Find("Iridium Asteroid").transform.position;
+        if (solarSystemPrefabs[i].transform.Find("Planets").Find("Palladium Asteroid") != null)
+            startPosition = solarSystemPrefabs[i].transform.Find("Planets").Find("Palladium Asteroid").transform.position;
+        else startPosition = solarSystemPrefabs[i].transform.Find("Planets").Find("Element Zero Asteroid").transform.position;
+
+        startPosition.x += 50;
+        startPosition.y = 0;
+        startPosition.z -= 30;
+
+        return startPosition;
     }
 
     void Update()
     {
-        
+           
     }
 
     // void CheckForWin
@@ -158,6 +207,7 @@ class Game : MonoBehaviour
             randomV3 = new Vector3((float)Random.Range(10, 500), (float)13, (float)Random.Range(10, 500));
             Systems.Add(new SolarSystem(randomV3, i + "._SOLARSYSTEM", null, null));
         }
+       
     }
 
     void GenerateSystemRelations()

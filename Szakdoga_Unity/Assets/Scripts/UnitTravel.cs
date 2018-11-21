@@ -27,7 +27,7 @@ class UnitTravel : MonoBehaviour {
             {
                 SolarSystem targetSolarSystem = game.Systems.Find(x => x.Name == other.GetComponent<Unit>().solarSystemTarget.name);
                 path.FindTheWay(game.currentSolarSystem, targetSolarSystem);        
-                other.transform.SetParent(GameObject.Find("SolarSystems").transform.Find(other.GetComponent<Unit>().solarSystemTarget.name).transform.Find("Units"));
+                other.transform.SetParent(GameObject.Find("SolarSystems").transform.Find(other.GetComponent<Unit>().solarSystemTarget.name).transform.Find("Units"));                
 
                 foreach (MeshRenderer mesh in other.transform.GetComponentsInChildren<MeshRenderer>())
                 {
@@ -35,6 +35,11 @@ class UnitTravel : MonoBehaviour {
                 }
 
                 other.GetComponent<Unit>().solarSystemTarget = null;
+ 
+                if (Mouse.CurrentlySelectedUnits.Contains(other))
+                {
+                    game.GetComponent<Mouse>().RemoveUnitFromCurrentlySelectedUnits(other.gameObject);
+                }
 
             }                   
         }

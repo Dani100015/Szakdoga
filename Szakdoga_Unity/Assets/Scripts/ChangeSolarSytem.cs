@@ -31,7 +31,7 @@ class ChangeSolarSytem : MonoBehaviour {
     public void ChangeSystem()
     {
 
-        setSolarSystem.DisappiareOtherSolarSystem(solarSystemPrefabs.Find(x => x.name == ItemStarnameText.text));
+        setSolarSystem.DisappearOtherSolarSystem(solarSystemPrefabs.Find(x => x.name == ItemStarnameText.text));
         setSolarSystem  = GameObject.Find("SolarSystemGenerator").GetComponent<SetSolarSystems>();
         game.currentSolarSystem = game.Systems.Find(x => x.Name == ItemStarnameText.text);
     }

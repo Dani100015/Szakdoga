@@ -21,6 +21,7 @@ public class Unit : MonoBehaviour
     public GameObject Projectile;
     public float attackSpeed;
     public int attackDamage;
+    Game game;
 
     //RelayTravel
     public GameObject solarSystemTarget;
@@ -66,6 +67,7 @@ public class Unit : MonoBehaviour
             CurrentCarriedResource = resourceType.None;
         }
         else Idle = false;
+        game = GameObject.Find("Game").gameObject.GetComponent<Game>();
     }
 
     void Awake()
@@ -93,7 +95,7 @@ public class Unit : MonoBehaviour
 
     public IEnumerator AttackTarget(Transform target)
     {
-        while (target != null && Vector3.Distance(target.gameObject.transform.position, gameObject.transform.position) <= Range * 5)
+        while (target != null && target.transform.parent.parent == transform.parent.parent && Vector3.Distance(target.gameObject.transform.position, gameObject.transform.position) <= Range * 5)
         {
             Projectile = Instantiate(Resources.Load("Prefabs/Projectiles/Bullet"), transform.position, transform.rotation) as GameObject;
             Projectile.GetComponent<Rigidbody>().velocity = (target.position - gameObject.transform.position).normalized * 100;
@@ -106,7 +108,7 @@ public class Unit : MonoBehaviour
 
     public IEnumerator GatherTarget(Transform target)
     {
-        while (target != null && Vector3.Distance(target.gameObject.transform.position, gameObject.transform.position) <= 15)
+        while (target != null && target.transform.parent.parent == transform.parent.parent && Vector3.Distance(target.gameObject.transform.position, gameObject.transform.position) <= 15)
         {
             if (CurrentCarriedResource != target.gameObject.GetComponent<ResourceObject>().Type)
                 CurrentResourceAmount = 0;
@@ -178,10 +180,19 @@ public class Unit : MonoBehaviour
 
         Mouse.DeselectGameObjectsIfSelected();
         Destroy(placeholder);
-
+        Debug.Log(CurrentlyBuiltObject.name);
         GameObject newUnit = Instantiate(CurrentlyBuiltObject, new Vector3(setter.ai.destination.x, 5f, setter.ai.destination.z), Quaternion.identity);
         newUnit.name = CurrentlyBuiltObject.name;
         newUnit.GetComponent<Unit>().Owner = Owner;
+        newUnit.SetActive(true);
+        newUnit.transform.parent = gameObject.transform.parent;
+        
+        if (transform.parent.parent.gameObject != game.currentSolarSystem.solarSystemGObject)
+        {
+            
+            newUnit.GetComponent<Collider>().enabled = false;
+            newUnit.transform.Find("Graphic").gameObject.SetActive(false);
+        }
         CurrentlyBuiltObject = null;
         RevealGameObject();
         gameObject.transform.position = new Vector3(newUnit.transform.position.x, -2.1f, newUnit.transform.position.z - (newUnit.GetComponent<Collider>().bounds.size.z));
@@ -192,6 +203,12 @@ public class Unit : MonoBehaviour
 
     public IEnumerator Repair(Transform target)
     {
+        if (!target.transform.parent.parent == transform.parent.parent)
+        {
+            transform.GetComponent<AIDestinationSetter>().isRepairing = false;
+            transform.GetComponent<AIDestinationSetter>().target = null;
+            yield break;
+        }
         Structure building = target.GetComponent<Structure>();
         while (true)
         {

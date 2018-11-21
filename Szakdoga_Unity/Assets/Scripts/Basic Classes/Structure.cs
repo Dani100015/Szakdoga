@@ -17,6 +17,7 @@ public class Structure : Unit
     public bool Training;
     public bool isDropOffPoint;
     public GameObject GUIGhost;
+    Game game;
 
     void Start()
     {
@@ -25,6 +26,8 @@ public class Structure : Unit
         TrainingQueue = new List<GameObject>();
         RallyPoint = gameObject.transform.position;
         RallyTarget = null;
+        game = GameObject.Find("Game").gameObject.GetComponent<Game>();
+
     }
 
     IEnumerator Train()
@@ -42,6 +45,18 @@ public class Structure : Unit
         GameObject TrainedUnit = Instantiate(TrainableUnit, transform.position, transform.rotation) as GameObject;
         TrainedUnit.GetComponent<Unit>().Owner = gameObject.GetComponent<Structure>().Owner;
         TrainedUnit.SetActive(true);
+        TrainedUnit.transform.parent = gameObject.transform.parent;
+        if (transform.parent.parent.gameObject.name != game.currentSolarSystem.Name)
+        {
+
+            TrainedUnit.GetComponent<Collider>().enabled = false;
+            Renderer[] R = TrainedUnit.transform.GetComponentsInChildren<Renderer>(true);
+            foreach (Renderer rend in R)
+            {
+                rend.enabled = false;
+            }
+
+        }
         AIDestinationSetter setter = TrainedUnit.GetComponent<AIDestinationSetter>();
         if (RallyPoint != gameObject.transform.position)
         {

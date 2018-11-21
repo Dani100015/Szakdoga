@@ -25,6 +25,7 @@ namespace Pathfinding
         public IAstarAI ai;
         Mouse mouse;
         public bool isAttacking, isGathering, isRepairing, repairStarted;
+        GUISetup gui;
 
         void OnEnable()
         {
@@ -39,6 +40,7 @@ namespace Pathfinding
                 ai.onSearchPath += LateUpdate;
                 ai.isStopped = true;
             }
+
         }
 
         void OnDisable()
@@ -62,6 +64,7 @@ namespace Pathfinding
         void Start()
         {
             mouse = GameObject.Find("Game").GetComponent<Mouse>();
+            gui = GameObject.Find("Game").GetComponent<GUISetup>();
             StartCoroutine("AutoAttack");
         }
 
@@ -112,6 +115,7 @@ namespace Pathfinding
             {
                 if (hitColliders[i].gameObject.GetComponent<Structure>() != null &&
                     hitColliders[i].gameObject.GetComponent<Structure>().isDropOffPoint &&
+                    hitColliders[i].transform.parent == transform.parent &&
                     hitColliders[i].gameObject.GetComponent<Structure>().Owner.Equals(Game.players.Where(x => x.empireName.Equals(unit.Owner)).SingleOrDefault().empireName))
                 {
                     dropOffPoints.Add(hitColliders[i].transform);
@@ -137,7 +141,7 @@ namespace Pathfinding
 
         /** Updates the AI's destination every frame */
         void LateUpdate()
-        {
+        {           
             //Ha van célpont beállítva, menjen a célpont pozíciójához
             if (ai != null && target != null && !unit.HoldPosition)
             {
@@ -240,7 +244,8 @@ namespace Pathfinding
                             if (ai != null && target != null) ai.destination = target.transform.position;
                             if (ai != null) ai.destination = mouse.RightClickPoint;
                             unit.ActionsQueue.Clear();
-                            Debug.Log(ai.destination);
+                            if (tempTarget != null)
+                                tempTarget = null;
                         }
                         else mouse.EndModes();
                     }
@@ -248,7 +253,7 @@ namespace Pathfinding
             }
 
             #region Javítás
-            if (unit.isGatherer && target != null && target.gameObject.layer == LayerMask.NameToLayer("Unit") && target.gameObject.GetComponent<Structure>() != null &&
+            if (unit.isGatherer && isGathering && target != null && target.transform.parent.parent == transform.parent.parent && target.gameObject.layer == LayerMask.NameToLayer("Unit") && target.gameObject.GetComponent<Structure>() != null &&
                 !Game.players.Where(x => x.empireName.Equals(unit.Owner)).SingleOrDefault().enemies.Contains(Game.players.Where(x => x.empireName.Equals(target.GetComponent<Unit>().Owner)).SingleOrDefault()))
             {
                 isRepairing = true;
@@ -301,7 +306,7 @@ namespace Pathfinding
             #endregion
 
             #region Támadás
-            if (target != null && target.gameObject.layer == LayerMask.NameToLayer("Unit") &&
+            if (target != null && target.transform.parent.parent == transform.parent.parent && target.gameObject.layer == LayerMask.NameToLayer("Unit") &&
                 Game.players.Where(x => x.empireName.Equals(unit.Owner)).SingleOrDefault().enemies.Contains(Game.players.Where(x => x.empireName.Equals(target.GetComponent<Unit>().Owner)).SingleOrDefault()))
             {
                 if (unit.HoldPosition && Vector3.Distance(target.gameObject.transform.position, gameObject.transform.position) > unit.Range * 5)
@@ -373,7 +378,7 @@ namespace Pathfinding
             #endregion
 
             #region Gyûjtögetés
-            if (target != null && target.gameObject.layer == LayerMask.NameToLayer("Resources") &&
+            if (target != null && target.transform.parent.parent == transform.parent.parent && target.gameObject.layer == LayerMask.NameToLayer("Resources") &&
                 Vector3.Distance(target.gameObject.transform.position, gameObject.transform.position) <= 15)
             {
                 ai.isStopped = true;
@@ -404,12 +409,13 @@ namespace Pathfinding
                         }
                     }
                 }
+                
 
             }
             #endregion
 
             #region Nyersanyag leadás
-            if (target != null && !isRepairing && target.GetComponent<Structure>() != null && target.GetComponent<Structure>().isDropOffPoint &&
+            if (target != null && !isRepairing && target.transform.parent == transform.parent && target.GetComponent<Structure>() != null && target.GetComponent<Structure>().isDropOffPoint &&
                 Vector3.Distance(transform.position, target.position) < 20 && target.GetComponent<Structure>().Owner.Equals(Game.players.Where(x => x.empireName.Equals(unit.Owner)).SingleOrDefault().empireName))
 
             {
@@ -423,6 +429,8 @@ namespace Pathfinding
 
                 unit.CurrentCarriedResource = resourceType.None;
                 unit.CurrentResourceAmount = 0;
+                if (unit.Owner == Game.currentPlayer.empireName)
+                gui.UpdatePlayerInfoBar();
                 target = tempTarget;
             }
             #endregion
