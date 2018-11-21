@@ -7,49 +7,57 @@ using UnityEngine.UI;
 
 class Game : MonoBehaviour
 {
+    #region Változók
 
+    //Script hivatkozások
     public static Game game;
-
-    List<SolarSystem> solars;
-    public static List<Player> players;
-    //List<Team> teams;
-
-    public static Player currentPlayer;
-    public static Player player2;
-
-    public static object[] SharedIcons;
-
-    public List<SolarSystem> Systems;
-
-    public List<GameObject> galaxyStarPrefabs;
-    public List<GameObject> solarSystemPrefabs;
-
-    public SolarSystem startSolarSystem;
-    public SolarSystem currentSolarSystem;
-
-    public int starCount;
-
-    public List<Tech> playerTechList = new List<Tech>();
-
     public SetSolarSystems setSystems;
     public GameStartOptions gameStart;
 
-    public static bool GalaxyView;
-
+    //Aktuális cameranézet
     static public Camera mainCamera;
 
-    public bool fromGalaxy;
+    //Players
+    public static Player currentPlayer;
+    public static Player player2;
+    public static List<Player> players;
 
+    //Icons
+    public static object[] SharedIcons;
 
+    //Unit,Naprendszer listák
+    public List<SolarSystem> Systems;
+    public List<GameObject> galaxyStarPrefabs;
+    public List<GameObject> solarSystemPrefabs;
     public List<GameObject> Units = new List<GameObject>();
 
+    //Kezdő naprendszer
+    public SolarSystem startSolarSystem;
+
+    //A jelenlegi naprendszer
+    public SolarSystem currentSolarSystem;
+
+    //Tech inicializálás
+    public List<Tech> playerTechList = new List<Tech>();
+
+    //Naprendszerek száma
+    public int starCount;
+
+    //Nézet
+    public static bool GalaxyView;
+    public bool fromGalaxy;
+
+    //
     bool GenerationComplete;
+
+    #endregion
+
     void Awake()
     {
-
+        #region Első lefutás
         if (ParameterWatcher.firstGameInit)
         {
-
+            #region Naprendszerek száma beállítás
             if (GameStartOptions.StarCount != 0)
             {
                 starCount = GameStartOptions.StarCount;
@@ -58,19 +66,16 @@ class Game : MonoBehaviour
             {
                 starCount = 5;
             }
+            #endregion
 
-            fromGalaxy = false;
+            GenerateSolarSystems(starCount); // Naprendszer generálás
+            GenerateSystemRelations();       // Naprendszer kapcsolatok generálása
+            initTechTree();                  // Tech fa létrehozása a Playernek
 
-            GenerateSolarSystems(starCount);
-            GenerateSystemRelations();
+            Game.mainCamera = Camera.main;   //kezdő kamera beállítása
+            Game.game = this;                //game = this
 
-            startSolarSystem = Systems[0];
-            currentSolarSystem = startSolarSystem;
-
-            initTechTree();
-
-            Game.mainCamera = Camera.main;
-            Game.game = transform.GetComponent<Game>();
+            #region Playerek deklarálása
 
             players = new List<Player>();
 
@@ -84,16 +89,25 @@ class Game : MonoBehaviour
             players.Add(currentPlayer);
             players.Add(player2);
 
-            ParameterWatcher.firstGameInit = false;
+            #endregion
 
-        }     
+            //Kezdő naprendszer
+            startSolarSystem = Systems[0];
+            currentSolarSystem = startSolarSystem;
+
+            //Kezdő nézet beállítása
+            fromGalaxy = false;
+
+            ParameterWatcher.firstGameInit = false;
+        }
+        #endregion
     }
 
     void Start()
     {
-        GenerationComplete = false;
+        #region Alap egységek/épületek legenerálása
 
-        //Alap egységek legenerálása
+        GenerationComplete = false;
         for (int i = 0; i < players.Count; i++)
         {
             GameObject mainBuilding = Instantiate(players[i].BuildableUnits.Where(x => x.GetComponent<Structure>() && x.GetComponent<Structure>().isDropOffPoint).First());
@@ -123,6 +137,7 @@ class Game : MonoBehaviour
                 players[i].units.Add(gatherer);
             }
         }
+        #endregion
     }
 
     Vector3 GetStartingPosition(int i)
