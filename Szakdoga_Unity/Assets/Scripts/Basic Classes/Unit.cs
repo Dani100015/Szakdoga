@@ -241,17 +241,19 @@ public class Unit : MonoBehaviour
 
     void Update()
     {
+        if (game == null)
+            return;
         #region Selection
         //if unit not selected, get screenspace
         if (!Selected)
-        {
+        {          
             //track the screen position
             if (DragSelect)
                 ScreenPos = Camera.main.WorldToScreenPoint(DragSelect.transform.position);
             else ScreenPos = Camera.main.WorldToScreenPoint(transform.position);
 
             //if within screen space
-            if (Mouse.UnitWithinScreenSpace(ScreenPos))
+            if (Mouse.UnitWithinScreenSpace(ScreenPos) && gameObject.transform.parent.parent.name == game.currentSolarSystem.Name)
             {
                 //and not already added to UnitsOnScreen, add it
                 if (!OnScreen)

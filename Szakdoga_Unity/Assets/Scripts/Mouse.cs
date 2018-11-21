@@ -44,6 +44,7 @@ public class Mouse : MonoBehaviour
     private static float clickDragZone = 1.3f;
     public LayerMask MouseLayerMask;
     public bool MoveMode, AttackMode, RepairMode;
+    Game game;
 
     //GUI
     private float BoxWidth;
@@ -54,6 +55,11 @@ public class Mouse : MonoBehaviour
     private static Vector2 BoxFinish;
 
     #endregion
+
+    void Start()
+    {
+        game = GameObject.Find("Game").GetComponent<Game>();
+    }
 
     // Update is called once per frame
     void Update()
@@ -174,7 +180,7 @@ public class Mouse : MonoBehaviour
                     if (Input.GetMouseButtonUp(0) && DidUserClickLeftMouse(mouseDownPoint) && !EventSystem.current.IsPointerOverGameObject())
                     {
                         //Is the user hitting a unit?
-                        if (hit.collider.gameObject.GetComponent<Unit>() || hit.collider.gameObject.layer == LayerMask.NameToLayer("SelectMesh"))
+                        if ((hit.collider.gameObject.GetComponent<Unit>() || hit.collider.gameObject.layer == LayerMask.NameToLayer("SelectMesh")) && hit.collider.transform.parent.parent.name == game.currentSolarSystem.Name)
                         {
                             Transform UnitGameObject;
                             if (hit.collider.gameObject.layer == LayerMask.NameToLayer("SelectMesh"))

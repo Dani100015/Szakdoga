@@ -53,13 +53,15 @@ public class AI : MonoBehaviour {
 
             if (MainBuilding == null)
             {
-                if (player.CurrentWorkers.Count > 0)
+                if (player.CurrentWorkers.Count > 0 && BuildCostCheck(player.BuildableUnits.Where(x => x.GetComponent<Structure>() && x.GetComponent<Structure>().isDropOffPoint).FirstOrDefault().GetComponent<Structure>()))
                     (player.CurrentWorkers[(int)Random.Range(0, player.CurrentWorkers.Count - 1)] as GameObject).GetComponent<Unit>().CurrentlyBuiltObject = player.BuildableUnits.Where(x => x.GetComponent<Structure>() && x.GetComponent<Structure>().isDropOffPoint).First();
 
             }
         }
 
         player.units.RemoveAll(x => x == null);
+
+
         #region Gyűjtögetők
         //Kiképzés
         if (mainStructure != null)
@@ -144,7 +146,10 @@ public class AI : MonoBehaviour {
         #endregion
     }
 
-    
+    void RebuildStructure(GameObject buildable)
+    {
+
+    }
 
     IEnumerator AttackCooldown()
     {

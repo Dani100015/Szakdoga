@@ -95,10 +95,10 @@ class SetSolarSystems : MonoBehaviour
                         line.enabled = false;
                     }
                 }
-                foreach (BoxCollider item in solar.GetComponentsInChildren<BoxCollider>())
-                {
-                    item.enabled = false;
-                }
+                //foreach (BoxCollider item in solar.GetComponentsInChildren<BoxCollider>())
+                //{
+                //    item.enabled = false;
+                //}
                 foreach (GUI_CelestialToolTip celestials in solar.GetComponentsInChildren<GUI_CelestialToolTip>())
                 {
                     celestials.enabled = false;
