@@ -24,14 +24,10 @@ class UnitTravel : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.name);
         if (other.gameObject.tag == "Unit")
         {
-            Debug.Log(other.GetComponent<Unit>().solarSystemTarget == null);
             if (other.GetComponent<Unit>() != null && other.GetComponent<Unit>().solarSystemTarget != null)
             {
-
-                Debug.Log("Jeah");
                 SolarSystem targetSolarSystem = game.Systems.Find(x => x.Name == other.GetComponent<Unit>().solarSystemTarget.name);
                 path.FindTheWay(game.currentSolarSystem, targetSolarSystem);
 

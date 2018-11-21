@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-class TechInfo : MonoBehaviour {
+class GUI_TechInfo : MonoBehaviour {
 
     public string techName;
     public string techInfo;
@@ -35,10 +35,6 @@ class TechInfo : MonoBehaviour {
     {
         techTipPanel = GameObject.Find("TechTipPanel");
         game = GameObject.Find("Game").GetComponent<Game>();
-
-
-
-
     }
     void Start()
     {  
@@ -79,7 +75,7 @@ class TechInfo : MonoBehaviour {
         trigger.triggers.Add(entry);
         #endregion
 
-        offset = new Vector3(150, -150, 0);
+        offset = new Vector3(200, -200, 0);
         techTipPanel.SetActive(false);
         processBacground.gameObject.SetActive(false);
     }

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-class GUISolarSystemPanelInfo : MonoBehaviour
+class GUI_SolarSystemPanelInfo : MonoBehaviour
 {
 
     GameObject[] solarSystems;

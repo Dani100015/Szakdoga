@@ -11,8 +11,7 @@ class GUI_StarNamePanel : MonoBehaviour {
     string planetName;
 
 	void Start () {
-
-       
+      
         canvas = transform.GetComponent<Canvas>();
         planetNameText = transform.Find("Panel").transform.Find("PlanetText").GetComponent<TextMeshProUGUI>();
 

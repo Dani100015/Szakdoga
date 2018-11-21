@@ -1,9 +1,7 @@
-﻿using System.Collections;
+﻿
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
 
 class Game : MonoBehaviour
 {
@@ -299,7 +297,7 @@ class Game : MonoBehaviour
         {
             if (player.BuildableUnits[i].GetComponent<Unit>() != null)
             {
-                Undo.RecordObject(player.BuildableUnits[i], "Életerő növelés");
+                //UnityEditor.Undo.RecordObject(player.BuildableUnits[i], "Életerő növelés");
                 player.BuildableUnits[i].GetComponent<Unit>().maxHealth += player.BuildableUnits[i].GetComponent<Unit>().HealthIncrement;
                 player.BuildableUnits[i].GetComponent<Unit>().currentHealth += player.BuildableUnits[i].GetComponent<Unit>().HealthIncrement;
             }

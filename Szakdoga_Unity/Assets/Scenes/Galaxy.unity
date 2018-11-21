@@ -140,7 +140,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9d1c05a0f4f5af4295d8f7c8dc82f69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SystemPrefabs: []
   startSystemGObject: {fileID: 0}
   currentSystemGObject: {fileID: 0}
 --- !u!4 &819989753

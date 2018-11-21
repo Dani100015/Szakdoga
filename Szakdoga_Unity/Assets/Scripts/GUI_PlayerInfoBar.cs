@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerInfoBar : MonoBehaviour
+public class GUI_PlayerInfoBar : MonoBehaviour
 {
 
     public Text resource1_Palladium;

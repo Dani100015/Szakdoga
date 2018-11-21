@@ -5,14 +5,18 @@ using UnityEngine.UI;
 
 class CelestialToolTip   : MonoBehaviour {
 
+    //Panel gameobejct
     GameObject TipPanel;
 
+    //UI Text elemek
     Text TipHeader;
     Text TipInfo;
 
+    //Megjelenítendő információk a panelen
     string celestialName;
     string celestialInfo;
 
+    //Panel pozíciók
     Vector3 activePosition;
     Vector3 deactivePosition;
 	void Start () {

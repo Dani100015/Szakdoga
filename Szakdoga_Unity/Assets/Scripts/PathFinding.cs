@@ -11,6 +11,13 @@ class PathFinding : MonoBehaviour
     {
         game = GameObject.Find("Game").GetComponent<Game>();
     }
+
+    /// <summary>
+    /// Két naprendszer összekötő útat keres meg
+    /// </summary>
+    /// <param name="startSystem"></param>
+    /// <param name="endSystem"></param>
+    /// <returns>Az útvonal elemeinek a listájával tér vissza</returns>
    public List<SolarSystem> FindWay(SolarSystem startSystem, SolarSystem endSystem)
    {
         List<SolarSystem> path = new List<SolarSystem>();

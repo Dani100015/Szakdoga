@@ -6,84 +6,93 @@ using UnityEngine.SceneManagement;
 
 public class Galaxy_SceneManager : MonoBehaviour
 {
-
+    //Scriptek
     Game game;
-    GameObject selectedObject;
-    RaycastHit hitInfo;
-    bool hit;
+
+    static GameObject selectedObject; //Kiválaszott objectum
+    static RaycastHit hitInfo;        //Raycast Találat infó
+    static bool hit;                  //Volt találat?
+    static bool wasStarHit = false;
+
     void Start()
     {
         game = GameObject.Find("Game").GetComponent<Game>();
-
     }
     void Update()
     {
-        #region UnitTravelOrder
-        if (Input.GetKeyDown(KeyCode.Mouse1))
+
+        hitInfo = new RaycastHit();
+        if (Input.GetKey(KeyCode.Mouse1))
         {
-            hitInfo = new RaycastHit();
-            hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
-            if (hit)
+            UnitTravelOrder();
+        }
+        else if (Input.GetKey(KeyCode.Mouse0))
+        {
+            SystemViewChange();
+        }
+        else if (Input.GetKey(KeyCode.Space) && game.fromGalaxy == true)
+        {
+            CameraViewChange.ChangeCameraView();
+        }
+    }
+
+    void UnitTravelOrder()
+    {
+        hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
+        if (hit)
+        {
+            if (selectedObject != hitInfo.transform.gameObject)
             {
-
-                if (selectedObject != hitInfo.transform.gameObject)
+                selectedObject = hitInfo.transform.gameObject;
+            }
+            else if (selectedObject.tag == "StarSystem")
+            {
+                selectedObject = hitInfo.transform.gameObject;
+                if (Mouse.CurrentlySelectedUnits.Count != 0)
                 {
-                    selectedObject = hitInfo.transform.gameObject;
-                }
-                else if (selectedObject.tag == "StarSystem")
-                {
-                    selectedObject = hitInfo.transform.gameObject;
-                    if (Mouse.CurrentlySelectedUnits.Count != 0)
+                    for (int i = 0; i < Mouse.CurrentlySelectedUnits.Count; i++)
                     {
-                        for (int i = 0; i < Mouse.CurrentlySelectedUnits.Count; i++)
+                        GameObject CurrentObject = Mouse.CurrentlySelectedUnits[i] as GameObject;
+                        if (CurrentObject != null)
                         {
-                            GameObject CurrentObject = Mouse.CurrentlySelectedUnits[i] as GameObject;
-                            if (CurrentObject != null)
+                            AIDestinationSetter setter = CurrentObject.GetComponent<AIDestinationSetter>();
+                            Unit unitObj = CurrentObject.GetComponent<Unit>();
+                            if (unitObj != null && CurrentObject.GetComponent<Structure>() == null && unitObj.Owner == Game.currentPlayer.empireName)
                             {
-                                AIDestinationSetter setter = CurrentObject.GetComponent<AIDestinationSetter>();
-                                Unit unitObj = CurrentObject.GetComponent<Unit>();
-                                if (unitObj != null && CurrentObject.GetComponent<Structure>() == null && unitObj.Owner == Game.currentPlayer.empireName)
-                                {
-                                    Transform unitOwnSolarSystem = CurrentObject.transform.parent.parent;
+                                Transform unitOwnSolarSystem = CurrentObject.transform.parent.parent;
 
-                                    Debug.Log(unitOwnSolarSystem.gameObject.name);
-                                   
-                                    setter.target = GameObject.Find("SolarSystems").transform.Find(unitOwnSolarSystem.name).transform.Find("BUILDING_Relay");
-                                    unitObj.solarSystemTarget = selectedObject;
-                                    Debug.Log(unitObj.solarSystemTarget.name);
+                                Debug.Log(unitOwnSolarSystem.gameObject.name);
 
-                                    CurrentObject.GetComponent<Unit>().ActionsQueue.Clear();
-                                }
+                                setter.target = GameObject.Find("SolarSystems").transform.Find(unitOwnSolarSystem.name).transform.Find("BUILDING_Relay");
+                                unitObj.solarSystemTarget = selectedObject;
+                                Debug.Log(unitObj.solarSystemTarget.name);
+
+                                CurrentObject.GetComponent<Unit>().ActionsQueue.Clear();
                             }
                         }
                     }
                 }
             }
         }
-        #endregion
-        #region SolarSystem View Change
-        else if (Input.GetKeyDown(KeyCode.Mouse0))
+
+    }
+    void SystemViewChange()
+    {
+        hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
+        if (hit)
         {
-            hitInfo = new RaycastHit();
-            hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
-            if (hit)
+            if (selectedObject != hitInfo.transform.gameObject)
             {
-
-                if (selectedObject != hitInfo.transform.gameObject)
-                {
-                    selectedObject = hitInfo.transform.gameObject;
-                }
-                else if (selectedObject.tag == "StarSystem")
-                {
-                    selectedObject = hitInfo.transform.gameObject;
-
-                    game.currentSolarSystem = game.Systems.Find(x => x.Name == selectedObject.name);
-                    Game.GalaxyView = false;
-
-                    CameraViewChange.ChangeCameraView();
-                }
+                selectedObject = hitInfo.transform.gameObject;
+            }
+            else if (selectedObject.tag == "StarSystem" )
+            {
+                selectedObject = hitInfo.transform.gameObject;
+                Game.GalaxyView = false;
+                game.currentSolarSystem = game.Systems.Find(x => x.Name == selectedObject.name);
+                CameraViewChange.ChangeCameraView();               
             }
         }
-        #endregion
+        
     }
 }

@@ -9,7 +9,6 @@ public class Player {
     public Species species;
 
     List<SolarSystem> playerSystems; //irányított naprendszerek
-    List<Planets> playerColonizedPlanets; //kolonizált player planéták
 
     public List<GameObject> units; //
     public List<Player> allies;
