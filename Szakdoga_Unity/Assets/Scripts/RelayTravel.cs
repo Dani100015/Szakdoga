@@ -102,6 +102,8 @@ class RelayTravel : MonoBehaviour {
 
     void OnMouseDown()
     {
+
+        Time.timeScale = 0;
         currentSystem = game.currentSolarSystem;
 
         if (isRelayPanelActive == true)
@@ -119,6 +121,7 @@ class RelayTravel : MonoBehaviour {
         }
         isRelayPanelActive = !isRelayPanelActive;
 
+        Time.timeScale = 1;
     }
 
 }

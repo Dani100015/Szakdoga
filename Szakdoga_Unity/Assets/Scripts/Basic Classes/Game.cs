@@ -40,7 +40,9 @@ class Game : MonoBehaviour
 
     public bool fromGalaxy;
 
-    public List<GameObject> units = new List<GameObject>();
+
+    public List<GameObject> Units = new List<GameObject>();
+
     bool GenerationComplete;
     void Awake()
     {
@@ -48,7 +50,14 @@ class Game : MonoBehaviour
         if (ParameterWatcher.firstGameInit)
         {
 
-            starCount = 5;
+            if (GameStartOptions.StarCount != 0)
+            {
+                starCount = GameStartOptions.StarCount;
+            }
+            else
+            {
+                starCount = 5;
+            }
 
             fromGalaxy = false;
 
@@ -61,8 +70,19 @@ class Game : MonoBehaviour
             initTechTree();
 
             Game.mainCamera = Camera.main;
-
             Game.game = transform.GetComponent<Game>();
+
+            players = new List<Player>();
+
+            currentPlayer = new Player(10000, 10000, 10000, "Peti", Species.Human);
+            player2 = new Player(10000, 10000, 10000, "Sanyi", Species.Human);
+            player2.MaxPopulation = 200;
+
+            currentPlayer.enemies.Add(player2);
+            player2.enemies.Add(currentPlayer);
+
+            players.Add(currentPlayer);
+            players.Add(player2);
 
             ParameterWatcher.firstGameInit = false;
 
@@ -72,68 +92,6 @@ class Game : MonoBehaviour
     void Start()
     {
         GenerationComplete = false;
-        #region Init
-
-        //Játékosok inicializálása
-        players = new List<Player>();
-
-        currentPlayer = new Player(10000, 10000, 10000, "Peti", Species.Human);
-        player2 = new Player(10000, 10000, 10000, "Sanyi", Species.Human);
-		player2.MaxPopulation = 200;
-
-        currentPlayer.enemies.Add(player2);
-        player2.enemies.Add(currentPlayer);
-
-        players.Add(currentPlayer);
-        players.Add(player2);
-
-        //Egységek betöltése és játékosokhoz rendelése
-        string path = "Prefabs/Units";
-        object[] LoadedUnits = Resources.LoadAll(path);
-        List<GameObject> Units = new List<GameObject>();
-        for (int i = 0; i < LoadedUnits.Length; i++)
-        {
-            GameObject temp = Instantiate(LoadedUnits[i] as GameObject);
-            if (GameObject.Find("SolarSystems") != null)
-                temp.transform.SetParent(GameObject.Find("SolarSystems").transform.Find(currentSolarSystem.Name).transform.Find("Units"));
-            temp.gameObject.tag = "Unit";
-			temp.name = (LoadedUnits[i] as GameObject).name;
-            temp.hideFlags = HideFlags.HideInHierarchy;
-            temp.SetActive(false);
-            Units.Add(temp);
-        }
-
-        if (Units.Count > 0)
-        {
-            for (int i = 0; i < Units.Count; i++)
-            {
-                GameObject unit = Units[i] as GameObject;
-                Unit unitobj = unit.GetComponent<Unit>();
-                foreach (Player p in players)
-                {
-                    if (unitobj.Race == p.species)
-                        p.BuildableUnits.Add(unit);
-                }
-            }
-        }
-
-        SharedIcons = Resources.LoadAll("Icons/Shared");
-        #endregion
-
-        #region Induló elemek
-        //A pályán levő egységeket/épületeket a tulajdonosuk listáihoz rendeli
-        var goArray = FindObjectsOfType(typeof(GameObject));
-        List<GameObject> goList = new List<GameObject>();
-        for (int i = 0; i < goArray.Length; i++)
-        {
-            GameObject currentObject = goArray[i] as GameObject;
-            if (currentObject.GetComponent<Unit>() != null || currentObject.GetComponent<Structure>() != null)
-            {
-                players.Where(x => x.empireName.Equals(currentObject.GetComponent<Unit>().Owner)).SingleOrDefault().units.Add(currentObject);
-            }
-
-        }
-        #endregion
 
         //Alap egységek legenerálása
         for (int i = 0; i < players.Count; i++)

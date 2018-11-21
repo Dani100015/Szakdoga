@@ -7,11 +7,12 @@ using UnityEngine;
 class SetGalaxySolarSystems : MonoBehaviour {
 
     Game game;
+    XMLManager xmlManager;
 
     GameObject[] starPrefabs;
 
-    public List<GameObject> SystemPrefabs = new List<GameObject>();
-    public List<SolarSystem> Systems = new List<SolarSystem>();
+    public static List<GameObject> SystemPrefabs = new List<GameObject>();
+    public static List<SolarSystem> Systems = new List<SolarSystem>();
 
     public GameObject startSystemGObject;
     public GameObject currentSystemGObject;
@@ -19,46 +20,59 @@ class SetGalaxySolarSystems : MonoBehaviour {
     List<LineRenderer> neighbourLine;
     GameObject lineContainer;
 
-    void Awake()
-    {
-       
-    }
     void Start()
     {
-        game = GameObject.Find("Game").GetComponent<Game>();
-        Systems = game.Systems;
+        if (ParameterWatcher.firstGalaxyInit)
+        {
+            game = GameObject.Find("Game").GetComponent<Game>();
+            xmlManager = GameObject.Find("XMLManager").GetComponent<XMLManager>();
+            Systems = game.Systems;
 
-        startSystemGObject = SystemPrefabs.Find(x => x.name == game.startSolarSystem.Name);
-        currentSystemGObject = startSystemGObject;
+            GenerateGalaxyPrefabs();
 
-        starPrefabs = Resources.LoadAll<GameObject>("Prefabs/Galaxy") as GameObject[];
-        lineContainer = GameObject.Find("LineContainer");
+            startSystemGObject = SystemPrefabs.Find(x => x.name == game.startSolarSystem.Name);
+            currentSystemGObject = startSystemGObject;
 
-        GenerateGalaxyPrefabs();
-        GenerateSystemRelationsLine();
-           
+            lineContainer = GameObject.Find("LineContainer");
+            GenerateSystemRelationsLine();
+
+
+            ParameterWatcher.firstGalaxyInit = false;
+        }
+
     }
     void GenerateGalaxyPrefabs()
     {
-        GameObject currentSystem;
-        for (int i = 0; i < Systems.Count; i++)
+        if (!ParameterWatcher.isLoadedGalaxy)
         {
-            currentSystem = starPrefabs[Random.Range(0,4)];
+            starPrefabs = Resources.LoadAll<GameObject>("Prefabs/Galaxy") as GameObject[];
+            GameObject currentSystem;
+            for (int i = 0; i < Systems.Count; i++)
+            {
+                currentSystem = starPrefabs[Random.Range(0, 4)];
 
-            currentSystem.name = Systems[i].Name;
-            currentSystem.transform.position = Systems[i].position + new Vector3(1000,0,1000);
-            currentSystem.tag = "StarSystem";
+                currentSystem.name = Systems[i].Name;
+                currentSystem.transform.position = Systems[i].position + new Vector3(1000, 0, 1000);
+                currentSystem.tag = "StarSystem";
 
-            SystemPrefabs.Add(Instantiate(currentSystem));
+                SystemPrefabs.Add(Instantiate(currentSystem));
+            }
+            for (int i = 0; i < SystemPrefabs.Count; i++)
+            {
+                SystemPrefabs[i].transform.SetParent(GameObject.Find("Galaxy").transform);
+            }
+            for (int i = 0; i < SystemPrefabs.Count; i++)
+            {
+                SystemPrefabs[i].name = Systems[i].Name;
+            }
+            game.galaxyStarPrefabs = SystemPrefabs;
         }
-        for (int i = 0; i < SystemPrefabs.Count; i++)
+        else
         {
-            SystemPrefabs[i].transform.SetParent(GameObject.Find("Galaxy").transform);
+            xmlManager.SetLoadedGalaxyStars();
+            ParameterWatcher.isLoadedGalaxy = false;
         }
-        for (int i = 0; i < SystemPrefabs.Count; i++)
-        {
-            SystemPrefabs[i].name = Systems[i].Name;
-        }
+
     }
 
     void GenerateSystemRelationsLine()
@@ -76,10 +90,19 @@ class SetGalaxySolarSystems : MonoBehaviour {
 
                 line.startWidth = 0.3f;
                 line.endWidth = 0.3f;
-                line.positionCount = 2;              
+                line.positionCount = 2;
 
-                line.SetPosition(0, Systems[i].position + new Vector3(1000,0,1000));
-                line.SetPosition(1, Systems[i].neighbourSystems[j].position + new Vector3(1000, 0, 1000));              
+                if (ParameterWatcher.isLoadedGalaxy)
+                {
+                    line.SetPosition(0, Systems[i].position);
+                    line.SetPosition(1, Systems[i].neighbourSystems[j].position);
+                }
+                else
+                {
+                    line.SetPosition(0, Systems[i].position + new Vector3(1000, 0, 1000));
+                    line.SetPosition(1, Systems[i].neighbourSystems[j].position + new Vector3(1000, 0, 1000));
+                }
+               
 
                 //line.transform.SetParent();
 

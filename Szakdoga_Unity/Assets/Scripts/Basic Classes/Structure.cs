@@ -49,7 +49,7 @@ public class Structure : Unit
         if (transform.parent.parent.gameObject.name != game.currentSolarSystem.Name)
         {
 
-            TrainedUnit.GetComponent<Collider>().enabled = false;
+            TrainedUnit.GetComponent<Collider>().enabled = true;
             Renderer[] R = TrainedUnit.transform.GetComponentsInChildren<Renderer>(true);
             foreach (Renderer rend in R)
             {

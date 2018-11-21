@@ -26,12 +26,6 @@ public class SolarSystem_SceneChange : MonoBehaviour {
     }
 
     void Update () {
-        //if (transform.position.y > viewChangeHeight)
-        //{
-        //    DontDestroyOnLoad(gameCanvas);
-        //    Game.GalaxyView = true;
-        //    CameraViewChange.ChangeCameraView();
-        //}
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
