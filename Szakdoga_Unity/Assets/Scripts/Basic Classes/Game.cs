@@ -182,7 +182,7 @@ class Game : MonoBehaviour
             
             if (p.units.Where(x => x.GetComponent<Structure>() && x.GetComponent<Structure>().isDropOffPoint).First().GetComponent<Structure>().currentHealth == 0)
             {
-                if (p.empireName == GameStartOptions.PlayerName)
+                if (p.empireName == currentPlayer.empireName)
                 {
                     StartCoroutine("WinOrLose", "You lose");
                 }
