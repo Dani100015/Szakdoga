@@ -54,7 +54,10 @@ public class AI : MonoBehaviour {
             if (MainBuilding == null)
             {
                 if (player.CurrentWorkers.Count > 0 && BuildCostCheck(player.BuildableUnits.Where(x => x.GetComponent<Structure>() && x.GetComponent<Structure>().isDropOffPoint).FirstOrDefault().GetComponent<Structure>()))
-                    (player.CurrentWorkers[(int)Random.Range(0, player.CurrentWorkers.Count - 1)] as GameObject).GetComponent<Unit>().CurrentlyBuiltObject = player.BuildableUnits.Where(x => x.GetComponent<Structure>() && x.GetComponent<Structure>().isDropOffPoint).First();
+                {
+                    RebuildStructure(player.BuildableUnits.Where(x => x.GetComponent<Structure>() && x.GetComponent<Structure>().isDropOffPoint).First());
+                }
+                //Ide jön a vereség kondíció
 
             }
         }
@@ -87,7 +90,16 @@ public class AI : MonoBehaviour {
         DefenceForce.RemoveAll(x => x == null);
 
         if (mainBarracks == null)
+        {
             mainBarracks = player.units.Where(x => x.GetComponent<Structure>() && x.GetComponent<Structure>().TrainableUnits.Count > 1).First().GetComponent<Structure>();
+            if (mainBarracks == null)
+            {
+                if (player.CurrentWorkers.Count > 0 && BuildCostCheck(player.BuildableUnits.Where(x => x.GetComponent<Structure>() && x.GetComponent<Structure>().TrainableUnits.Count > 1).First().GetComponent<Structure>()))
+                {
+                    RebuildStructure(player.BuildableUnits.Where(x => x.GetComponent<Structure>() && x.GetComponent<Structure>().TrainableUnits.Count > 1).First());
+                }
+            }
+        }
         if (mainBarracks != null && DefenceForce.Count < 10)
         {
             Unit currentlyTrainedUnit = mainBarracks.TrainableUnits[(int)Random.Range(0, mainBarracks.TrainableUnits.Count)].GetComponent<Unit>();
@@ -148,7 +160,11 @@ public class AI : MonoBehaviour {
 
     void RebuildStructure(GameObject buildable)
     {
-
+        GameObject builder = player.CurrentWorkers[(int)Random.Range(0, player.CurrentWorkers.Count - 1)] as GameObject;
+        builder.GetComponent<Unit>().CurrentlyBuiltObject = buildable;
+        builder.GetComponent<AIDestinationSetter>().ai.destination = new Vector3(Random.Range(-120,120), 0f, Random.Range(-100,100));
+        builder.GetComponent<AIDestinationSetter>().ai.isStopped = false;
+        builder.GetComponent<Unit>().StartCoroutine("Build");
     }
 
     IEnumerator AttackCooldown()

@@ -99,7 +99,9 @@ public class Unit : MonoBehaviour
         {
             Projectile = Instantiate(Resources.Load("Prefabs/Projectiles/Bullet"), transform.position, transform.rotation) as GameObject;
             Projectile.GetComponent<Rigidbody>().velocity = (target.position - gameObject.transform.position).normalized * 100;
-            target.gameObject.GetComponent<Unit>().currentHealth -= (attackDamage - target.gameObject.GetComponent<Unit>().Armor);
+            if (attackDamage - target.gameObject.GetComponent<Unit>().Armor > 0)
+                target.gameObject.GetComponent<Unit>().currentHealth -= (attackDamage - target.gameObject.GetComponent<Unit>().Armor);
+            else target.gameObject.GetComponent<Unit>().currentHealth -= 1;
             Destroy(Projectile.gameObject, 0.5f);
             yield return new WaitForSeconds(attackSpeed);
         }
