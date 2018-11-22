@@ -162,7 +162,7 @@ public class XMLManager : MonoBehaviour {
         ParameterWatcher.isLoadedSolarSystem = true;
         ParameterWatcher.isLoadedGalaxy = true;
 
-    SceneManager.LoadScene("SolarSystems_Teszt");
+        SceneManager.LoadScene("SolarSystems");
     }
     public void SetLoadedSolarSystem()
     {
@@ -215,7 +215,7 @@ public class XMLManager : MonoBehaviour {
                 }
             }       
 
-            SetSolarSystems.SystemPrefabs = SystemPrefabs;
+            SetSolarSystems.SystemGObjects = SystemPrefabs;
             game.solarSystemPrefabs = SystemPrefabs;
         }
     }
@@ -242,7 +242,7 @@ public class XMLManager : MonoBehaviour {
             game.Systems[i].position = GalaxyStarPrefabs[i].transform.position;
         }
 
-        SetGalaxySolarSystems.SystemPrefabs = GalaxyStarPrefabs;
+        SetGalaxySolarSystems.GalaxyGObjects = GalaxyStarPrefabs;
         game.galaxyStarPrefabs = GalaxyStarPrefabs;
     }
     public void SetLoadedUnits()
@@ -268,7 +268,6 @@ public class XMLManager : MonoBehaviour {
             Debug.Log(itemDB.units[i].starName);
             temp.transform.SetParent(SystemPrefabs.Find(x => x.name == itemDB.units[i].starName).transform.Find("Units"));
             temp.gameObject.tag = "Unit";           
-         //   temp.hideFlags = HideFlags.HideInHierarchy;
             temp.SetActive(true);
             Units.Add(temp);
         }

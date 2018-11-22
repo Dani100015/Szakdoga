@@ -6,13 +6,18 @@ using UnityEngine.UI;
 
 class ChangeSolarSytem : MonoBehaviour {
 
+    //Script elemek
     Game game;
     SetSolarSystems setSolarSystem;
 
-    List<SolarSystem> solarSystems;
-    List<GameObject> solarSystemPrefabs;
+    //Naprendszerek
+    List<SolarSystem> Systems;
+    List<GameObject> SystemPrefabs;
 
+    //Listaelem
     public GameObject ItemGObject;
+
+    //UI Text
     public Text ItemStarnameText;
 
     void Start()
@@ -22,22 +27,19 @@ class ChangeSolarSytem : MonoBehaviour {
 
         transform.GetComponent<Button>().onClick.AddListener(() => ChangeSystem());
 
-        solarSystems = game.Systems;
-        solarSystemPrefabs = SetSolarSystems.SystemPrefabs;
+        Systems = game.Systems;
+        SystemPrefabs = SetSolarSystems.SystemGObjects;
 
         ItemGObject = transform.gameObject;
         ItemStarnameText = ItemGObject.transform.Find("ItemText").GetComponent<Text>();
     }
+    /// <summary>
+    /// A listaelem álatal megadott naprendszerre vált
+    /// </summary>
     public void ChangeSystem()
     {
-
-        setSolarSystem.DisappearOtherSolarSystem(solarSystemPrefabs.Find(x => x.name == ItemStarnameText.text));
+        setSolarSystem.DisappearOtherSolarSystem(SystemPrefabs.Find(x => x.name == ItemStarnameText.text));
         setSolarSystem  = GameObject.Find("SolarSystemGenerator").GetComponent<SetSolarSystems>();
         game.currentSolarSystem = game.Systems.Find(x => x.Name == ItemStarnameText.text);
-    }
-    void Update()
-    {
-
-
     }
 }

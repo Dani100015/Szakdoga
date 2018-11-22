@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ToolTip : MonoBehaviour {
+public class GUI_ToolTip : MonoBehaviour {
 
     [Header("Object Text Information")]
     public string objectName;

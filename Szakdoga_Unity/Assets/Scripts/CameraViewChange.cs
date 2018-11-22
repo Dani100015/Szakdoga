@@ -4,30 +4,38 @@ using UnityEngine;
 
 public class CameraViewChange : MonoBehaviour {
 
+    //Camerák
     static Camera solarSystemViewCamera;
     static Camera galaxyViewCamera;
 
+    //Camera alap alapértelmezett pozíciók
     static Vector3 galaxyViewCameraDefaultPosition = new Vector3(1200,300,900);
     static Vector3 solarSystemViewCameraDefaultPosition = new Vector3(-75,150,-125);
 
+    //Camera Audio Componensek
     static AudioListener solarSystemAudioListener;
     static AudioListener galaxyAudioListener;
 
-    // Use this for initialization
 	void Start () {
 
+        //Változó inicializálása
         solarSystemViewCamera = GameObject.Find("SolarSystemCamera").GetComponent<Camera>();
         galaxyViewCamera = GameObject.Find("GalaxyCamera").GetComponent<Camera>();
-
         solarSystemAudioListener = GameObject.Find("SolarSystemCamera").GetComponent<AudioListener>();
         galaxyAudioListener = GameObject.Find("GalaxyCamera").GetComponent<AudioListener>();
 
+        //Beálítjuk a kezdőkamerát
         solarSystemViewCamera.gameObject.SetActive(true);
         galaxyViewCamera.gameObject.SetActive(false);
 	}
 	
+    /// <summary>
+    /// Kamera nézet váltás
+    /// </summary>
     public static void ChangeCameraView()
     {
+        //Meg kell vizsgálni melyik kamera aktív
+
         if (solarSystemViewCamera.gameObject.activeSelf == true)
         {
             solarSystemViewCamera.gameObject.SetActive(false);

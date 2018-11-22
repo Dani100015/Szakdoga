@@ -22,10 +22,14 @@ public class PlanetRingRenderer : MonoBehaviour {
 
     void Start()
     {
-        GeneratePlanetLine();
+        GeneratePlanetLine();   
         GenerateSystemBorderLine();
     }
-
+    
+    /// <summary>
+    /// Adott keringési pály kirajzolása
+    /// </summary>
+    /// <param name="line"></param>
     void CreatePoints(LineRenderer line)
     {
         float x;
@@ -49,6 +53,9 @@ public class PlanetRingRenderer : MonoBehaviour {
 
     }
 
+    /// <summary>
+    /// Bolyók keringési pályájának kirajzolása
+    /// </summary>
     void GeneratePlanetLine()
     {
         planets = new List<GameObject>();
@@ -114,20 +121,17 @@ public class PlanetRingRenderer : MonoBehaviour {
         line = LineObject.GetComponent<LineRenderer>();
 
         line.startWidth = (1f);
-        line.endWidth = (1f);
-    
+        line.endWidth = (1f);    
         line.material.color = Color.cyan;
         line.material.mainTextureOffset = new Vector2(100, 100);
-
         line.positionCount = (segments + 1);
-
         line.useWorldSpace = false;
         line.gameObject.layer = 15;
 
         lines.Add(line);
+
         LineObject.transform.SetParent(transform.parent.transform.Find("LineContainer"));
 
         CreatePoints(line);
-
     }
 }

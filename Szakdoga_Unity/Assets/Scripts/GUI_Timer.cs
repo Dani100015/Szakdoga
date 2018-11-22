@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-class Timer : MonoBehaviour {
+class GUI_Timer : MonoBehaviour {
 
     public Text gameTime;
     float minutes, seconds, hours;

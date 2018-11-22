@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class OnClickLoadScene : MonoBehaviour {
+public class OwnSceneManager : MonoBehaviour {
 
     public void LoadByName(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
+    }
+
+    public void LoadByIndex(int sceneIndex)
+    {
+        SceneManager.LoadScene(sceneIndex);
     }
 	
 }

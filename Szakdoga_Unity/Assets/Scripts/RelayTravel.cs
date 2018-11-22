@@ -1,41 +1,41 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 class RelayTravel : MonoBehaviour {
 
+    //Scriptek
     Game game;
     SetSolarSystems setSystem;
-    List<ChangeSolarSytem> changes;
 
-    GameObject systemGObject;
-    SolarSystem currentSystem;
 
-    Component[] meshComponents;
 
+
+    //Naprendszer listák
     List<SolarSystem> neighbourSystems = new List<SolarSystem>();
     List<SolarSystem> Systems;
-    List<GameObject> SystemGObjects;
+    List<GameObject> SystemPrefabs;
 
-    GameObject currentSolarSystemGObject;
-
-    public ScrollRect itemView;
-    public GameObject itemContents;
-    public GameObject itemPrefab;
-
+    List<ChangeSolarSytem> changes;
     List<GameObject> items;
 
-    Text solarSystemText;
+    GameObject systemPrefab;
+    SolarSystem currentSystem;
+   
+    //UI Panel elemek
+    ScrollRect itemView;
+    GameObject itemContents;
+    GameObject itemPrefab;
+    
+    //UI Text
+    Text solarSystemText; 
 
-    bool isRelayPanelActive = true;
-
+    //Panel pozíciók
     Vector3 activePosition;
     Vector3 deactivePosition;
 
-
+    //Panel láthatósághoz
+    bool isRelayPanelActive = true;
 
     void Awake()
     {
@@ -49,11 +49,10 @@ class RelayTravel : MonoBehaviour {
     void Start () {
 
         
-
         items = new List<GameObject>();
         changes = new List<ChangeSolarSytem>();
 
-        systemGObject = transform.parent.gameObject;
+        systemPrefab = transform.parent.gameObject;
         Systems = game.Systems;
 
         currentSystem = Systems.Find(x => x.Name == game.currentSolarSystem.Name);
@@ -63,6 +62,10 @@ class RelayTravel : MonoBehaviour {
         deactivePosition = itemView.transform.position;
     }
 
+    /// <summary>
+    /// A RelayTravel panelbe generáljuk bele a jelenelgi naprendszer szomszédjainak a listájából listelelemek
+    /// </summary>
+    /// <param name="system"></param>
     void GenerateNeighbourSystemList(SolarSystem system)
     {
         for (int i = 0; i < system.neighbourSystems.Count; i++)
@@ -83,6 +86,7 @@ class RelayTravel : MonoBehaviour {
         }
 
     }
+
     void Update()
     {
         
@@ -99,13 +103,11 @@ class RelayTravel : MonoBehaviour {
         }
     }
 
-
     void OnMouseDown()
     {
-
-        Time.timeScale = 0;
         currentSystem = game.currentSolarSystem;
 
+        //Megvizsgáljuk hogy aktív-e a RelayTravel panel
         if (isRelayPanelActive == true)
         {
             itemView.transform.position = activePosition;
@@ -120,8 +122,6 @@ class RelayTravel : MonoBehaviour {
             }
         }
         isRelayPanelActive = !isRelayPanelActive;
-
-        Time.timeScale = 1;
     }
 
 }
