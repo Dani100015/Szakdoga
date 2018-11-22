@@ -1,7 +1,9 @@
 ﻿
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 class Game : MonoBehaviour
 {
@@ -66,6 +68,8 @@ class Game : MonoBehaviour
             }
             #endregion
 
+
+
             GenerateSolarSystems(starCount); // Naprendszer generálás
             GenerateSystemRelations();       // Naprendszer kapcsolatok generálása
             initTechTree();                  // Tech fa létrehozása a Playernek
@@ -87,6 +91,12 @@ class Game : MonoBehaviour
             players.Add(currentPlayer);
             players.Add(player2);
 
+            if (GameStartOptions.PlayerName != null && GameStartOptions.EnemyName != null)
+            {
+                currentPlayer.empireName = GameStartOptions.PlayerName;
+                player2.empireName = GameStartOptions.EnemyName;
+            }
+            Debug.Log(currentPlayer.empireName);
             #endregion
 
             //Kezdő naprendszer
@@ -157,7 +167,7 @@ class Game : MonoBehaviour
 
     void Update()
     {
-           
+        DefeatCondition();
     }
 
     // void CheckForWin
@@ -165,6 +175,38 @@ class Game : MonoBehaviour
     // void setNewGame
     // void EndGame
 
+    void DefeatCondition()
+    {
+        foreach (Player p in players)
+        {
+            
+            if (p.units.Where(x => x.GetComponent<Structure>() && x.GetComponent<Structure>().isDropOffPoint).First().GetComponent<Structure>().currentHealth == 0)
+            {
+                if (p.empireName == GameStartOptions.PlayerName)
+                {
+                    StartCoroutine("WinOrLose", "You lose");
+                }
+                else
+                {
+                    StartCoroutine("WinOrLose", "You win");
+                }
+            }
+
+        }
+    }
+
+    IEnumerator WinOrLose(string status)    
+    {
+        GameObject gameOverPanel = GameObject.Find("GameOverPanel");
+        Text gameOverText = gameOverPanel.GetComponentInChildren<Text>();
+
+        gameOverPanel.transform.localPosition = new Vector3(0, 0, 0);
+        gameOverText.text = status;
+
+        yield return new WaitForSeconds(5);
+        OwnSceneManager.LoadByName("MainMenu");
+
+    }
     public void GenerateSolarSystems(int starCount)
     {
         //X számú rendszer generálás

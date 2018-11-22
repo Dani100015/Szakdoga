@@ -8,9 +8,6 @@ class RelayTravel : MonoBehaviour {
     Game game;
     SetSolarSystems setSystem;
 
-
-
-
     //Naprendszer listák
     List<SolarSystem> neighbourSystems = new List<SolarSystem>();
     List<SolarSystem> Systems;
@@ -86,7 +83,6 @@ class RelayTravel : MonoBehaviour {
         }
 
     }
-
     void Update()
     {
         
@@ -102,7 +98,6 @@ class RelayTravel : MonoBehaviour {
             currentSystem = game.currentSolarSystem;
         }
     }
-
     void OnMouseDown()
     {
         currentSystem = game.currentSolarSystem;

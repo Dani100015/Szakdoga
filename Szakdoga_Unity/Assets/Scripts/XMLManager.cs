@@ -12,7 +12,6 @@ public class XMLManager : MonoBehaviour {
     Game game;
 
     List<SolarSystem> Systems = new List<SolarSystem>();
-
     List<GameObject> SystemPrefabs = new List<GameObject>();
     List<GameObject> GalaxyStarPrefabs = new List<GameObject>();
     List<Transform> Celestials = new List<Transform>();
@@ -275,7 +274,6 @@ public class XMLManager : MonoBehaviour {
 }
 
 #region Item Classes
-
 [System.Serializable]
 public class PlanetItem 
 {

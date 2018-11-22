@@ -12,7 +12,6 @@ public class Galaxy_SceneManager : MonoBehaviour
     static GameObject selectedObject; //Kiválaszott objectum
     static RaycastHit hitInfo;        //Raycast Találat infó
     static bool hit;                  //Volt találat?
-    static bool wasStarHit = false;
 
     void Start()
     {
@@ -20,7 +19,6 @@ public class Galaxy_SceneManager : MonoBehaviour
     }
     void Update()
     {
-
         hitInfo = new RaycastHit();
         if (Input.GetKey(KeyCode.Mouse1))
         {
@@ -30,9 +28,13 @@ public class Galaxy_SceneManager : MonoBehaviour
         {
             SystemViewChange();
         }
-        else if (Input.GetKey(KeyCode.Space) && game.fromGalaxy == true)
+        else if (Input.GetKeyDown(KeyCode.Space) && Game.GalaxyView == false)
         {
-            CameraViewChange.ChangeCameraView();
+            CameraViewChange.ChangeCameraView();       
+        }
+        else if (true)
+        {
+
         }
     }
 
