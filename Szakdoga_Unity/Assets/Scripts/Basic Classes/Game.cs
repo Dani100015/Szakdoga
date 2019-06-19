@@ -13,6 +13,7 @@ class Game : MonoBehaviour
     public static Game game;
     public SetSolarSystems setSystems;
     public GameStartOptions gameStart;
+    public OwnSceneManager sceneManager = new OwnSceneManager();
 
     //Aktuális cameranézet
     static public Camera mainCamera;
@@ -64,11 +65,9 @@ class Game : MonoBehaviour
             }
             else
             {
-                starCount = 5;
+                starCount = 10;
             }
             #endregion
-
-
 
             GenerateSolarSystems(starCount); // Naprendszer generálás
             GenerateSystemRelations();       // Naprendszer kapcsolatok generálása
@@ -96,7 +95,6 @@ class Game : MonoBehaviour
                 currentPlayer.empireName = GameStartOptions.PlayerName;
                 player2.empireName = GameStartOptions.EnemyName;
             }
-            Debug.Log(currentPlayer.empireName);
             #endregion
 
             //Kezdő naprendszer
@@ -194,7 +192,6 @@ class Game : MonoBehaviour
 
         }
     }
-
     IEnumerator WinOrLose(string status)    
     {
         GameObject gameOverPanel = GameObject.Find("GameOverPanel");
@@ -203,8 +200,9 @@ class Game : MonoBehaviour
         gameOverPanel.transform.localPosition = new Vector3(0, 0, 0);
         gameOverText.text = status;
 
-        yield return new WaitForSeconds(5);
-        OwnSceneManager.LoadByName("MainMenu");
+        yield return new WaitForSeconds(3);
+        
+        sceneManager.LoadByIndex(0);
 
     }
     public void GenerateSolarSystems(int starCount)
@@ -222,7 +220,6 @@ class Game : MonoBehaviour
         }
        
     }
-
     void GenerateSystemRelations()
     {
         for (int i = 0; i < Systems.Count; i++)
@@ -260,7 +257,6 @@ class Game : MonoBehaviour
             }
         }
     }
-
     public static void ResearchEffects(Player player, Tech tech)
     {
         switch (tech.name)
@@ -303,7 +299,6 @@ class Game : MonoBehaviour
 
         }
     }
-
     public static void IncreaseMaxPopulation(Player player)
     {
         player.MaxPopulation += 30;
@@ -321,7 +316,6 @@ class Game : MonoBehaviour
                 player.BuildableUnits[i].GetComponent<Unit>().GatherSpeed += 1f;
         }       
     }
-
     public static void IncreaseMaxHealth(Player player)
     {       
         for (int i = 0; i < player.units.Count; i++)
@@ -345,7 +339,6 @@ class Game : MonoBehaviour
             }
         }
     }
-
     public static void IncreaseArmor(Player player)
     {
         for (int i = 0; i < player.units.Count; i++)
@@ -359,7 +352,6 @@ class Game : MonoBehaviour
                 player.BuildableUnits[i].GetComponent<Unit>().Armor += player.BuildableUnits[i].GetComponent<Unit>().ArmorIncrement;
         } 
     }
-
     public static void IncreaseAttack(Player player)
     {
         for (int i = 0; i < player.units.Count; i++)
@@ -373,7 +365,6 @@ class Game : MonoBehaviour
                 player.BuildableUnits[i].GetComponent<Unit>().attackDamage += player.BuildableUnits[i].GetComponent<Unit>().AttackIncrement;
         }
     }
-
     public void initTechTree()
     {
         playerTechList = new List<Tech>();

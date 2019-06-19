@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-class CelestialToolTip   : MonoBehaviour {
+class CelestialToolTip : MonoBehaviour {
 
     //Panel gameobejct
     GameObject TipPanel;
@@ -20,9 +20,9 @@ class CelestialToolTip   : MonoBehaviour {
     Vector3 activePosition;
     Vector3 deactivePosition;
 	void Start () {
-        TipPanel = GameObject.Find("CelestialTipPanel");
+        TipPanel  = GameObject.Find("CelestialTipPanel");
         TipHeader = GameObject.Find("CelestialTipPanelHead").transform.Find("CelestialName").GetComponent<Text>();
-        TipInfo = GameObject.Find("CelestialInfo").GetComponent<Text>();
+        TipInfo   = GameObject.Find("CelestialInfo").GetComponent<Text>();
 
         celestialName = transform.name;
         celestialInfo = transform.position.ToString();

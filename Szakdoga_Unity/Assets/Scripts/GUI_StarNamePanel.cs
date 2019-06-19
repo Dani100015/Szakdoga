@@ -15,7 +15,6 @@ class GUI_StarNamePanel : MonoBehaviour {
         canvas = transform.GetComponent<Canvas>();
         planetNameText = transform.Find("Panel").transform.Find("PlanetText").GetComponent<TextMeshProUGUI>();
 
-
         planetName = canvas.gameObject.transform.parent.name;       
         planetNameText.text = planetName;
 

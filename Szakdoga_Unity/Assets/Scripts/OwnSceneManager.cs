@@ -1,16 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class OwnSceneManager : MonoBehaviour {
+class OwnSceneManager : MonoBehaviour {
 
-    public static void LoadByName(string sceneName)
+    public void LoadByName(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
     }
 
-    public static void LoadByIndex(int sceneIndex)
+    public void LoadByIndex(int sceneIndex)
     {
         SceneManager.LoadScene(sceneIndex);
     }

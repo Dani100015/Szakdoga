@@ -11,8 +11,6 @@ class SolarSystem
     public List<SolarSystem> neighbourSystems;     //Szomszédos naprendszerek
     public GameObject solarSystemGObject;
 
-
-
     public string Name
     {
         get

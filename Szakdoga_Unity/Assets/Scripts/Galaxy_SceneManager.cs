@@ -28,16 +28,11 @@ public class Galaxy_SceneManager : MonoBehaviour
         {
             SystemViewChange();
         }
-        else if (Input.GetKeyDown(KeyCode.Space) && Game.GalaxyView == false)
+        else if (Input.GetKeyDown(KeyCode.Space))
         {
-            CameraViewChange.ChangeCameraView();       
-        }
-        else if (true)
-        {
-
+            CameraViewChange.ChangeCameraView();
         }
     }
-
     void UnitTravelOrder()
     {
         hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);

@@ -30,14 +30,10 @@ namespace SystemPath
                 {
                     cs = cs.Szulo;
                 }
-                Debug.Log("Siker");
             }
 
         }
     }
-
-
-
     abstract class AbsztraktAllapot
     {
         public abstract bool AllapotE();

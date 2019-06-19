@@ -42,7 +42,6 @@ class PathFinding : MonoBehaviour
 
         return path;
    }
-
 }
 
 abstract class AbsztraktAllapot

@@ -14,7 +14,6 @@ class GUI_CelestialToolTip : MonoBehaviour
     string celestialName;
     string celestialInfo;
 
-
     Vector3 offset;
     Vector3 activePosition;
     Vector3 deactivePosition;

@@ -13,14 +13,12 @@ class GUI_SolarSystemPanelInfo : MonoBehaviour
     SetSolarSystems setSystems;
     Game game;
 
-    string currentSolarSystemName;
-
     Vector3 activePosition;
     Vector3 deactivePosition;
+
     void Awake()
     {
-        game = GameObject.Find("Game").GetComponent<Game>();     
-        //setSystems = GameObject.Find("SolarSystemGenerator").GetComponent<SetSolarSystems>();
+        game = GameObject.Find("Game").GetComponent<Game>();
         SolarSystemNameText = transform.Find("TextSolarSystem").GetComponent<Text>();
     }
 
@@ -33,22 +31,35 @@ class GUI_SolarSystemPanelInfo : MonoBehaviour
     }
     void Update()
     {
-        InvokeRepeating("UpdatetSolarSystemText", 1, 2);
-    }
-    void UpdatetSolarSystemText()
-    {
-        if (Game.GalaxyView == true)
-        {
-            transform.localPosition = deactivePosition;
-        }
-        if (Game.GalaxyView == false)
-        {
-            transform.localPosition = activePosition;
-            if (game != null && game.currentSolarSystem != null)
+            //InvokeRepeating("UpdatetSolarSystemText", 1, 2);
+            if (Game.GalaxyView == true)
             {
-                SolarSystemNameText.text = game.currentSolarSystem.Name;
+                transform.localPosition = deactivePosition;
             }
+            if (Game.GalaxyView == false)
+            {
+                transform.localPosition = activePosition;
+                if (game != null && game.currentSolarSystem != null)
+                {
+                    SolarSystemNameText.text = game.currentSolarSystem.Name;
+                }
 
-        }
+            }
     }
+    //void UpdatetSolarSystemText()
+    //{
+    //    if (Game.GalaxyView == true)
+    //    {
+    //        transform.localPosition = deactivePosition;
+    //    }
+    //    if (Game.GalaxyView == false)
+    //    {
+    //        transform.localPosition = activePosition;
+    //        if (game != null && game.currentSolarSystem != null)
+    //        {
+    //            SolarSystemNameText.text = game.currentSolarSystem.Name;
+    //        }
+
+    //    }
+    //}
 }

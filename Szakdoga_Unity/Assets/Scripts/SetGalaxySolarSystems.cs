@@ -19,8 +19,8 @@ class SetGalaxySolarSystems : MonoBehaviour {
 
     void Start()
     {
-        if (ParameterWatcher.firstGalaxyInit)
-        {
+        //if (ParameterWatcher.firstGalaxyInit)
+        //{
             game = GameObject.Find("Game").GetComponent<Game>();
             xmlManager = GameObject.Find("XMLManager").GetComponent<XMLManager>();
             Systems = game.Systems;
@@ -33,9 +33,8 @@ class SetGalaxySolarSystems : MonoBehaviour {
             lineContainer = GameObject.Find("LineContainer");
             GenerateSystemRelationsLine();
 
-
-            ParameterWatcher.firstGalaxyInit = false;
-        }
+        //    ParameterWatcher.firstGalaxyInit = false;
+        //}
 
     }
     void GenerateGalaxyPrefabs()
@@ -81,7 +80,7 @@ class SetGalaxySolarSystems : MonoBehaviour {
             {
                 GameObject gObject = new GameObject("LineObject");
                 LineRenderer line = gObject.AddComponent<LineRenderer>();
-
+                   
                 if (ParameterWatcher.isLoadedGalaxy)
                 {
                     line.SetPosition(0, Systems[i].position);

@@ -1,8 +1,4 @@
 sceneSetups:
-<<<<<<< HEAD
-- path: Assets/Scenes/SolarSystems_Teszt Copy.unity
-=======
-- path: Assets/Scenes/MainMenu.unity
->>>>>>> 80d0eda2cef48e6db31cdf8286269bd5fceb21ec
+- path: Assets/Scenes/SolarSystems.unity
   isLoaded: 1
   isActive: 1

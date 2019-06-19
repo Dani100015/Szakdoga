@@ -9,24 +9,38 @@
       <systemName>SolarSystems</systemName>
     </PlanetItem>
     <PlanetItem>
-      <celestialName>Planet3(Clone)</celestialName>
-      <posX>26</posX>
-      <posY>0</posY>
-      <posZ>-169</posZ>
-      <systemName>0._SOLARSYSTEM</systemName>
-    </PlanetItem>
-    <PlanetItem>
       <celestialName>Planet1(Clone)</celestialName>
-      <posX>23</posX>
+      <posX>80</posX>
       <posY>0</posY>
-      <posZ>-217</posZ>
+      <posZ>14</posZ>
       <systemName>0._SOLARSYSTEM</systemName>
     </PlanetItem>
     <PlanetItem>
-      <celestialName>Planet2(Clone)</celestialName>
-      <posX>-80</posX>
+      <celestialName>Planet10(Clone)</celestialName>
+      <posX>-20</posX>
       <posY>0</posY>
-      <posZ>-209</posZ>
+      <posZ>155</posZ>
+      <systemName>0._SOLARSYSTEM</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planet8(Clone)</celestialName>
+      <posX>-116</posX>
+      <posY>0</posY>
+      <posZ>-19</posZ>
+      <systemName>0._SOLARSYSTEM</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planet7(Clone)</celestialName>
+      <posX>149</posX>
+      <posY>0</posY>
+      <posZ>29</posZ>
+      <systemName>0._SOLARSYSTEM</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planet7(Clone)</celestialName>
+      <posX>-117</posX>
+      <posY>0</posY>
+      <posZ>-4</posZ>
       <systemName>0._SOLARSYSTEM</systemName>
     </PlanetItem>
     <PlanetItem>
@@ -37,24 +51,24 @@
       <systemName>SolarSystems</systemName>
     </PlanetItem>
     <PlanetItem>
-      <celestialName>Planet7(Clone)</celestialName>
-      <posX>-68</posX>
+      <celestialName>Planet1(Clone)</celestialName>
+      <posX>-4</posX>
       <posY>0</posY>
-      <posZ>67</posZ>
+      <posZ>-141</posZ>
       <systemName>1._SOLARSYSTEM</systemName>
     </PlanetItem>
     <PlanetItem>
-      <celestialName>Planet9(Clone)</celestialName>
-      <posX>149</posX>
+      <celestialName>Planet10(Clone)</celestialName>
+      <posX>-125</posX>
       <posY>0</posY>
-      <posZ>-12</posZ>
+      <posZ>-197</posZ>
       <systemName>1._SOLARSYSTEM</systemName>
     </PlanetItem>
     <PlanetItem>
-      <celestialName>Planet9(Clone)</celestialName>
-      <posX>-41</posX>
+      <celestialName>Planet1(Clone)</celestialName>
+      <posX>-19</posX>
       <posY>0</posY>
-      <posZ>244</posZ>
+      <posZ>-183</posZ>
       <systemName>1._SOLARSYSTEM</systemName>
     </PlanetItem>
     <PlanetItem>
@@ -66,115 +80,283 @@
     </PlanetItem>
     <PlanetItem>
       <celestialName>Planet5(Clone)</celestialName>
-      <posX>106</posX>
+      <posX>-118</posX>
       <posY>0</posY>
-      <posZ>-67</posZ>
+      <posZ>225</posZ>
       <systemName>2._SOLARSYSTEM</systemName>
-    </PlanetItem>
-    <PlanetItem>
-      <celestialName>Planet8(Clone)</celestialName>
-      <posX>144</posX>
-      <posY>0</posY>
-      <posZ>-97</posZ>
-      <systemName>2._SOLARSYSTEM</systemName>
-    </PlanetItem>
-    <PlanetItem>
-      <celestialName>Planet10(Clone)</celestialName>
-      <posX>-24</posX>
-      <posY>0</posY>
-      <posZ>-170</posZ>
-      <systemName>2._SOLARSYSTEM</systemName>
-    </PlanetItem>
-    <PlanetItem>
-      <celestialName>Planets</celestialName>
-      <posX>0</posX>
-      <posY>0</posY>
-      <posZ>0</posZ>
-      <systemName>SolarSystems</systemName>
-    </PlanetItem>
-    <PlanetItem>
-      <celestialName>Planet9(Clone)</celestialName>
-      <posX>-77</posX>
-      <posY>0</posY>
-      <posZ>-141</posZ>
-      <systemName>3._SOLARSYSTEM</systemName>
-    </PlanetItem>
-    <PlanetItem>
-      <celestialName>Planet7(Clone)</celestialName>
-      <posX>136</posX>
-      <posY>0</posY>
-      <posZ>209</posZ>
-      <systemName>3._SOLARSYSTEM</systemName>
-    </PlanetItem>
-    <PlanetItem>
-      <celestialName>Planet3(Clone)</celestialName>
-      <posX>-99</posX>
-      <posY>0</posY>
-      <posZ>-90</posZ>
-      <systemName>3._SOLARSYSTEM</systemName>
-    </PlanetItem>
-    <PlanetItem>
-      <celestialName>Planet4(Clone)</celestialName>
-      <posX>146</posX>
-      <posY>0</posY>
-      <posZ>200</posZ>
-      <systemName>3._SOLARSYSTEM</systemName>
-    </PlanetItem>
-    <PlanetItem>
-      <celestialName>Planet9(Clone)</celestialName>
-      <posX>46</posX>
-      <posY>0</posY>
-      <posZ>181</posZ>
-      <systemName>3._SOLARSYSTEM</systemName>
-    </PlanetItem>
-    <PlanetItem>
-      <celestialName>Planet7(Clone)</celestialName>
-      <posX>-103</posX>
-      <posY>0</posY>
-      <posZ>-94</posZ>
-      <systemName>3._SOLARSYSTEM</systemName>
-    </PlanetItem>
-    <PlanetItem>
-      <celestialName>Planets</celestialName>
-      <posX>0</posX>
-      <posY>0</posY>
-      <posZ>0</posZ>
-      <systemName>SolarSystems</systemName>
-    </PlanetItem>
-    <PlanetItem>
-      <celestialName>Planet7(Clone)</celestialName>
-      <posX>65</posX>
-      <posY>0</posY>
-      <posZ>-36</posZ>
-      <systemName>4._SOLARSYSTEM</systemName>
-    </PlanetItem>
-    <PlanetItem>
-      <celestialName>Planet3(Clone)</celestialName>
-      <posX>-49</posX>
-      <posY>0</posY>
-      <posZ>57</posZ>
-      <systemName>4._SOLARSYSTEM</systemName>
-    </PlanetItem>
-    <PlanetItem>
-      <celestialName>Planet10(Clone)</celestialName>
-      <posX>56</posX>
-      <posY>0</posY>
-      <posZ>224</posZ>
-      <systemName>4._SOLARSYSTEM</systemName>
-    </PlanetItem>
-    <PlanetItem>
-      <celestialName>Planet8(Clone)</celestialName>
-      <posX>-52</posX>
-      <posY>0</posY>
-      <posZ>-156</posZ>
-      <systemName>4._SOLARSYSTEM</systemName>
     </PlanetItem>
     <PlanetItem>
       <celestialName>Planet1(Clone)</celestialName>
-      <posX>12</posX>
+      <posX>-143</posX>
       <posY>0</posY>
-      <posZ>175</posZ>
+      <posZ>198</posZ>
+      <systemName>2._SOLARSYSTEM</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planet3(Clone)</celestialName>
+      <posX>-77</posX>
+      <posY>0</posY>
+      <posZ>-47</posZ>
+      <systemName>2._SOLARSYSTEM</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planets</celestialName>
+      <posX>0</posX>
+      <posY>0</posY>
+      <posZ>0</posZ>
+      <systemName>SolarSystems</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planet10(Clone)</celestialName>
+      <posX>25</posX>
+      <posY>0</posY>
+      <posZ>68</posZ>
+      <systemName>3._SOLARSYSTEM</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planet1(Clone)</celestialName>
+      <posX>-121</posX>
+      <posY>0</posY>
+      <posZ>188</posZ>
+      <systemName>3._SOLARSYSTEM</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planet7(Clone)</celestialName>
+      <posX>-16</posX>
+      <posY>0</posY>
+      <posZ>178</posZ>
+      <systemName>3._SOLARSYSTEM</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planet2(Clone)</celestialName>
+      <posX>145</posX>
+      <posY>0</posY>
+      <posZ>-17</posZ>
+      <systemName>3._SOLARSYSTEM</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planet10(Clone)</celestialName>
+      <posX>-76</posX>
+      <posY>0</posY>
+      <posZ>-171</posZ>
+      <systemName>3._SOLARSYSTEM</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planet6(Clone)</celestialName>
+      <posX>-7</posX>
+      <posY>0</posY>
+      <posZ>34</posZ>
+      <systemName>3._SOLARSYSTEM</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planets</celestialName>
+      <posX>0</posX>
+      <posY>0</posY>
+      <posZ>0</posZ>
+      <systemName>SolarSystems</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planet9(Clone)</celestialName>
+      <posX>-22</posX>
+      <posY>0</posY>
+      <posZ>2</posZ>
       <systemName>4._SOLARSYSTEM</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planet10(Clone)</celestialName>
+      <posX>118</posX>
+      <posY>0</posY>
+      <posZ>-9</posZ>
+      <systemName>4._SOLARSYSTEM</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planet6(Clone)</celestialName>
+      <posX>113</posX>
+      <posY>0</posY>
+      <posZ>163</posZ>
+      <systemName>4._SOLARSYSTEM</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planets</celestialName>
+      <posX>0</posX>
+      <posY>0</posY>
+      <posZ>0</posZ>
+      <systemName>SolarSystems</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planet10(Clone)</celestialName>
+      <posX>-5</posX>
+      <posY>0</posY>
+      <posZ>234</posZ>
+      <systemName>5._SOLARSYSTEM</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planet10(Clone)</celestialName>
+      <posX>112</posX>
+      <posY>0</posY>
+      <posZ>184</posZ>
+      <systemName>5._SOLARSYSTEM</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planet4(Clone)</celestialName>
+      <posX>-139</posX>
+      <posY>0</posY>
+      <posZ>196</posZ>
+      <systemName>5._SOLARSYSTEM</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planet7(Clone)</celestialName>
+      <posX>-140</posX>
+      <posY>0</posY>
+      <posZ>131</posZ>
+      <systemName>5._SOLARSYSTEM</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planets</celestialName>
+      <posX>0</posX>
+      <posY>0</posY>
+      <posZ>0</posZ>
+      <systemName>SolarSystems</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planet3(Clone)</celestialName>
+      <posX>-96</posX>
+      <posY>0</posY>
+      <posZ>174</posZ>
+      <systemName>6._SOLARSYSTEM</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planet10(Clone)</celestialName>
+      <posX>-117</posX>
+      <posY>0</posY>
+      <posZ>89</posZ>
+      <systemName>6._SOLARSYSTEM</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planet7(Clone)</celestialName>
+      <posX>-68</posX>
+      <posY>0</posY>
+      <posZ>111</posZ>
+      <systemName>6._SOLARSYSTEM</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planet6(Clone)</celestialName>
+      <posX>116</posX>
+      <posY>0</posY>
+      <posZ>-228</posZ>
+      <systemName>6._SOLARSYSTEM</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planets</celestialName>
+      <posX>0</posX>
+      <posY>0</posY>
+      <posZ>0</posZ>
+      <systemName>SolarSystems</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planet3(Clone)</celestialName>
+      <posX>88</posX>
+      <posY>0</posY>
+      <posZ>168</posZ>
+      <systemName>7._SOLARSYSTEM</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planet5(Clone)</celestialName>
+      <posX>-121</posX>
+      <posY>0</posY>
+      <posZ>117</posZ>
+      <systemName>7._SOLARSYSTEM</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planet2(Clone)</celestialName>
+      <posX>81</posX>
+      <posY>0</posY>
+      <posZ>203</posZ>
+      <systemName>7._SOLARSYSTEM</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planet1(Clone)</celestialName>
+      <posX>60</posX>
+      <posY>0</posY>
+      <posZ>141</posZ>
+      <systemName>7._SOLARSYSTEM</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planets</celestialName>
+      <posX>0</posX>
+      <posY>0</posY>
+      <posZ>0</posZ>
+      <systemName>SolarSystems</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planet5(Clone)</celestialName>
+      <posX>-60</posX>
+      <posY>0</posY>
+      <posZ>-187</posZ>
+      <systemName>8._SOLARSYSTEM</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planet2(Clone)</celestialName>
+      <posX>117</posX>
+      <posY>0</posY>
+      <posZ>94</posZ>
+      <systemName>8._SOLARSYSTEM</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planet7(Clone)</celestialName>
+      <posX>-31</posX>
+      <posY>0</posY>
+      <posZ>227</posZ>
+      <systemName>8._SOLARSYSTEM</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planet7(Clone)</celestialName>
+      <posX>89</posX>
+      <posY>0</posY>
+      <posZ>-166</posZ>
+      <systemName>8._SOLARSYSTEM</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planet8(Clone)</celestialName>
+      <posX>-3</posX>
+      <posY>0</posY>
+      <posZ>96</posZ>
+      <systemName>8._SOLARSYSTEM</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planet3(Clone)</celestialName>
+      <posX>2</posX>
+      <posY>0</posY>
+      <posZ>48</posZ>
+      <systemName>8._SOLARSYSTEM</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planets</celestialName>
+      <posX>0</posX>
+      <posY>0</posY>
+      <posZ>0</posZ>
+      <systemName>SolarSystems</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planet3(Clone)</celestialName>
+      <posX>17</posX>
+      <posY>0</posY>
+      <posZ>94</posZ>
+      <systemName>9._SOLARSYSTEM</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planet10(Clone)</celestialName>
+      <posX>2</posX>
+      <posY>0</posY>
+      <posZ>-56</posZ>
+      <systemName>9._SOLARSYSTEM</systemName>
+    </PlanetItem>
+    <PlanetItem>
+      <celestialName>Planet8(Clone)</celestialName>
+      <posX>120</posX>
+      <posY>0</posY>
+      <posZ>182</posZ>
+      <systemName>9._SOLARSYSTEM</systemName>
     </PlanetItem>
   </planets>
   <asteriods>
@@ -182,16 +364,7 @@
       <celestialName>Palladium Asteroid</celestialName>
       <posX>-170.6001</posX>
       <posY>-2.10000038</posY>
-      <posZ>-228</posZ>
-      <systemName>0._SOLARSYSTEM</systemName>
-      <capacity>0</capacity>
-      <type>None</type>
-    </AsteriodItem>
-    <AsteriodItem>
-      <celestialName>Element Zero Asteroid</celestialName>
-      <posX>-214.8003</posX>
-      <posY>-2.10000038</posY>
-      <posZ>123</posZ>
+      <posZ>243</posZ>
       <systemName>0._SOLARSYSTEM</systemName>
       <capacity>0</capacity>
       <type>None</type>
@@ -200,7 +373,7 @@
       <celestialName>Iridium Asteroid</celestialName>
       <posX>-170.6001</posX>
       <posY>-2.10000038</posY>
-      <posZ>-30</posZ>
+      <posZ>114</posZ>
       <systemName>0._SOLARSYSTEM</systemName>
       <capacity>0</capacity>
       <type>None</type>
@@ -209,7 +382,7 @@
       <celestialName>Palladium Asteroid</celestialName>
       <posX>-170.6001</posX>
       <posY>-2.10000038</posY>
-      <posZ>-118</posZ>
+      <posZ>176</posZ>
       <systemName>0._SOLARSYSTEM</systemName>
       <capacity>0</capacity>
       <type>None</type>
@@ -217,27 +390,135 @@
     <AsteriodItem>
       <celestialName>Element Zero Asteroid</celestialName>
       <posX>-214.8003</posX>
+      <posY>-2.10000038</posY>
+      <posZ>220</posZ>
+      <systemName>1._SOLARSYSTEM</systemName>
+      <capacity>0</capacity>
+      <type>None</type>
+    </AsteriodItem>
+    <AsteriodItem>
+      <celestialName>Iridium Asteroid</celestialName>
+      <posX>-170.6001</posX>
+      <posY>-2.10000038</posY>
+      <posZ>217</posZ>
+      <systemName>1._SOLARSYSTEM</systemName>
+      <capacity>0</capacity>
+      <type>None</type>
+    </AsteriodItem>
+    <AsteriodItem>
+      <celestialName>Palladium Asteroid</celestialName>
+      <posX>-170.6001</posX>
+      <posY>-2.10000038</posY>
+      <posZ>78</posZ>
+      <systemName>1._SOLARSYSTEM</systemName>
+      <capacity>0</capacity>
+      <type>None</type>
+    </AsteriodItem>
+    <AsteriodItem>
+      <celestialName>Palladium Asteroid</celestialName>
+      <posX>-170.6001</posX>
+      <posY>-2.10000038</posY>
+      <posZ>-240</posZ>
+      <systemName>1._SOLARSYSTEM</systemName>
+      <capacity>0</capacity>
+      <type>None</type>
+    </AsteriodItem>
+    <AsteriodItem>
+      <celestialName>Iridium Asteroid</celestialName>
+      <posX>-170.6001</posX>
+      <posY>-2.10000038</posY>
+      <posZ>212</posZ>
+      <systemName>2._SOLARSYSTEM</systemName>
+      <capacity>0</capacity>
+      <type>None</type>
+    </AsteriodItem>
+    <AsteriodItem>
+      <celestialName>Iridium Asteroid</celestialName>
+      <posX>-170.6001</posX>
+      <posY>-2.10000038</posY>
+      <posZ>-63</posZ>
+      <systemName>2._SOLARSYSTEM</systemName>
+      <capacity>0</capacity>
+      <type>None</type>
+    </AsteriodItem>
+    <AsteriodItem>
+      <celestialName>Element Zero Asteroid</celestialName>
+      <posX>-214.8003</posX>
+      <posY>-2.10000038</posY>
+      <posZ>-142</posZ>
+      <systemName>2._SOLARSYSTEM</systemName>
+      <capacity>0</capacity>
+      <type>None</type>
+    </AsteriodItem>
+    <AsteriodItem>
+      <celestialName>Element Zero Asteroid</celestialName>
+      <posX>-214.8003</posX>
+      <posY>-2.10000038</posY>
+      <posZ>-178</posZ>
+      <systemName>2._SOLARSYSTEM</systemName>
+      <capacity>0</capacity>
+      <type>None</type>
+    </AsteriodItem>
+    <AsteriodItem>
+      <celestialName>Iridium Asteroid</celestialName>
+      <posX>-170.6001</posX>
+      <posY>-2.10000038</posY>
+      <posZ>-35</posZ>
+      <systemName>2._SOLARSYSTEM</systemName>
+      <capacity>0</capacity>
+      <type>None</type>
+    </AsteriodItem>
+    <AsteriodItem>
+      <celestialName>Element Zero Asteroid</celestialName>
+      <posX>-214.8003</posX>
+      <posY>-2.10000038</posY>
+      <posZ>-240</posZ>
+      <systemName>3._SOLARSYSTEM</systemName>
+      <capacity>0</capacity>
+      <type>None</type>
+    </AsteriodItem>
+    <AsteriodItem>
+      <celestialName>Iridium Asteroid</celestialName>
+      <posX>-170.6001</posX>
+      <posY>-2.10000038</posY>
+      <posZ>91</posZ>
+      <systemName>3._SOLARSYSTEM</systemName>
+      <capacity>0</capacity>
+      <type>None</type>
+    </AsteriodItem>
+    <AsteriodItem>
+      <celestialName>Palladium Asteroid</celestialName>
+      <posX>-170.6001</posX>
+      <posY>-2.10000038</posY>
+      <posZ>-163</posZ>
+      <systemName>3._SOLARSYSTEM</systemName>
+      <capacity>0</capacity>
+      <type>None</type>
+    </AsteriodItem>
+    <AsteriodItem>
+      <celestialName>Element Zero Asteroid</celestialName>
+      <posX>-214.8003</posX>
+      <posY>-2.10000038</posY>
+      <posZ>99</posZ>
+      <systemName>4._SOLARSYSTEM</systemName>
+      <capacity>0</capacity>
+      <type>None</type>
+    </AsteriodItem>
+    <AsteriodItem>
+      <celestialName>Element Zero Asteroid</celestialName>
+      <posX>-214.8003</posX>
+      <posY>-2.10000038</posY>
+      <posZ>143</posZ>
+      <systemName>4._SOLARSYSTEM</systemName>
+      <capacity>0</capacity>
+      <type>None</type>
+    </AsteriodItem>
+    <AsteriodItem>
+      <celestialName>Iridium Asteroid</celestialName>
+      <posX>-170.6001</posX>
       <posY>-2.10000038</posY>
       <posZ>105</posZ>
-      <systemName>0._SOLARSYSTEM</systemName>
-      <capacity>0</capacity>
-      <type>None</type>
-    </AsteriodItem>
-    <AsteriodItem>
-      <celestialName>Palladium Asteroid</celestialName>
-      <posX>-170.6001</posX>
-      <posY>-2.10000038</posY>
-      <posZ>-14</posZ>
-      <systemName>0._SOLARSYSTEM</systemName>
-      <capacity>0</capacity>
-      <type>None</type>
-    </AsteriodItem>
-    <AsteriodItem>
-      <celestialName>Element Zero Asteroid</celestialName>
-      <posX>-214.8003</posX>
-      <posY>-2.10000038</posY>
-      <posZ>-213</posZ>
-      <systemName>1._SOLARSYSTEM</systemName>
+      <systemName>4._SOLARSYSTEM</systemName>
       <capacity>0</capacity>
       <type>None</type>
     </AsteriodItem>
@@ -245,8 +526,17 @@
       <celestialName>Iridium Asteroid</celestialName>
       <posX>-170.6001</posX>
       <posY>-2.10000038</posY>
-      <posZ>-172</posZ>
-      <systemName>1._SOLARSYSTEM</systemName>
+      <posZ>-86</posZ>
+      <systemName>4._SOLARSYSTEM</systemName>
+      <capacity>0</capacity>
+      <type>None</type>
+    </AsteriodItem>
+    <AsteriodItem>
+      <celestialName>Palladium Asteroid</celestialName>
+      <posX>-170.6001</posX>
+      <posY>-2.10000038</posY>
+      <posZ>-227</posZ>
+      <systemName>4._SOLARSYSTEM</systemName>
       <capacity>0</capacity>
       <type>None</type>
     </AsteriodItem>
@@ -254,8 +544,8 @@
       <celestialName>Iridium Asteroid</celestialName>
       <posX>-170.6001</posX>
       <posY>-2.10000038</posY>
-      <posZ>-226</posZ>
-      <systemName>1._SOLARSYSTEM</systemName>
+      <posZ>-211</posZ>
+      <systemName>4._SOLARSYSTEM</systemName>
       <capacity>0</capacity>
       <type>None</type>
     </AsteriodItem>
@@ -263,8 +553,26 @@
       <celestialName>Iridium Asteroid</celestialName>
       <posX>-170.6001</posX>
       <posY>-2.10000038</posY>
-      <posZ>88</posZ>
-      <systemName>1._SOLARSYSTEM</systemName>
+      <posZ>-196</posZ>
+      <systemName>5._SOLARSYSTEM</systemName>
+      <capacity>0</capacity>
+      <type>None</type>
+    </AsteriodItem>
+    <AsteriodItem>
+      <celestialName>Palladium Asteroid</celestialName>
+      <posX>-170.6001</posX>
+      <posY>-2.10000038</posY>
+      <posZ>235</posZ>
+      <systemName>5._SOLARSYSTEM</systemName>
+      <capacity>0</capacity>
+      <type>None</type>
+    </AsteriodItem>
+    <AsteriodItem>
+      <celestialName>Palladium Asteroid</celestialName>
+      <posX>-170.6001</posX>
+      <posY>-2.10000038</posY>
+      <posZ>26</posZ>
+      <systemName>5._SOLARSYSTEM</systemName>
       <capacity>0</capacity>
       <type>None</type>
     </AsteriodItem>
@@ -272,8 +580,26 @@
       <celestialName>Element Zero Asteroid</celestialName>
       <posX>-214.8003</posX>
       <posY>-2.10000038</posY>
-      <posZ>-101</posZ>
-      <systemName>2._SOLARSYSTEM</systemName>
+      <posZ>147</posZ>
+      <systemName>5._SOLARSYSTEM</systemName>
+      <capacity>0</capacity>
+      <type>None</type>
+    </AsteriodItem>
+    <AsteriodItem>
+      <celestialName>Palladium Asteroid</celestialName>
+      <posX>-170.6001</posX>
+      <posY>-2.10000038</posY>
+      <posZ>111</posZ>
+      <systemName>6._SOLARSYSTEM</systemName>
+      <capacity>0</capacity>
+      <type>None</type>
+    </AsteriodItem>
+    <AsteriodItem>
+      <celestialName>Palladium Asteroid</celestialName>
+      <posX>-170.6001</posX>
+      <posY>-2.10000038</posY>
+      <posZ>-63</posZ>
+      <systemName>6._SOLARSYSTEM</systemName>
       <capacity>0</capacity>
       <type>None</type>
     </AsteriodItem>
@@ -281,17 +607,44 @@
       <celestialName>Element Zero Asteroid</celestialName>
       <posX>-214.8003</posX>
       <posY>-2.10000038</posY>
-      <posZ>-82</posZ>
-      <systemName>2._SOLARSYSTEM</systemName>
+      <posZ>107</posZ>
+      <systemName>6._SOLARSYSTEM</systemName>
       <capacity>0</capacity>
       <type>None</type>
     </AsteriodItem>
     <AsteriodItem>
-      <celestialName>Element Zero Asteroid</celestialName>
-      <posX>-214.8003</posX>
+      <celestialName>Palladium Asteroid</celestialName>
+      <posX>-170.6001</posX>
       <posY>-2.10000038</posY>
-      <posZ>-166</posZ>
-      <systemName>2._SOLARSYSTEM</systemName>
+      <posZ>13</posZ>
+      <systemName>6._SOLARSYSTEM</systemName>
+      <capacity>0</capacity>
+      <type>None</type>
+    </AsteriodItem>
+    <AsteriodItem>
+      <celestialName>Palladium Asteroid</celestialName>
+      <posX>-170.6001</posX>
+      <posY>-2.10000038</posY>
+      <posZ>80</posZ>
+      <systemName>6._SOLARSYSTEM</systemName>
+      <capacity>0</capacity>
+      <type>None</type>
+    </AsteriodItem>
+    <AsteriodItem>
+      <celestialName>Palladium Asteroid</celestialName>
+      <posX>-170.6001</posX>
+      <posY>-2.10000038</posY>
+      <posZ>15</posZ>
+      <systemName>7._SOLARSYSTEM</systemName>
+      <capacity>0</capacity>
+      <type>None</type>
+    </AsteriodItem>
+    <AsteriodItem>
+      <celestialName>Palladium Asteroid</celestialName>
+      <posX>-170.6001</posX>
+      <posY>-2.10000038</posY>
+      <posZ>119</posZ>
+      <systemName>7._SOLARSYSTEM</systemName>
       <capacity>0</capacity>
       <type>None</type>
     </AsteriodItem>
@@ -299,8 +652,8 @@
       <celestialName>Iridium Asteroid</celestialName>
       <posX>-170.6001</posX>
       <posY>-2.10000038</posY>
-      <posZ>-33</posZ>
-      <systemName>2._SOLARSYSTEM</systemName>
+      <posZ>-57</posZ>
+      <systemName>7._SOLARSYSTEM</systemName>
       <capacity>0</capacity>
       <type>None</type>
     </AsteriodItem>
@@ -308,8 +661,26 @@
       <celestialName>Element Zero Asteroid</celestialName>
       <posX>-214.8003</posX>
       <posY>-2.10000038</posY>
-      <posZ>-98</posZ>
-      <systemName>2._SOLARSYSTEM</systemName>
+      <posZ>69</posZ>
+      <systemName>8._SOLARSYSTEM</systemName>
+      <capacity>0</capacity>
+      <type>None</type>
+    </AsteriodItem>
+    <AsteriodItem>
+      <celestialName>Iridium Asteroid</celestialName>
+      <posX>-170.6001</posX>
+      <posY>-2.10000038</posY>
+      <posZ>-235</posZ>
+      <systemName>8._SOLARSYSTEM</systemName>
+      <capacity>0</capacity>
+      <type>None</type>
+    </AsteriodItem>
+    <AsteriodItem>
+      <celestialName>Iridium Asteroid</celestialName>
+      <posX>-170.6001</posX>
+      <posY>-2.10000038</posY>
+      <posZ>50</posZ>
+      <systemName>8._SOLARSYSTEM</systemName>
       <capacity>0</capacity>
       <type>None</type>
     </AsteriodItem>
@@ -317,35 +688,8 @@
       <celestialName>Palladium Asteroid</celestialName>
       <posX>-170.6001</posX>
       <posY>-2.10000038</posY>
-      <posZ>108</posZ>
-      <systemName>2._SOLARSYSTEM</systemName>
-      <capacity>0</capacity>
-      <type>None</type>
-    </AsteriodItem>
-    <AsteriodItem>
-      <celestialName>Palladium Asteroid</celestialName>
-      <posX>-170.6001</posX>
-      <posY>-2.10000038</posY>
-      <posZ>172</posZ>
-      <systemName>3._SOLARSYSTEM</systemName>
-      <capacity>0</capacity>
-      <type>None</type>
-    </AsteriodItem>
-    <AsteriodItem>
-      <celestialName>Palladium Asteroid</celestialName>
-      <posX>-170.6001</posX>
-      <posY>-2.10000038</posY>
-      <posZ>-184</posZ>
-      <systemName>3._SOLARSYSTEM</systemName>
-      <capacity>0</capacity>
-      <type>None</type>
-    </AsteriodItem>
-    <AsteriodItem>
-      <celestialName>Palladium Asteroid</celestialName>
-      <posX>-170.6001</posX>
-      <posY>-2.10000038</posY>
-      <posZ>59</posZ>
-      <systemName>3._SOLARSYSTEM</systemName>
+      <posZ>-123</posZ>
+      <systemName>8._SOLARSYSTEM</systemName>
       <capacity>0</capacity>
       <type>None</type>
     </AsteriodItem>
@@ -353,8 +697,26 @@
       <celestialName>Element Zero Asteroid</celestialName>
       <posX>-214.8003</posX>
       <posY>-2.10000038</posY>
-      <posZ>113</posZ>
-      <systemName>4._SOLARSYSTEM</systemName>
+      <posZ>-215</posZ>
+      <systemName>8._SOLARSYSTEM</systemName>
+      <capacity>0</capacity>
+      <type>None</type>
+    </AsteriodItem>
+    <AsteriodItem>
+      <celestialName>Iridium Asteroid</celestialName>
+      <posX>-170.6001</posX>
+      <posY>-2.10000038</posY>
+      <posZ>-196</posZ>
+      <systemName>8._SOLARSYSTEM</systemName>
+      <capacity>0</capacity>
+      <type>None</type>
+    </AsteriodItem>
+    <AsteriodItem>
+      <celestialName>Iridium Asteroid</celestialName>
+      <posX>-170.6001</posX>
+      <posY>-2.10000038</posY>
+      <posZ>72</posZ>
+      <systemName>9._SOLARSYSTEM</systemName>
       <capacity>0</capacity>
       <type>None</type>
     </AsteriodItem>
@@ -362,35 +724,17 @@
       <celestialName>Element Zero Asteroid</celestialName>
       <posX>-214.8003</posX>
       <posY>-2.10000038</posY>
-      <posZ>-47</posZ>
-      <systemName>4._SOLARSYSTEM</systemName>
+      <posZ>-40</posZ>
+      <systemName>9._SOLARSYSTEM</systemName>
       <capacity>0</capacity>
       <type>None</type>
     </AsteriodItem>
     <AsteriodItem>
-      <celestialName>Palladium Asteroid</celestialName>
+      <celestialName>Iridium Asteroid</celestialName>
       <posX>-170.6001</posX>
       <posY>-2.10000038</posY>
-      <posZ>-243</posZ>
-      <systemName>4._SOLARSYSTEM</systemName>
-      <capacity>0</capacity>
-      <type>None</type>
-    </AsteriodItem>
-    <AsteriodItem>
-      <celestialName>Element Zero Asteroid</celestialName>
-      <posX>-214.8003</posX>
-      <posY>-2.10000038</posY>
-      <posZ>167</posZ>
-      <systemName>4._SOLARSYSTEM</systemName>
-      <capacity>0</capacity>
-      <type>None</type>
-    </AsteriodItem>
-    <AsteriodItem>
-      <celestialName>Palladium Asteroid</celestialName>
-      <posX>-170.6001</posX>
-      <posY>-2.10000038</posY>
-      <posZ>229</posZ>
-      <systemName>4._SOLARSYSTEM</systemName>
+      <posZ>-233</posZ>
+      <systemName>9._SOLARSYSTEM</systemName>
       <capacity>0</capacity>
       <type>None</type>
     </AsteriodItem>
@@ -399,103 +743,197 @@
     <SystemItem>
       <systemName>0._SOLARSYSTEM</systemName>
       <celestials>
-        <string>Planet3(Clone)</string>
         <string>Planet1(Clone)</string>
-        <string>Planet2(Clone)</string>
+        <string>Planet10(Clone)</string>
+        <string>Planet8(Clone)</string>
+        <string>Planet7(Clone)</string>
+        <string>Planet7(Clone)</string>
         <string>Palladium Asteroid</string>
-        <string>Element Zero Asteroid</string>
         <string>Iridium Asteroid</string>
-        <string>Palladium Asteroid</string>
-        <string>Element Zero Asteroid</string>
         <string>Palladium Asteroid</string>
       </celestials>
     </SystemItem>
     <SystemItem>
       <systemName>1._SOLARSYSTEM</systemName>
       <celestials>
-        <string>Planet7(Clone)</string>
-        <string>Planet9(Clone)</string>
-        <string>Planet9(Clone)</string>
+        <string>Planet1(Clone)</string>
+        <string>Planet10(Clone)</string>
+        <string>Planet1(Clone)</string>
         <string>Element Zero Asteroid</string>
         <string>Iridium Asteroid</string>
-        <string>Iridium Asteroid</string>
-        <string>Iridium Asteroid</string>
+        <string>Palladium Asteroid</string>
+        <string>Palladium Asteroid</string>
       </celestials>
     </SystemItem>
     <SystemItem>
       <systemName>2._SOLARSYSTEM</systemName>
       <celestials>
         <string>Planet5(Clone)</string>
-        <string>Planet8(Clone)</string>
-        <string>Planet10(Clone)</string>
-        <string>Element Zero Asteroid</string>
+        <string>Planet1(Clone)</string>
+        <string>Planet3(Clone)</string>
+        <string>Iridium Asteroid</string>
+        <string>Iridium Asteroid</string>
         <string>Element Zero Asteroid</string>
         <string>Element Zero Asteroid</string>
         <string>Iridium Asteroid</string>
-        <string>Element Zero Asteroid</string>
-        <string>Palladium Asteroid</string>
       </celestials>
     </SystemItem>
     <SystemItem>
       <systemName>3._SOLARSYSTEM</systemName>
       <celestials>
-        <string>Planet9(Clone)</string>
+        <string>Planet10(Clone)</string>
+        <string>Planet1(Clone)</string>
         <string>Planet7(Clone)</string>
-        <string>Planet3(Clone)</string>
-        <string>Planet4(Clone)</string>
-        <string>Planet9(Clone)</string>
-        <string>Planet7(Clone)</string>
-        <string>Palladium Asteroid</string>
-        <string>Palladium Asteroid</string>
+        <string>Planet2(Clone)</string>
+        <string>Planet10(Clone)</string>
+        <string>Planet6(Clone)</string>
+        <string>Element Zero Asteroid</string>
+        <string>Iridium Asteroid</string>
         <string>Palladium Asteroid</string>
       </celestials>
     </SystemItem>
     <SystemItem>
       <systemName>4._SOLARSYSTEM</systemName>
       <celestials>
+        <string>Planet9(Clone)</string>
+        <string>Planet10(Clone)</string>
+        <string>Planet6(Clone)</string>
+        <string>Element Zero Asteroid</string>
+        <string>Element Zero Asteroid</string>
+        <string>Iridium Asteroid</string>
+        <string>Iridium Asteroid</string>
+        <string>Palladium Asteroid</string>
+        <string>Iridium Asteroid</string>
+      </celestials>
+    </SystemItem>
+    <SystemItem>
+      <systemName>5._SOLARSYSTEM</systemName>
+      <celestials>
+        <string>Planet10(Clone)</string>
+        <string>Planet10(Clone)</string>
+        <string>Planet4(Clone)</string>
         <string>Planet7(Clone)</string>
+        <string>Iridium Asteroid</string>
+        <string>Palladium Asteroid</string>
+        <string>Palladium Asteroid</string>
+        <string>Element Zero Asteroid</string>
+      </celestials>
+    </SystemItem>
+    <SystemItem>
+      <systemName>6._SOLARSYSTEM</systemName>
+      <celestials>
+        <string>Planet3(Clone)</string>
+        <string>Planet10(Clone)</string>
+        <string>Planet7(Clone)</string>
+        <string>Planet6(Clone)</string>
+        <string>Palladium Asteroid</string>
+        <string>Palladium Asteroid</string>
+        <string>Element Zero Asteroid</string>
+        <string>Palladium Asteroid</string>
+        <string>Palladium Asteroid</string>
+      </celestials>
+    </SystemItem>
+    <SystemItem>
+      <systemName>7._SOLARSYSTEM</systemName>
+      <celestials>
+        <string>Planet3(Clone)</string>
+        <string>Planet5(Clone)</string>
+        <string>Planet2(Clone)</string>
+        <string>Planet1(Clone)</string>
+        <string>Palladium Asteroid</string>
+        <string>Palladium Asteroid</string>
+        <string>Iridium Asteroid</string>
+      </celestials>
+    </SystemItem>
+    <SystemItem>
+      <systemName>8._SOLARSYSTEM</systemName>
+      <celestials>
+        <string>Planet5(Clone)</string>
+        <string>Planet2(Clone)</string>
+        <string>Planet7(Clone)</string>
+        <string>Planet7(Clone)</string>
+        <string>Planet8(Clone)</string>
+        <string>Planet3(Clone)</string>
+        <string>Element Zero Asteroid</string>
+        <string>Iridium Asteroid</string>
+        <string>Iridium Asteroid</string>
+        <string>Palladium Asteroid</string>
+        <string>Element Zero Asteroid</string>
+        <string>Iridium Asteroid</string>
+      </celestials>
+    </SystemItem>
+    <SystemItem>
+      <systemName>9._SOLARSYSTEM</systemName>
+      <celestials>
         <string>Planet3(Clone)</string>
         <string>Planet10(Clone)</string>
         <string>Planet8(Clone)</string>
-        <string>Planet1(Clone)</string>
+        <string>Iridium Asteroid</string>
         <string>Element Zero Asteroid</string>
-        <string>Element Zero Asteroid</string>
-        <string>Palladium Asteroid</string>
-        <string>Element Zero Asteroid</string>
-        <string>Palladium Asteroid</string>
+        <string>Iridium Asteroid</string>
       </celestials>
     </SystemItem>
   </systems>
   <stars>
     <StarItem>
       <starName>0._SOLARSYSTEM</starName>
-      <posX>1391</posX>
+      <posX>1140</posX>
       <posY>13</posY>
-      <posZ>1182</posZ>
+      <posZ>1115</posZ>
     </StarItem>
     <StarItem>
       <starName>1._SOLARSYSTEM</starName>
-      <posX>1096</posX>
+      <posX>1219</posX>
       <posY>13</posY>
-      <posZ>1471</posZ>
+      <posZ>1056</posZ>
     </StarItem>
     <StarItem>
       <starName>2._SOLARSYSTEM</starName>
-      <posX>1282</posX>
+      <posX>1493</posX>
       <posY>13</posY>
-      <posZ>1026</posZ>
+      <posZ>1062</posZ>
     </StarItem>
     <StarItem>
       <starName>3._SOLARSYSTEM</starName>
-      <posX>1381</posX>
+      <posX>1366</posX>
       <posY>13</posY>
-      <posZ>1366</posZ>
+      <posZ>1297</posZ>
     </StarItem>
     <StarItem>
       <starName>4._SOLARSYSTEM</starName>
-      <posX>1036</posX>
+      <posX>1336</posX>
       <posY>13</posY>
-      <posZ>1026</posZ>
+      <posZ>1475</posZ>
+    </StarItem>
+    <StarItem>
+      <starName>5._SOLARSYSTEM</starName>
+      <posX>1481</posX>
+      <posY>13</posY>
+      <posZ>1083</posZ>
+    </StarItem>
+    <StarItem>
+      <starName>6._SOLARSYSTEM</starName>
+      <posX>1255</posX>
+      <posY>13</posY>
+      <posZ>1496</posZ>
+    </StarItem>
+    <StarItem>
+      <starName>7._SOLARSYSTEM</starName>
+      <posX>1461</posX>
+      <posY>13</posY>
+      <posZ>1191</posZ>
+    </StarItem>
+    <StarItem>
+      <starName>8._SOLARSYSTEM</starName>
+      <posX>1476</posX>
+      <posY>13</posY>
+      <posZ>1424</posZ>
+    </StarItem>
+    <StarItem>
+      <starName>9._SOLARSYSTEM</starName>
+      <posX>1400</posX>
+      <posY>13</posY>
+      <posZ>1052</posZ>
     </StarItem>
   </stars>
   <units />

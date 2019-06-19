@@ -44,7 +44,6 @@ class RelayTravel : MonoBehaviour {
         setSystem = GameObject.Find("SolarSystemGenerator").GetComponent<SetSolarSystems>();
     }
     void Start () {
-
         
         items = new List<GameObject>();
         changes = new List<ChangeSolarSytem>();
@@ -53,7 +52,6 @@ class RelayTravel : MonoBehaviour {
         Systems = game.Systems;
 
         currentSystem = Systems.Find(x => x.Name == game.currentSolarSystem.Name);
-
 
         activePosition = new Vector3(150,400,0f);
         deactivePosition = itemView.transform.position;
@@ -72,11 +70,9 @@ class RelayTravel : MonoBehaviour {
             scrollItemObject.AddComponent<ChangeSolarSytem>();
             scrollItemObject.transform.SetParent(itemContents.transform, false);
 
-
             scrollItemObject.name = "Item" + i;
             scrollItemObject.AddComponent<Button>();
             
-
             solarSystemText = scrollItemObject.transform.Find("ItemText").GetComponent<Text>();
             solarSystemText.text = system.neighbourSystems[i].Name;
 

@@ -37,7 +37,6 @@ abstract class Celestials {
         get { return owner; }
         set { owner = value; ; }
     }
-
     public Celestials(SolarSystem Sol,string Name,float X,float Y)
     {
         name = Name;

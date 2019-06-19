@@ -46,9 +46,7 @@ public class XMLManager : MonoBehaviour {
 
         SetItemValues();
     }
-
     public ItemDatabase itemDB;
-
     void Update()
     {
         Units = game.Units;
@@ -154,12 +152,12 @@ public class XMLManager : MonoBehaviour {
 
         stream.Close();
 
-        ParameterWatcher.firstGameInit = true;
-        ParameterWatcher.firstSolarSystemInit = true;
-        ParameterWatcher.firstGalaxyInit = true;
+        //ParameterWatcher.firstGameInit = true;
+        //ParameterWatcher.firstSolarSystemInit = true;
+        //ParameterWatcher.firstGalaxyInit = true;
 
-        ParameterWatcher.isLoadedSolarSystem = true;
-        ParameterWatcher.isLoadedGalaxy = true;
+        //ParameterWatcher.isLoadedSolarSystem = true;
+        //ParameterWatcher.isLoadedGalaxy = true;
 
         SceneManager.LoadScene("SolarSystems");
     }
